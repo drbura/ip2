@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Dashboard - Student Clearance Management System</title>
+  <title>Profile - Student Clearance Management System</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -268,26 +268,26 @@
 
                 <div class="tab-pane fade pt-3" id="profile-change-password">
                   <!-- Change Password Form -->
-                  <form>
+                  <form method ="POST" action ="change_password.php">
 
                     <div class="row mb-3">
-                      <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
+                      <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Email</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="password" type="password" class="form-control" id="currentPassword">
+                        <input name="email" type="password" class="form-control" id="currentPassword">
                       </div>
                     </div>
 
                     <div class="row mb-3">
-                      <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
+                      <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="newpassword" type="password" class="form-control" id="newPassword">
+                        <input name="current_password" type="password" class="form-control" id="newPassword">
                       </div>
                     </div>
 
                     <div class="row mb-3">
-                      <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New Password</label>
+                      <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="renewpassword" type="password" class="form-control" id="renewPassword">
+                        <input name="new_password" type="password" class="form-control" id="renewPassword">
                       </div>
                     </div>
 
@@ -309,7 +309,7 @@
 
   </main><!-- End #main -->
   
-  <?php include 'footer.ph' ?>
+  <?php include 'footer.php' ?>
   
 </body>
 </html>
