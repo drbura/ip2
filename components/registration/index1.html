@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<h1 align="center">DIRE DAWA UNIVERSITY</h1>
+<title>Student Registration Form</title>
+
+<script src="index.js"></script>
+</head>
+<body>
+<form>
+<table width="700" border="0" align="center" cellpadding="0" cellspacing="5">
+  <tr>
+    <th width="25%" height="60">&nbsp;</th>
+    <th><p>Student Registration Form</p></th>
+    <th width="10%">&nbsp;</th>
+  </tr>
+  <tr>
+    <td><strong>Student ID:</strong></td>
+    <td><input name="student_id" type="text" size="35" required/></td>
+    <td>&nbsp;</td>
+  </tr>
+ 
+  <tr>
+    <td><strong>FIRST Name:</strong></td>
+    <td><input name="first_name" type="text" size="35" required/></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><strong>FATHER Name:</strong></td>
+    <td><input name="father_name" type="text" size="35" required/></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><strong>GFATHER Name:</strong></td>
+    <td><input name="gfather_name" type="text" size="35" required/></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><strong>DOB:</strong></td>
+    <td><input name="dob" type="date" size="35" required/></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><strong>Sex:</strong></td>
+    <td>
+      <input type="radio" name="gender" value="male" required>Male
+      <input type="radio" name="gender" value="female">Female
+    </td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><strong>Enrolment Date:</strong></td>
+    <td><input name="enrolment_date" type="date" size="35" required/></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><strong>School:</strong></td>
+    <td>
+      <select id="slct1" name="school" onchange="populate(this.id, 'slct2')">
+        <option>Select..</option>
+        <option value="Freshman">Freshman</option>
+        <option value="Medicine and Health Sciences">Medicine and Health Sciences</option>
+        <option value="Law">Law</option>
+        <option value="Business and Economics">Business and Economics</option>
+        <option value="Science, Engineering and Technology">Science, Engineering and Technology</option>
+        <option value="Education">Education</option>
+        <option value="Pharmacy">Pharmacy</option>
+      
+      </select>
+    </td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>Department/Stream:</td>
+    <td>
+      <select id="slct2" name="slct2">
+        <option value="select">Select</option>
+      </select>
+    </td>
+  </tr>
+ 
+  <tr>
+    <td><input type="reset" /></td>
+    <td><input type="submit" value="Submit" onsubmit="alert('your details have been submitted!')" /></td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+</form>
+</body>
+</html>
