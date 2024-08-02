@@ -11,6 +11,7 @@
             color: #333;
             font-family: 'Roboto', sans-serif;
             margin-top: 80px;
+            margin-left: 250px;
         }
         .container {
             background-color: #ffffff;
@@ -197,6 +198,25 @@
                 errorMessage.style.display = 'none';
             }
         }
+        document.querySelector('form').onsubmit = function(event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    var formData = new FormData(this);
+
+    fetch('insert.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById('registrationMessage').innerText = data;
+        document.getElementById('registrationMessage').style.display = 'block';
+        if (data.includes("Registered Successfully")) {
+            this.reset(); // Reset the form fields
+        }
+    })
+    .catch(error => console.error('Error:', error));
+};
     </script>
 </head>
 <body>
@@ -418,22 +438,11 @@
                 <button type="submit" class="btn btn-primary">Submit</button>
                 <button type="reset" class="btn btn-secondary">Reset</button>
             </div>
+            <div id="registrationMessage" class="alert alert-success" style="display: none;"></div>
+
         </form>
     </div>
         </main>
-    
-    <footer id="footer" class="footer">
-    <div class="copyright">
-      &copy; Copyright <strong><span>DDU UNIVERSITY</span></strong>. All Rights Reserved
-    </div>
-    <div class="credits">
-      <!-- All the links in the footer should remain intact. -->
-      <!-- You can delete the links only if you purchased the pro version. -->
-      <!-- Licensing information: https://bootstrapmade.com/license/ -->
-      <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-      <!-- <a href="https://bootstrapmade.com/"></a> -->
-    </div>
-  </footer><!-- End Footer -->
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>

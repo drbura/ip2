@@ -20,7 +20,7 @@ $studentId = mysqli_real_escape_string($conn, $_POST['ID']);
 $password = mysqli_real_escape_string($conn, $_POST['password']);
 
 // Check if the ID and password (both should be the same as student_id) exist in student_data table
-$query = "SELECT * FROM student_data WHERE student_id = '$studentId' AND student_id = '$password'";
+$query = "SELECT * FROM ddustudentdata WHERE student_id = '$studentId' AND student_id = '$password'";
 $result = $conn->query($query);
 
 if ($result->num_rows > 0) {

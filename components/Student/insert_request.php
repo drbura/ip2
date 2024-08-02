@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['send_request'])) {
         die("Connection failed: " . $conn->connect_error);
     }
 
-    $stmt = $conn->prepare("SELECT COUNT(*) FROM student_data WHERE student_id = ?");
+    $stmt = $conn->prepare("SELECT COUNT(*) FROM ddustudentdata WHERE student_id = ?");
     $stmt->bind_param("s", $studentId);
     $stmt->execute();
     $stmt->bind_result($count);

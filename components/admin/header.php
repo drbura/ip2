@@ -190,7 +190,7 @@
           <i class="bi bi-menu-button-wide"></i><span>Registration</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-            <a href="../../admition.php">
+            <a href="../registration">
               <i class="bi bi-circle"></i><span>Student Registration</span>
             </a>
           </li>
@@ -208,12 +208,12 @@
         </a>
         <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="#">
+            <a href="../Student/display_data.php">
               <i class="bi bi-circle"></i><span>Student Data</span>
             </a>
           </li>
           <li>
-            <a href="#">
+            <a href="display_data.php">
               <i class="bi bi-circle"></i><span>User Data</span>
             </a>
           </li>

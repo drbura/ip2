@@ -18,9 +18,9 @@ if ($conn->connect_error) {
 function fetchRequests($conn, $actor) {
     $sql = "SELECT request.StudentId, request.RequestId, request.$actor, 
             request.Advisor, request.LabAssistant, request.DepartmentHead, 
-            student_data.Fname, student_data.Mname 
+            ddustudentdata.first_name, ddustudentdata.father_name 
             FROM request 
-            JOIN student_data ON request.StudentId = student_data.student_id";
+            JOIN ddustudentdata ON request.StudentId = ddustudentdata.student_id";
     $result = $conn->query($sql);
 
     $requests = [];
@@ -81,7 +81,7 @@ $conn->close();
                 <?php foreach ($requests as $request) : ?>
                     <tr>
                         <td><?php echo htmlspecialchars($request['StudentId']); ?></td>
-                        <td><?php echo htmlspecialchars($request['Fname'] . ' ' . $request['Mname']); ?></td>
+                        <td><?php echo htmlspecialchars($request['first_name'] . ' ' . $request['father_name']); ?></td>
                         <td>
                             <?php if ($request[$actor] == 'APPROVED') : ?>
                                 <button class="btn btn-success status-btn" disabled>Approved</button>
