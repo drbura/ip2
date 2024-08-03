@@ -22,9 +22,10 @@ $department = mysqli_real_escape_string($conn, $_POST['department']);
 $year = mysqli_real_escape_string($conn, $_POST['year']);
 $semester = mysqli_real_escape_string($conn, $_POST['semester']);
 $role = mysqli_real_escape_string($conn, $_POST['role']);
+$position = mysqli_real_escape_string($conn, $_POST['position']);
 $phone = mysqli_real_escape_string($conn, $_POST['phone']);
 $email = mysqli_real_escape_string($conn, $_POST['email']);
-$password = mysqli_real_escape_string($conn, $_POST['password']);
+$password = password_hash(trim($_POST["password"]), PASSWORD_DEFAULT);
 $date = mysqli_real_escape_string($conn, $_POST['date']);
 
 // Check if the email already exists
@@ -37,12 +38,13 @@ if ($emailCheckResult->num_rows > 0) {
 }
 
 // Prepare and bind
-$stmt = $conn->prepare("INSERT INTO ddu_substaff (fName, mName, lName, collegeName, department, year, semester, role, phone, email, password, date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-$stmt->bind_param("ssssssssssss", $fName, $mName, $lName, $collegeName, $department, $year, $semester, $role, $phone, $email, $password, $date);
+$stmt = $conn->prepare("INSERT INTO ddu_substaff (fName, mName, lName, collegeName, department, year, semester, staff, role, phone, email, password, date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)");
+$stmt->bind_param("sssssssssssss", $fName, $mName, $lName, $collegeName, $department, $year, $semester, $role,$position, $phone, $email, $password, $date);
 
 // Execute statement
 if ($stmt->execute()) {
-    echo json_encode(['success' => true]);
+    include ('index.php');
+    //echo json_encode(['success' => true]);
 } else {
     echo json_encode(['success' => false, 'error' => 'Database insert error']);
 }

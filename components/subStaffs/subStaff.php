@@ -105,7 +105,7 @@
                             </select>
                             <small class="error" id="yearError"></small>
                         </div>
-                       
+                        
                         <div class="input-field">
                             <label>Semester</label>
                             <select id="semester" name="semester" required>
@@ -116,18 +116,22 @@
                             <small class="error" id="semesterError"></small>
                         </div>
                         <div class="input-field">
-                            <label>Role</label>
+                            <label>Position</label>
                             <select id="role" name="role" required>
-                                <option value="" disabled selected>Select Roll</option>
+                                <option value="" disabled selected>Select Position</option>
+                                <?php if ($_GET['actor'] === 'DepartmentHead'): ?>
                                 <option value="Advisor">Advisor</option>
                                 <option value="LabAssistant">Lab Assistant</option>
+                                <?php endif; ?>
+                                <?php if ($_GET['actor'] === 'SchoolDean'): ?>
                                 <option value="DepartmentHead">Department Head</option>
+                                <?php endif; ?>
                             </select>
                             <small class="error" id="roleError"></small>
                         </div>
                         <div class="input-field">
-                            <label>Position</label>
-                            <input type="text" placeholder="Position" name="position" id="position" required>
+                            <label>Roll</label>
+                            <input type="text" placeholder="Roll" name="position" id="position" required>
                             <small class="error" id="positionError"></small>
                         </div>
                         <div class="input-field">

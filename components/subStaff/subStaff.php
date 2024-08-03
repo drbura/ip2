@@ -54,7 +54,7 @@
         <form id="registrationForm" action="submit_form.php" method="POST">
             <div class="form first">
                 <div class="details personal">
-                    <span class="title">User Registration Form</span>
+                    <span class="title">Substaff Registration Form</span>
                     <div class="fields">
                         <div class="input-field">
                             <label>First Name</label>
@@ -105,7 +105,7 @@
                             </select>
                             <small class="error" id="yearError"></small>
                         </div>
-                       
+                        
                         <div class="input-field">
                             <label>Semester</label>
                             <select id="semester" name="semester" required>
@@ -117,8 +117,17 @@
                         </div>
                         <div class="input-field">
                             <label>Position</label>
-                            <input type="text" placeholder="Position" name="role" id="role" required>
+                            <select id="role" name="role" required>
+                                <option value="" disabled selected>Select Position</option>
+                                <option value="Advisor">Advisor</option>
+                                <option value="LabAssistant">Lab Assistant</option>
+                            </select>
                             <small class="error" id="roleError"></small>
+                        </div>
+                        <div class="input-field">
+                            <label>Roll</label>
+                            <input type="text" placeholder="Roll" name="position" id="position" required>
+                            <small class="error" id="positionError"></small>
                         </div>
                         <div class="input-field">
                             <label>Mobile Number</label>
@@ -144,15 +153,50 @@
                 </div>
                 <div class="input-field">
                     <input type="submit" value="Add">
+                    <br><br><br>
                 </div>
                 <div class="details ID">
                     <div class="fields">
                     </div>
                 </div>
             
+            
         </form>
     </div>
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const departmentOptions = {
+                computation: [
+                    { value: 'cs', text: 'Computer Science' },
+                    { value: 'it', text: 'Information Technology' },
+                    { value: 'se', text: 'Software Engineering' }
+                ],
+                law: [
+                    { value: 'civil', text: 'Civil Law' },
+                    { value: 'criminal', text: 'Criminal Law' }
+                ],
+                medicine: [
+                    { value: 'general', text: 'General Medicine' },
+                    { value: 'dentistry', text: 'Dentistry' }
+                ]
+            };
+
+            document.getElementById('collegeName').addEventListener('change', function() {
+                const college = this.value;
+                const departmentSelect = document.getElementById('department');
+                departmentSelect.innerHTML = '<option value="" disabled selected>Select Department</option>';
+
+                if (departmentOptions[college]) {
+                    departmentOptions[college].forEach(department => {
+                        const option = document.createElement('option');
+                        option.value = department.value;
+                        option.textContent = department.text;
+                        departmentSelect.appendChild(option);
+                    });
+                }
+            });
+        });
+
         function validateName(inputId, errorId) {
             const input = document.getElementById(inputId);
             const error = document.getElementById(errorId);
@@ -252,7 +296,8 @@
         document.getElementById('fName').addEventListener('blur', () => validateName('fName', 'fNameError'));
         document.getElementById('mName').addEventListener('blur', () => validateName('mName', 'mNameError'));
         document.getElementById('lName').addEventListener('blur', () => validateName('lName', 'lNameError'));
-        document.getElementById('role').addEventListener('blur', validatePosition);
+        document.getElementById('role').addEventListener('blur', validateRole);
+        document.getElementById('position').addEventListener('blur', validatePosition);
         document.getElementById('phone').addEventListener('blur', validatePhone);
         document.getElementById('email').addEventListener('blur', validateEmail);
         document.getElementById('password').addEventListener('blur', validatePassword);
@@ -269,6 +314,7 @@
             valid = validateName('fName', 'fNameError') && valid;
             valid = validateName('mName', 'mNameError') && valid;
             valid = validateName('lName', 'lNameError') && valid;
+            valid = validateRole() && valid;
             valid = validatePosition() && valid;
             valid = validatePhone() && valid;
             valid = await validateEmail() && valid;
@@ -297,37 +343,6 @@
                 .catch(error => {
                     console.error('Error:', error);
                     alert('There was an error adding the user.');
-                });
-            }
-        });
-
-        const departmentOptions = {
-            computation: [
-                { value: 'cs', text: 'Computer Science' },
-                { value: 'it', text: 'Information Technology' },
-                { value: 'se', text: 'Software Engineering' }
-            ],
-            law: [
-                { value: 'civil', text: 'Civil Law' },
-                { value: 'criminal', text: 'Criminal Law' }
-            ],
-            medicine: [
-                { value: 'general', text: 'General Medicine' },
-                { value: 'dentistry', text: 'Dentistry' }
-            ]
-        };
-
-        document.getElementById('collegeName').addEventListener('change', function() {
-            const college = this.value;
-            const departmentSelect = document.getElementById('department');
-            departmentSelect.innerHTML = '<option value="" disabled selected>Select Department</option>';
-
-            if (departmentOptions[college]) {
-                departmentOptions[college].forEach(department => {
-                    const option = document.createElement('option');
-                    option.value = department.value;
-                    option.textContent = department.text;
-                    departmentSelect.appendChild(option);
                 });
             }
         });

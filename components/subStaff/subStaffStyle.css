@@ -47,8 +47,8 @@ body {
     margin-top: 16px;
     min-height: 490px;
     background-color: #ffffff37;
-    overflow: hidden;
-}
+    /* overflow: hidden;
+} */}
 .container form .form {
     position: absolute;
     background-color: #ffffff37;

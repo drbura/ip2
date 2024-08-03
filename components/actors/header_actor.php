@@ -138,6 +138,15 @@
       </li>
       <?php endif; ?>
 
+      <?php if ($_GET['actor'] === 'DepartmentHead'): ?>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="../subStaff/">
+          <i class="bi bi-people"></i>
+          <span>Substaff Registration</span>
+        </a>
+      </li>
+      <?php endif; ?>
+
       <li class="nav-heading">Pages</li>
 
       <li class="nav-item">
