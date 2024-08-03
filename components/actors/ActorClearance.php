@@ -1,5 +1,10 @@
 <?php
+session_start();
+
+$UserEmail = isset($_SESSION['email']) ? $_SESSION['email'] : ''; // Retrieve the email from the session
+
 $actor = $_GET['actor'] ?? '';
+
 
 // Database connection
 $servername = "localhost";
@@ -15,20 +20,25 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-function fetchRequests($conn, $actor) {
+function fetchRequests($conn, $actor, $searchTerm = '') {
     $sql = "SELECT request.StudentId, request.RequestId, request.$actor, 
             request.Advisor, request.LabAssistant, request.DepartmentHead, 
-            ddustudentdata.first_name, ddustudentdata.father_name 
+            ddustudentdata.first_name, ddustudentdata.father_name, ddustudentdata.school, ddustudentdata.department, ddustudentdata.year, ddustudentdata.semester
             FROM request 
             JOIN ddustudentdata ON request.StudentId = ddustudentdata.student_id";
+
+    if (!empty($searchTerm)) {
+        $sql .= " WHERE request.StudentId LIKE '%" . $conn->real_escape_string($searchTerm) . "%'";
+    }
+
     $result = $conn->query($sql);
 
     $requests = [];
     if ($result->num_rows > 0) {
-        while($row = $result->fetch_assoc()) {
+        while ($row = $result->fetch_assoc()) {
             // Apply approval sequence logic
-            if ($actor === 'LabAssistant' && $row['Advisor'] !== 'APPROVED') {
-                continue; // Skip if Advisor hasn't approved
+            if ($actor === 'Advisor' && $row['LabAssistant'] !== 'APPROVED') {
+                continue; // Skip if LabAssistant hasn't approved
             }
             if ($actor === 'DepartmentHead' && ($row['Advisor'] !== 'APPROVED' || $row['LabAssistant'] !== 'APPROVED')) {
                 continue; // Skip if either Advisor or LabAssistant hasn't approved
@@ -42,10 +52,15 @@ function fetchRequests($conn, $actor) {
     return $requests;
 }
 
-$requests = fetchRequests($conn, $actor);
+$searchTerm = $_GET['search'] ?? '';
+$requests = fetchRequests($conn, $actor, $searchTerm);
 $conn->close();
-?>
 
+$showSearchAndApproveAll = in_array($actor, ['LabAssistant', 'Advisor','DepartmentHead','SchoolDean','Store', 'Library', 'BookStore', 'Cafeteria', 'AcademicEnrollment', 'StudentService', 'Dormitary', 'StudentLoan']);
+?>
+<script>
+comfirm("This is your email" $UserEmail)
+</script>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -58,49 +73,97 @@ $conn->close();
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
     <style>
         .container {
-            margin-top: 100px; /* 100px from the top */
-            margin-left: 350px; /* 300px from the left */
+            margin-top: 70px;
+            margin-left: 350px;
         }
         .status-btn {
-            margin-right: 5px;
+            margin-right: 2px;
+        }
+        .btn {
+            padding: 3px;
+            font-size: 15px;
+        }
+        .search-bar {
+            margin-bottom: 20px;
+            align-content: center;
+        }
+        .approve-all-btn {
+            /* margin-top: 10px; */
+            border-radius: 15px;
+            font-family: Courier, monospace;
+            font-size: 10px;
+        }
+        #search {
+            width: 400px;
+            margin: auto;
+            border-radius: 15px;
+            font-weight: bold;
+            font-family: Courier, monospace;
+            border-width:  medium;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1 class="text-center"><?php echo htmlspecialchars($actor); ?> Clearance Requests</h1>
-        <table class="table table-bordered">
+        <?php if ($showSearchAndApproveAll): ?>
+            <div class="search-bar">
+                <input type="hidden" id="actor" value="<?php echo htmlspecialchars($actor); ?>">
+                <input type="text" id="search" class="form-control" placeholder="Search">
+                <!-- <button type="button" id="searchBtn" class="btn btn-primary mt-2">Search</button> -->
+            </div>
+        <?php endif; ?>
+        <table class="table table-bordered" id="requestsTable">
             <thead>
                 <tr>
                     <th>Student ID</th>
                     <th>Student Name</th>
-                    <th>Status</th>
+                    <th>College</th>
+                    <th>Department</th>
+                    <th>Year</th>
+                    <th>Semester</th>
+                    <th>Status    <button class="btn btn-success approve-all-btn" onclick="approveAll()">Approve All</button>
+</th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($requests as $request) : ?>
-                    <tr>
-                        <td><?php echo htmlspecialchars($request['StudentId']); ?></td>
-                        <td><?php echo htmlspecialchars($request['first_name'] . ' ' . $request['father_name']); ?></td>
-                        <td>
-                            <?php if ($request[$actor] == 'APPROVED') : ?>
-                                <button class="btn btn-success status-btn" disabled>Approved</button>
-                                <button class="btn btn-warning status-btn" onclick="updateStatus(<?php echo $request['RequestId']; ?>, 'PENDING')">Restore</button>
-                            <?php elseif ($request[$actor] == 'REJECT') : ?>
-                                <button class="btn btn-danger status-btn" disabled>Rejected</button>
-                                <button class="btn btn-warning status-btn" onclick="updateStatus(<?php echo $request['RequestId']; ?>, 'PENDING')">Restore</button>
-                            <?php else : ?>
-                                <button class="btn btn-success status-btn" onclick="updateStatus(<?php echo $request['RequestId']; ?>, 'APPROVED')">Approve</button>
-                                <button class="btn btn-danger status-btn" onclick="updateStatus(<?php echo $request['RequestId']; ?>, 'REJECT')">Reject</button>
-                                <button class="btn btn-warning status-btn" onclick="updateStatus(<?php echo $request['RequestId']; ?>, 'PENDING')">Restore</button>
-                            <?php endif; ?>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
+                <!-- Data will be populated here via AJAX -->
             </tbody>
         </table>
+        
     </div>
     <script>
+        $(document).ready(function() {
+            const actor = $('#actor').val();
+
+            function fetchRequests(searchTerm = '') {
+                $.ajax({
+                    type: 'GET',
+                    url: 'actor_clearance_fetch.php',
+                    data: { actor: actor, search: searchTerm },
+                    success: function(response) {
+                        $('#requestsTable tbody').html(response);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("AJAX error:", error);
+                        console.error("Response text:", xhr.responseText);
+                    }
+                });
+            }
+
+            $('#search').on('input', function() {
+                const searchTerm = $(this).val();
+                fetchRequests(searchTerm);
+            });
+
+            fetchRequests(); // Initial fetch to display all data
+
+            $('#searchBtn').on('click', function() {
+                const searchTerm = $('#search').val();
+                fetchRequests(searchTerm);
+            });
+        });
+
         function updateStatus(requestId, status) {
             $.ajax({
                 type: 'POST',
@@ -114,6 +177,23 @@ $conn->close();
                     console.error("Response text:", xhr.responseText);
                 }
             });
+        }
+
+        function approveAll() {
+            if (confirm("Are you sure you want to approve all requests?")) {
+                $.ajax({
+                    type: 'POST',
+                    url: 'actor_approve_all.php',
+                    data: { actor: '<?php echo $actor; ?>' },
+                    success: function(response) {
+                        location.reload();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("AJAX error:", error);
+                        console.error("Response text:", xhr.responseText);
+                    }
+                });
+            }
         }
     </script>
 </body>

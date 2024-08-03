@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Database connection
     $servername = "localhost";
@@ -49,6 +51,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $row = $result->fetch_assoc();
                 $storedPassword = $row['password'];
                 $staff = $row['staff'];
+                // Set session Email
+                    $_SESSION['email'] = $email;
 
                 // Define placeholder redirect URLs for each table
         $redirects = [
@@ -63,6 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     // Check MD5 password
                     if (checkMd5Password($storedPassword, $password)) {
                         $user_found = true;
+                            $_SESSION['email'] = $email;
                         header("Location: " . $redirects[$i]);
                         exit();
                     }

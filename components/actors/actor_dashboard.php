@@ -7,12 +7,11 @@
 
 </head>
 <body>
-  <?php include 'lib.php' ?>
-  <?php include 'header_actor.php' ?>
-  
+  <?php include 'lib.php'?>
+  <?php include 'header_actor.php'?>
   <?php include 'ActorClearance.php'?>
 
-  <?php include 'footer.php' ?>
+  <?php include 'footer.php'?>
 
 </body>
 </html>

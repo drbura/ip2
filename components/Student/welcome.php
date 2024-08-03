@@ -1,5 +1,13 @@
 <?php
 session_start();
+
+// Check if the user is logged in by verifying the session variables
+if (!isset($_SESSION['id'])) {
+    header('Location: index.php'); // Redirect to login page if session is not set
+    exit;
+}
+
+// Check if the user has agreed to the terms
 if (!isset($_SESSION['agreed'])) {
     header('Location: agree.php');
     exit;
@@ -11,6 +19,37 @@ $formError = isset($_SESSION['error']) ? $_SESSION['error'] : '';
 // Clear the session errors
 unset($_SESSION['id_error']);
 unset($_SESSION['error']);
+
+$studentId = isset($_SESSION['id']) ? $_SESSION['id'] : ''; // Retrieve the student ID from the session
+
+// Database connection
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "ddu_clerance";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Query to get student data
+$sql = "SELECT student_id, first_name, father_name, gfather_name, department, year, semester FROM ddustudentdata WHERE student_id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("s", $studentId);
+$stmt->execute();
+$result = $stmt->get_result();
+$studentData = $result->fetch_assoc();
+
+$fullName = htmlspecialchars($studentData['first_name'] . ' ' . $studentData['father_name'] . ' ' . $studentData['gfather_name']);
+$department = htmlspecialchars($studentData['department']);
+$year = htmlspecialchars($studentData['year']);
+$semester = htmlspecialchars($studentData['semester']);
+
+$stmt->close();
+$conn->close();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -89,39 +128,28 @@ unset($_SESSION['error']);
         <form id="studentForm" class="needs-validation" novalidate method="post" action="insert_request.php">
             <div class="form-group">
                 <label for="name">Full Name</label>
-                <input type="text" class="form-control" id="name" name="name" required>
+                <input type="text" class="form-control" id="name" name="name" value="<?php echo $fullName; ?>" readonly required>
                 <div class="invalid-feedback">Please enter your full name.</div>
             </div>
             <div class="form-group">
                 <label for="id">ID</label>
-                <input type="text" class="form-control" id="id" name="id" required>
+                <input type="text" class="form-control" id="id" name="id" value="<?php echo $studentData['student_id']; ?>" readonly required>
                 <div class="invalid-feedback">Please enter your ID.</div>
             </div>
             <div class="form-group">
                 <label for="department">Department</label>
-                <input type="text" class="form-control" id="department" name="department" required>
+                <input type="text" class="form-control" id="department" name="department" value="<?php echo $department; ?>" readonly required>
                 <div class="invalid-feedback">Please enter your department.</div>
             </div>
             <div class="form-group">
                 <label for="year">Year</label>
-                <select class="form-control" id="year" name="year" required>
-                    <option value="">Select Academic Year</option>
-                    <option value="1">Year 1</option>
-                    <option value="2">Year 2</option>
-                    <option value="3">Year 3</option>
-                    <option value="4">Year 4</option>
-                    <option value="5">Year 5</option>
-                </select>
-                <div class="invalid-feedback">Please select your Academic Year.</div>
+                <input type="text" class="form-control" id="year" name="year" value="<?php echo $year; ?>" readonly required>
+                <div class="invalid-feedback">Please enter your year.</div>
             </div>
             <div class="form-group">
                 <label for="semester">Semester</label>
-                <select class="form-control" id="semester" name="semester" required>
-                    <option value="">Select Semester</option>
-                    <option value="I">Semester I</option>
-                    <option value="II">Semester II</option>
-                </select>
-                <div class="invalid-feedback">Please select your semester.</div>
+                <input type="text" class="form-control" id="semester" name="semester" value="<?php echo $semester; ?>" readonly required>
+                <div class="invalid-feedback">Please enter your semester.</div>
             </div>
             <div class="form-group">
                 <label for="reason">Reason</label>
@@ -153,7 +181,7 @@ unset($_SESSION['error']);
                 }, false);
                 
                 $('#clearFormButton').on('click', function() {
-                    if (confirm('Are you sure you want to clear the form?')) {
+                    if (true) {
                         form.reset();
                         form.classList.remove('was-validated');
                     }
