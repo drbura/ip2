@@ -268,7 +268,7 @@
                     </div>
                     <div class="form-group col-md-6 form-section">
                         <label for="phone_number" class="form-label">Phone Number:</label>
-                        <input type="tel" class="form-control" id="phone_number" name="phone_number" pattern="[0-9]{2}[0-9]{2}[0-9]{2}[0-9]{2}[0-9]{2}" required>
+                        <input type="tel" class="form-control" id="phone_number" name="phone_number" pattern="^(09|07)[0-9]{8}$" required>
                         <small class="form-text text-muted">The phone number should be 10 digits.</small>
                     </div>
                 </div>
