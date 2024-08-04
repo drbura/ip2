@@ -1,7 +1,7 @@
 <?php
-session_start();
+// session_start();
 
-$UserEmail = isset($_SESSION['email']) ? $_SESSION['email'] : ''; // Retrieve the email from the session
+// $UserEmail = isset($_SESSION['email']) ? $_SESSION['email'] : ''; // Retrieve the email from the session
 
 $actor = $_GET['actor'] ?? '';
 
@@ -20,43 +20,43 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-function fetchRequests($conn, $actor, $searchTerm = '') {
-    $sql = "SELECT request.StudentId, request.RequestId, request.$actor, 
-            request.Advisor, request.LabAssistant, request.DepartmentHead, 
-            ddustudentdata.first_name, ddustudentdata.father_name, ddustudentdata.school, ddustudentdata.department, ddustudentdata.year, ddustudentdata.semester
-            FROM request 
-            JOIN ddustudentdata ON request.StudentId = ddustudentdata.student_id";
+// function fetchRequests($conn, $actor, $searchTerm = '') {
+//     $sql = "SELECT request.StudentId, request.RequestId, request.$actor, 
+//             request.Advisor, request.LabAssistant, request.DepartmentHead, 
+//             ddustudentdata.first_name, ddustudentdata.father_name, ddustudentdata.school, ddustudentdata.department, ddustudentdata.year, ddustudentdata.semester
+//             FROM request 
+//             JOIN ddustudentdata ON request.StudentId = ddustudentdata.student_id";
 
-    if (!empty($searchTerm)) {
-        $sql .= " WHERE request.StudentId LIKE '%" . $conn->real_escape_string($searchTerm) . "%'";
-    }
+//     if (!empty($searchTerm)) {
+//         $sql .= " WHERE request.StudentId LIKE '%" . $conn->real_escape_string($searchTerm) . "%'";
+//     }
 
-    $result = $conn->query($sql);
+//     $result = $conn->query($sql);
 
-    $requests = [];
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            // Apply approval sequence logic
-            if ($actor === 'Advisor' && $row['LabAssistant'] !== 'APPROVED') {
-                continue; // Skip if LabAssistant hasn't approved
-            }
-            if ($actor === 'DepartmentHead' && ($row['Advisor'] !== 'APPROVED' || $row['LabAssistant'] !== 'APPROVED')) {
-                continue; // Skip if either Advisor or LabAssistant hasn't approved
-            }
-            if ($actor === 'SchoolDean' && ($row['Advisor'] !== 'APPROVED' || $row['LabAssistant'] !== 'APPROVED' || $row['DepartmentHead'] !== 'APPROVED')) {
-                continue; // Skip if Advisor, LabAssistant, or DepartmentHead hasn't approved
-            }
-            $requests[] = $row;
-        }
-    }
-    return $requests;
-}
+//     $requests = [];
+//     if ($result->num_rows > 0) {
+//         while ($row = $result->fetch_assoc()) {
+//             // Apply approval sequence logic
+//             if ($actor === 'Advisor' && $row['LabAssistant'] !== 'APPROVED') {
+//                 continue; // Skip if LabAssistant hasn't approved
+//             }
+//             if ($actor === 'DepartmentHead' && ($row['Advisor'] !== 'APPROVED' || $row['LabAssistant'] !== 'APPROVED')) {
+//                 continue; // Skip if either Advisor or LabAssistant hasn't approved
+//             }
+//             if ($actor === 'SchoolDean' && ($row['Advisor'] !== 'APPROVED' || $row['LabAssistant'] !== 'APPROVED' || $row['DepartmentHead'] !== 'APPROVED')) {
+//                 continue; // Skip if Advisor, LabAssistant, or DepartmentHead hasn't approved
+//             }
+//             $requests[] = $row;
+//         }
+//     }
+//     return $requests;
+// }
 
-$searchTerm = $_GET['search'] ?? '';
-$requests = fetchRequests($conn, $actor, $searchTerm);
-$conn->close();
+// $searchTerm = $_GET['search'] ?? '';
+// $requests = fetchRequests($conn, $actor, $searchTerm);
+// $conn->close();
 
-$showSearchAndApproveAll = in_array($actor, ['LabAssistant', 'Advisor','DepartmentHead','SchoolDean','Store', 'Library', 'BookStore', 'Cafeteria', 'AcademicEnrollment', 'StudentService', 'Dormitary', 'StudentLoan']);
+$showSearchAndApproveAll = in_array($actor, ['LabAssistant', 'Advisor','DepartmentHead','SchoolDean','Store', 'Library', 'BookStore', 'Cafeteria', 'AcademicEnrollment', 'StudentService', 'Dormitory', 'StudentLoan']);
 ?>
 <script>
 comfirm("This is your email" $UserEmail)

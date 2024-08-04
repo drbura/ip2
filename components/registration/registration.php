@@ -69,7 +69,14 @@
         .text-danger {
             color: red !important;
         }
-        
+        .error {
+            border-color: red;
+        }
+        .error-message {
+            color: red;
+            font-size: 0.8em;
+            display: none;
+        }
         fieldset {
             margin-bottom: 15px;
             padding: 10px;
@@ -110,6 +117,106 @@
             }
         }
 
+        function validateForm() {
+            let isValid = true;
+
+            const studentIdField = document.getElementById('student_id');
+            const studentId = studentIdField.value.trim();
+            const regex = /^ddu\d{7}$/i;
+
+            if (!regex.test(studentId)) {
+                displayError(studentIdField, 'Student ID must start with "ddu" followed by exactly 7 digits.');
+                isValid = false;
+            } else {
+                clearError(studentIdField);
+            }
+
+            const firstNameField = document.getElementById('first_name');
+            const firstName = firstNameField.value.trim();
+            if (firstName === '') {
+                displayError(firstNameField, 'First Name is required.');
+                isValid = false;
+            } else {
+                clearError(firstNameField);
+            }
+
+            const fatherNameField = document.getElementById('father_name');
+            const fatherName = fatherNameField.value.trim();
+            if (fatherName === '') {
+                displayError(fatherNameField, 'Father Name is required.');
+                isValid = false;
+            } else {
+                clearError(fatherNameField);
+            }
+
+            const gfatherNameField = document.getElementById('gfather_name');
+            const gfatherName = gfatherNameField.value.trim();
+            if (gfatherName === '') {
+                displayError(gfatherNameField, 'Grandfather Name is required.');
+                isValid = false;
+            } else {
+                clearError(gfatherNameField);
+            }
+
+            const schoolField = document.getElementById('slct1');
+            const school = schoolField.value;
+            if (school === 'select') {
+                displayError(schoolField, 'Please select a valid school.');
+                isValid = false;
+            } else {
+                clearError(schoolField);
+            }
+
+            const departmentField = document.getElementById('slct2');
+            const department = departmentField.value;
+            if (department === 'select') {
+                displayError(departmentField, 'Please select a valid department.');
+                isValid = false;
+            } else {
+                clearError(departmentField);
+            }
+
+            return isValid;
+        }
+
+        function displayError(element, message) {
+            element.classList.add('error');
+            let errorMessage = element.nextElementSibling;
+            if (!errorMessage || !errorMessage.classList.contains('error-message')) {
+                errorMessage = document.createElement('div');
+                errorMessage.className = 'error-message';
+                element.parentNode.insertBefore(errorMessage, element.nextSibling);
+            }
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+        }
+
+        function clearError(element) {
+            element.classList.remove('error');
+            const errorMessage = element.nextElementSibling;
+            if (errorMessage && errorMessage.classList.contains('error-message')) {
+                errorMessage.style.display = 'none';
+            }
+        }
+        document.querySelector('form').onsubmit = function(event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    var formData = new FormData(this);
+
+    fetch('insert.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById('registrationMessage').innerText = data;
+        document.getElementById('registrationMessage').style.display = 'block';
+        if (data.includes("Registered Successfully")) {
+            this.reset(); // Reset the form fields
+        }
+    })
+    .catch(error => console.error('Error:', error));
+};
     </script>
 </head>
 <body>
@@ -122,9 +229,9 @@
             <fieldset>
                 <legend>Student Information</legend>
                 <div class="form-row">
-                <div class="form-group col-md-4 form-section">
-    <label for="student_id" class="form-label">Student ID:</label>
-    <input type="text" class="form-control" id="student_id" name="student_id" required pattern="^[A-Za-z]{3}\d{7}$" title="Student ID must start with three letters(ddu) followed by seven digits." minlength="10" maxlength="10">
+                    <div class="form-group col-md-4 form-section">
+                        <label for="student_id" class="form-label">Student ID:</label>
+                        <input type="text" class="form-control" id="student_id" name="student_id" required minlength="10">
                     </div>
                     <div class="form-group col-md-4 form-section">
                         <label for="first_name" class="form-label">First Name:</label>
@@ -141,6 +248,10 @@
                         <input type="text" class="form-control" id="gfather_name" name="gfather_name" required>
                     </div>
                     <div class="form-group col-md-4 form-section">
+                        <label for="dob" class="form-label">Date of Birth:</label>
+                        <input type="date" class="form-control" id="dob" name="dob" required>
+                    </div>
+                    <div class="form-group col-md-4 form-section">
                         <label class="form-label">Gender:</label><br>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="gender" id="gender_male" value="male" required>
@@ -153,10 +264,10 @@
                     </div>
                 </div>
                 <div class="form-row">
-                <div class="form-group col-md-4 form-section">
-    <label for="enrolment_date" class="form-label">Enrolment Date:</label>
-    <input type="date" class="form-control" id="enrolment_date" name="enrolment_date" required min="2018-01-01">
-</div>
+                    <div class="form-group col-md-4 form-section">
+                        <label for="enrolment_date" class="form-label">Enrolment Date:</label>
+                        <input type="date" class="form-control" id="enrolment_date" name="enrolment_date" required>
+                    </div>
                     <div class="form-group col-md-4 form-section">
                         <label for="year" class="form-label">Year:</label>
                         <input type="number" class="form-control" id="year" name="year" min="1" max="6" required>
@@ -268,8 +379,7 @@
                     </div>
                     <div class="form-group col-md-6 form-section">
                         <label for="phone_number" class="form-label">Phone Number:</label>
-                        <input type="tel" class="form-control" id="phone_number" name="phone_number" pattern="[0-9]{2}[0-9]{2}[0-9]{2}[0-9]{2}[0-9]{2}" required>
-                        <small class="form-text text-muted">The phone number should be 10 digits.</small>
+                        <input type="tel" class="form-control" id="phone_number" name="phone_number" required>
                     </div>
                 </div>
             </fieldset>
@@ -278,10 +388,10 @@
             <fieldset>
                 <legend>Birth Information</legend>
                 <div class="form-row">
-                <div class="form-group col-md-6 form-section">
-    <label for="birth_date" class="form-label">Birth Date:</label>
-    <input type="date" class="form-control" id="birth_date" name="birth_date" required max="2009-12-31" min="1984-01-01">
-</div>
+                    <div class="form-group col-md-6 form-section">
+                        <label for="dob2" class="form-label">Date of Birth:</label>
+                        <input type="date" class="form-control" id="dob2" name="dob2" required>
+                    </div>
                     <div class="form-group col-md-6 form-section">
                         <label for="birth_place" class="form-label">Birth Place:</label>
                         <input type="text" class="form-control" id="birth_place" name="birth_place" required>
