@@ -51,22 +51,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $row = $result->fetch_assoc();
                 $storedPassword = $row['password'];
                 $staff = $row['staff'];
-
-                // Set session email
-                $_SESSION['email'] = $email;
+                // Set session Email
+                    $_SESSION['email'] = $email;
 
                 // Define placeholder redirect URLs for each table
-                $redirects = [
-                    './components/admin/dashboard.php', // Placeholder URL for ddu_admin
-                    './components/actors/actor_dashboard.php?actor=' . urlencode($staff), // Placeholder URL for ddu_staff
-                    './components/actors/actor_dashboard.php?actor=' . urlencode($staff) // Placeholder URL for ddu_substaff
-                ];
+        $redirects = [
+            './components/admin/dashboard.php', // Placeholder URL for ddu_admin
+            './components/actors/actor_dashboard.php?actor='.urlencode($staff), // Placeholder URL for ddu_staff
+            './components/actors/actor_dashboard.php?actor='.urlencode($staff),
+            // 'student.php' // Placeholder URL for ddu_substaff
+        ];
 
                 // Determine if the password is MD5 or securely hashed
                 if (isMd5($storedPassword)) {
                     // Check MD5 password
                     if (checkMd5Password($storedPassword, $password)) {
                         $user_found = true;
+                            $_SESSION['email'] = $email;
                         header("Location: " . $redirects[$i]);
                         exit();
                     }
