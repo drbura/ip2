@@ -2,7 +2,7 @@
 session_start();
 $actor = $_GET['actor'] ?? '';
 $searchTerm = $_GET['search'] ?? '';
-$userEmail = $_SESSION['UserEmail'] ?? '';
+$userEmail = $_SESSION['email'] ?? ''; // Ensure consistency with the session variable from login
 
 // Database connection
 $servername = "localhost";
@@ -25,17 +25,39 @@ function fetchRequests($conn, $actor, $searchTerm = '', $userEmail = '') {
             FROM request 
             JOIN ddustudentdata ON request.StudentId = ddustudentdata.student_id";
 
-    if ($actor === 'Advisor' && !empty($userEmail)) {
-        $advisorQuery = "SELECT department, school, year, semester FROM ddu_substaff WHERE UserEmail = '" . $conn->real_escape_string($userEmail) . "'";
-        $advisorResult = $conn->query($advisorQuery);
+    // Check for advisor, lab assistant, department head, or school dean
+    if (($actor === 'Advisor' || $actor === 'LabAssistant' || $actor === 'DepartmentHead' || $actor === 'SchoolDean') && !empty($userEmail)) {
+        // Get the specific details for filtering
+        $substaffQuery = "SELECT department, collegeName, year, semester FROM ddu_substaff WHERE email = ?";
+        $stmt = $conn->prepare($substaffQuery);
+        $stmt->bind_param("s", $userEmail);
+        $stmt->execute();
+        $substaffResult = $stmt->get_result();
 
-        if ($advisorResult->num_rows > 0) {
-            $advisor = $advisorResult->fetch_assoc();
-            $sql .= " WHERE ddustudentdata.department = '" . $conn->real_escape_string($advisor['department']) . "'
-                      AND ddustudentdata.school = '" . $conn->real_escape_string($advisor['school']) . "'
-                      AND ddustudentdata.year = '" . $conn->real_escape_string($advisor['year']) . "'
-                      AND ddustudentdata.semester = '" . $conn->real_escape_string($advisor['semester']) . "'";
+        if ($substaffResult->num_rows > 0) {
+            $substaff = $substaffResult->fetch_assoc();
+            $conditions = [];
+
+            if ($actor === 'Advisor' || $actor === 'LabAssistant') {
+                $conditions[] = "ddustudentdata.department = '" . $conn->real_escape_string($substaff['department']) . "'";
+                $conditions[] = "ddustudentdata.year = '" . $conn->real_escape_string($substaff['year']) . "'";
+                $conditions[] = "ddustudentdata.semester = '" . $conn->real_escape_string($substaff['semester']) . "'";
+            } elseif ($actor === 'DepartmentHead') {
+                $conditions[] = "ddustudentdata.department = '" . $conn->real_escape_string($substaff['department']) . "'";
+            } elseif ($actor === 'SchoolDean') {
+                $conditions[] = "ddustudentdata.school = '" . $conn->real_escape_string($substaff['collegeName']) . "'";
+            }
+
+            if (!empty($conditions)) {
+                if (strpos($sql, 'WHERE') !== false) {
+                    $sql .= " AND " . implode(" AND ", $conditions);
+                } else {
+                    $sql .= " WHERE " . implode(" AND ", $conditions);
+                }
+            }
         }
+
+        $stmt->close();
     }
 
     if (!empty($searchTerm)) {
@@ -72,6 +94,7 @@ function fetchRequests($conn, $actor, $searchTerm = '', $userEmail = '') {
 }
 
 $requests = fetchRequests($conn, $actor, $searchTerm, $userEmail);
+
 $conn->close();
 
 foreach ($requests as $request) {
