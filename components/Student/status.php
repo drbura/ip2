@@ -6,9 +6,8 @@ if (!isset($_SESSION['id'])){
 }
 
 include 'connect.php';
-//I replace the db connect in separate file called connect.php
 
-$studentId = $_SESSION['id']; // Ensure student_id is stored in session
+$studentId = $_SESSION['id'];
 
 // Query to get the latest request for the student
 $sql = "SELECT Advisor, LabAssistant, DepartmentHead, SchoolDean, BookStore, Library, Cafeteria, StudentLoan, Dormitory, StudentService, Store, AcademicEnrollment FROM request WHERE StudentId = ? ORDER BY RequestDate DESC LIMIT 1";
@@ -131,7 +130,10 @@ $conn->close();
             </tbody>
         </table>
         <div class="text-center mt-4">
-            <button id="confirmButton" class="btn btn-confirm" disabled>Confirm</button>
+            <form id="confirmForm" method="post" action="final_status.php">
+                <input type="hidden" name="studentId" value="<?php echo htmlspecialchars($studentId); ?>">
+                <button type="submit" id="confirmButton" class="btn btn-confirm" disabled>Confirm</button>
+            </form>
             <br><br><br>
         </div>
         <?php else: ?>
@@ -139,11 +141,8 @@ $conn->close();
         <?php endif; ?>
     </div>
     <script>
-    
-    
         $(document).ready(function() {
             function updateConfirmButton() {
-                // Check if all status buttons are 'APPROVED'
                 let allApproved = true;
                 $('table tbody tr').each(function() {
                     const statusButton = $(this).find('button');
