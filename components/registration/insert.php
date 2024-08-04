@@ -17,7 +17,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $first_name = $_POST['first_name'];
     $father_name = $_POST['father_name'];
     $gfather_name = $_POST['gfather_name'];
-    $dob = $_POST['dob'];
     $gender = $_POST['gender'];
     $enrolment_date = $_POST['enrolment_date'];
     $year = $_POST['year'];
