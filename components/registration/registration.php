@@ -85,21 +85,31 @@
             var s2 = document.getElementById(s2);
             s2.innerHTML = "";
 
-            if (s1.value == "Medicine and Health Sciences") {
-                var optionArray = ["select|Select", "nursing|Nursing", "clinical medicine|Clinical Medicine", "family medicine|Family Medicine", "public health|Public Health"];
-            } else if (s1.value == "Law") {
-                var optionArray = ["select|Select", "law|Law"];
-            } else if (s1.value == "Business and Economics") {
-                var optionArray = ["select|Select", "commerce|Commerce", "economics|Economics", "hospitality & tourism|Hospitality & Tourism"];
-            } else if (s1.value == "Science, Engineering and Technology") {
+            if (s1.value == "Business and Economics") {
+                var optionArray = ["select|Select", "Accounting and Finance|Accounting and Finance", "Banking and Finance|Banking and Finance", "Logistics and supplies Chain Managment|Logistics and supplies Chain Managment", "Managment|Managment", "Marketing Management|Marketing Management", "Public Administration and Development Managment|Public Administration and Development Managment", "Economics|Economics", "Land and Real Property Valuation|Land and Real Property Valuation"];
+            } else if (s1.value == "Electrical and computer engineering") {
+                var optionArray = ["select|Select", "Electrical and computer engineering|Electrical and computer engineering"];} 
+             else if (s1.value == "School of Chemical and BioEngineering") {
+                var optionArray = ["select|Select", "Food Processing engineering|Food Processing engineering", "Chemical engineering|Chemical engineering"];} 
+             else if (s1.value == "School of Textile and Fashion Design") {
+                var optionArray = ["select|Select", "Textile engineering|Textile engineering", "Apparel and Fashion design|Apparel and Fashion design"];} 
+             else if (s1.value == "School of Civil Eng and Architecture") {
+                var optionArray = ["select|Select", "Architecture|Architecture", "Civil engineering|Civil engineering", "Construction technology and managment|Construction technology and managment", "Surveying engineering|Surveying engineering"];} 
+             else if (s1.value == "School of Mechanical and Industrial Engineering") {
+                var optionArray = ["select|Select", "Industrial engineering|Industrial engineering", "Mechanical engineering|Mechanical engineering"];} 
+             else if (s1.value == "School of Computing") {
+              var optionArray = ["select|Select", "Software Engineering|Software Engineering", "Information technology|Information technology","Computer Science|Computer Science"];} 
+             else if (s1.value == "College of medicine and health science") {
+                var optionArray = ["select|Select", "Anesthesia|Anesthesia", "Laboratory|Laboratory", "Madicine|Madicine", "Midwifery|Midwifery", "Nursing|Nursing", "Psychiatry|Psychiatry", "public Health|public Health"];} 
+             else if (s1.value == "College of Law") {
+                var optionArray = ["select|Select", "law|Law"];} 
+             else if (s1.value == "College of Natural and Computational Science") {
+                var optionArray = ["select|Select", "Biology|Biology", "Chemistry|Chemistry", "Geology|Geology", "Physics|Physics", "Mathematics|Mathematics", "Statistics|Statistics", "Sport Science|Sport Science"];} 
+                else if (s1.value == "College of Social Science and Humanity") {
+                var optionArray = ["select|Select", "AfSomali and Litrature|AfSomali and Litrature", "AfanOromo and Litrature|AfanOromo and Litrature", "Amharic Language and Litrature|Amharic Language and Litrature", "English Language and Litrature|English Language and Litrature", "Journalism and Communication|Journalism and Communication", "Geography and Enviromental Studies|Geography and Enviromental Studies", "History and Heritage Managment |History and Heritage Managment ", "Sociology and Social Anthropology|Sociology and Social Anthropology", "Political Science and International Relation|Political Science and International Relation", "Civics and Ethical Studies|Civics and Ethical Studies",, "Psychology|Psychology",];
+            } else if (s1.value == "College of Science, Engineering and Technology") {
                 var optionArray = ["select|Select", "computer science|Computer Science", "information technology|Information Technology", "software engineering|Software Engineering"];
-            } else if (s1.value == "Education") {
-                var optionArray = ["select|Select", "education|Education", "biology|Biology", "mathematics|Mathematics"];
-            } else if (s1.value == "Pharmacy") {
-                var optionArray = ["select|Select", "pharmacy|Pharmacy"];
-            } else if (s1.value == "Freshman") {
-                var optionArray = ["select|Select", "natural|Natural", "social|Social"];
-            }
+            } 
 
             for (var option in optionArray) {
                 var pair = optionArray[option].split("|");
@@ -196,13 +206,18 @@
                         <label for="slct1" class="form-label">School:</label>
                         <select class="form-control" id="slct1" name="school" onchange="populate(this.id,'slct2')" required>
                             <option value="select">Select</option>
-                            <option value="Medicine and Health Sciences">Medicine and Health Sciences</option>
-                            <option value="Law">Law</option>
                             <option value="Business and Economics">Business and Economics</option>
-                            <option value="Science, Engineering and Technology">Science, Engineering and Technology</option>
-                            <option value="Education">Education</option>
-                            <option value="Pharmacy">Pharmacy</option>
-                            <option value="Freshman">Freshman</option>
+                            <option value="Electrical and computer engineering">Electrical and computer engineering</option>
+                            <option value="School of Chemical and BioEngineering">School of Chemical and BioEngineering</option>
+                            <option value="School of Textile and Fashion Design">School of Textile and Fashion Design</option>
+                            <option value="School of Civil Eng and Architecture">School of Civil Eng and Architecture</option>
+                            <option value="School of Mechanical and Industrial Engineering">School of Mechanical and Industrial Engineering</option>
+                            <option value="School of Computing">School of Computing</option>
+                            <option value="College of medicine and health science">College of medicine and health science</option>
+                            <option value="College of Law">College of Law</option>
+                            <option value="College of Natural and Computational Science">College of Natural and Computational Science</option>
+                            <option value="College of Social Science and Humanity">College of Social Science and Humanity</option>
+                            <option value="College of Science, Engineering and Technology">vCollege of Science, Engineering and Technology</option>
                         </select>
                     </div>
                     <div class="form-group col-md-6 form-section">
@@ -267,10 +282,11 @@
                         <input type="email" class="form-control" id="email" name="email" required>
                     </div>
                     <div class="form-group col-md-6 form-section">
-                        <label for="phone_number" class="form-label">Phone Number:</label>
-                        <input type="tel" class="form-control" id="phone_number" name="phone_number" pattern="^(09|07)[0-9]{8}$" required>
-                        <small class="form-text text-muted">The phone number should be 10 digits.</small>
-                    </div>
+    <label for="phone_number" class="form-label">Phone Number:</label>
+    <input type="tel" class="form-control" id="phone_number" name="phone_number" pattern="^(09|07)[0-9]{8}$" required>
+    <small class="form-text text-muted">The phone number should be 10 digits and start with 09 or 07.</small>
+                  </div>
+
                 </div>
             </fieldset>
 
@@ -308,6 +324,19 @@
                         <option value="amhara">Amhara</option>
                         <option value="tigray">Tigray</option>
                         <option value="other">Other</option>
+                    </select>
+                </div>
+            </fieldset>
+
+             <!-- Legend: Student Legistlation Type -->
+             <fieldset>
+                <legend>Student Legistlation Type</legend>
+                <div class="form-row">
+                    <div class="form-group col-md-6 form-section">
+                    <label for="Student Legistlation Type" class="form-label">Student Legistlation Type:</label>
+                    <select class="form-control" id="Student Legistlation Type" name="Student Legistlation Type" required>
+                        <option value="Harmonized Modular">Harmonized Modular</option>
+                        <option value="conventional">conventional</option>
                     </select>
                 </div>
             </fieldset>
