@@ -107,9 +107,7 @@
                 var optionArray = ["select|Select", "Biology|Biology", "Chemistry|Chemistry", "Geology|Geology", "Physics|Physics", "Mathematics|Mathematics", "Statistics|Statistics", "Sport Science|Sport Science"];} 
                 else if (s1.value == "College of Social Science and Humanity") {
                 var optionArray = ["select|Select", "AfSomali and Litrature|AfSomali and Litrature", "AfanOromo and Litrature|AfanOromo and Litrature", "Amharic Language and Litrature|Amharic Language and Litrature", "English Language and Litrature|English Language and Litrature", "Journalism and Communication|Journalism and Communication", "Geography and Enviromental Studies|Geography and Enviromental Studies", "History and Heritage Managment |History and Heritage Managment ", "Sociology and Social Anthropology|Sociology and Social Anthropology", "Political Science and International Relation|Political Science and International Relation", "Civics and Ethical Studies|Civics and Ethical Studies",, "Psychology|Psychology",];
-            } else if (s1.value == "College of Science, Engineering and Technology") {
-                var optionArray = ["select|Select", "computer science|Computer Science", "information technology|Information Technology", "software engineering|Software Engineering"];
-            } 
+            }  
 
             for (var option in optionArray) {
                 var pair = optionArray[option].split("|");
@@ -203,7 +201,7 @@
                 <legend>Academic Information</legend>
                 <div class="form-row">
                     <div class="form-group col-md-6 form-section">
-                        <label for="slct1" class="form-label">School:</label>
+                        <label for="slct1" class="form-label">College/School:</label>
                         <select class="form-control" id="slct1" name="school" onchange="populate(this.id,'slct2')" required>
                             <option value="select">Select</option>
                             <option value="Business and Economics">Business and Economics</option>
@@ -217,7 +215,7 @@
                             <option value="College of Law">College of Law</option>
                             <option value="College of Natural and Computational Science">College of Natural and Computational Science</option>
                             <option value="College of Social Science and Humanity">College of Social Science and Humanity</option>
-                            <option value="College of Science, Engineering and Technology">vCollege of Science, Engineering and Technology</option>
+                           
                         </select>
                     </div>
                     <div class="form-group col-md-6 form-section">
