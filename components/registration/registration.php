@@ -91,25 +91,7 @@
     var s2 = document.getElementById(s2);
     s2.innerHTML = "";
 
-<<<<<<< Updated upstream
-            if (s1.value == "Medicine and Health Sciences") {
-                var optionArray = ["select|Select", "nursing|Nursing", "clinical medicine|Clinical Medicine", "family medicine|Family Medicine", "public health|Public Health"];
-            } else if (s1.value == "Law") {
-                var optionArray = ["select|Select", "law|Law"];
-            } else if (s1.value == "Business and Economics") {
-                var optionArray = ["select|Select", "commerce|Commerce", "economics|Economics", "hospitality & tourism|Hospitality & Tourism"];
-            } else if (s1.value == "Science, Engineering and Technology") {
-                var optionArray = ["select|Select", "computer science|Computer Science", "information technology|Information Technology", "software engineering|Software Engineering"];
-            } else if (s1.value == "Education") {
-                var optionArray = ["select|Select", "education|Education", "biology|Biology", "mathematics|Mathematics"];
-            } else if (s1.value == "Pharmacy") {
-                var optionArray = ["select|Select", "pharmacy|Pharmacy"];
-            } else if (s1.value == "Freshman") {
-                var optionArray = ["select|Select", "natural|Natural", "social|Social"];
-            }
-=======
     var placeholderOption = "<option value='' disabled selected>Select</option>";
->>>>>>> Stashed changes
 
     if (s1.value == "Business and Economics") {
         var optionArray = ["Accounting and Finance|Accounting and Finance", "Banking and Finance|Banking and Finance", "Logistics and supplies Chain Managment|Logistics and supplies Chain Managment", "Managment|Managment", "Marketing Management|Marketing Management", "Public Administration and Development Managment|Public Administration and Development Managment", "Economics|Economics", "Land and Real Property Valuation|Land and Real Property Valuation"];
@@ -276,16 +258,21 @@
                 <legend>Academic Information</legend>
                 <div class="form-row">
                     <div class="form-group col-md-6 form-section">
-                        <label for="slct1" class="form-label">School:</label>
+                        <label for="slct1" class="form-label">College/School:</label>
                         <select class="form-control" id="slct1" name="school" onchange="populate(this.id,'slct2')" required>
                             <option value="select">Select</option>
-                            <option value="Medicine and Health Sciences">Medicine and Health Sciences</option>
-                            <option value="Law">Law</option>
                             <option value="Business and Economics">Business and Economics</option>
-                            <option value="Science, Engineering and Technology">Science, Engineering and Technology</option>
-                            <option value="Education">Education</option>
-                            <option value="Pharmacy">Pharmacy</option>
-                            <option value="Freshman">Freshman</option>
+                            <option value="Electrical and computer engineering">Electrical and computer engineering</option>
+                            <option value="School of Chemical and BioEngineering">School of Chemical and BioEngineering</option>
+                            <option value="School of Textile and Fashion Design">School of Textile and Fashion Design</option>
+                            <option value="School of Civil Eng and Architecture">School of Civil Eng and Architecture</option>
+                            <option value="School of Mechanical and Industrial Engineering">School of Mechanical and Industrial Engineering</option>
+                            <option value="School of Computing">School of Computing</option>
+                            <option value="College of medicine and health science">College of medicine and health science</option>
+                            <option value="College of Law">College of Law</option>
+                            <option value="College of Natural and Computational Science">College of Natural and Computational Science</option>
+                            <option value="College of Social Science and Humanity">College of Social Science and Humanity</option>
+                           
                         </select>
                     </div>
                     <div class="form-group col-md-6 form-section">
@@ -350,10 +337,11 @@
                         <input type="email" class="form-control" id="email" name="email" required>
                     </div>
                     <div class="form-group col-md-6 form-section">
-                        <label for="phone_number" class="form-label">Phone Number:</label>
-                        <input type="tel" class="form-control" id="phone_number" name="phone_number" pattern="[0-9]{2}[0-9]{2}[0-9]{2}[0-9]{2}[0-9]{2}" required>
-                        <small class="form-text text-muted">The phone number should be 10 digits.</small>
-                    </div>
+    <label for="phone_number" class="form-label">Phone Number:</label>
+    <input type="tel" class="form-control" id="phone_number" name="phone_number" pattern="^(09|07)[0-9]{8}$" required>
+    <small class="form-text text-muted">The phone number should be 10 digits and start with 09 or 07.</small>
+                  </div>
+
                 </div>
             </fieldset>
 
@@ -395,8 +383,6 @@
                 </div>
             </fieldset>
 
-<<<<<<< Updated upstream
-=======
              <!-- Legend: Student Legistlation Type -->
              <fieldset>
                 <legend>Student Legistlation Type</legend>
@@ -410,7 +396,6 @@
                 </div>
             </fieldset>
 
->>>>>>> Stashed changes
             <!-- Legend: Photo Upload -->
             <fieldset>
                 <legend>Upload Photo</legend>
