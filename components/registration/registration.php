@@ -91,6 +91,7 @@
     var s2 = document.getElementById(s2);
     s2.innerHTML = "";
 
+
     var placeholderOption = "<option value='' disabled selected>Select</option>";
 
     if (s1.value == "Business and Economics") {
@@ -130,6 +131,7 @@
         s2.options.add(newOption);
     }
 }
+
 
 
         </script>
@@ -388,8 +390,10 @@
                 <legend>Student Legistlation Type</legend>
                 <div class="form-row">
                     <div class="form-group col-md-6 form-section">
+
                     <label for="Student_Legistlation_Type" class="form-label">Student Legistlation Type:</label>
                     <select class="form-control" id="Student_Legistlation_Type" name="Student_Legistlation_Type" required>
+
                         <option value="Harmonized Modular">Harmonized Modular</option>
                         <option value="conventional">conventional</option>
                     </select>
