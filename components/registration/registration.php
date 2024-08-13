@@ -1,3 +1,6 @@
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,10 +23,7 @@
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
             max-width: 1000px;
             margin: auto;
-
-
         }
-
         h2 {
             color: #007bff;
             font-weight: bold;
@@ -69,7 +69,6 @@
         .text-danger {
             color: red !important;
         }
-        
         fieldset {
             margin-bottom: 15px;
             padding: 10px;
@@ -78,62 +77,122 @@
         legend {
             font-size: 1.2rem;
         }
+        .error {
+            color: red;
+            font-size: 0.9em;
+        }
+        .input-error {
+            border: 2px solid red;
+        }
     </style>
     <script>
         function populate(s1, s2) {
-            var s1 = document.getElementById(s1);
-            var s2 = document.getElementById(s2);
-            s2.innerHTML = "";
+    var s1 = document.getElementById(s1);
+    var s2 = document.getElementById(s2);
+    s2.innerHTML = "";
 
-            if (s1.value == "Business and Economics") {
-                var optionArray = ["select|Select", "Accounting and Finance|Accounting and Finance", "Banking and Finance|Banking and Finance", "Logistics and supplies Chain Managment|Logistics and supplies Chain Managment", "Managment|Managment", "Marketing Management|Marketing Management", "Public Administration and Development Managment|Public Administration and Development Managment", "Economics|Economics", "Land and Real Property Valuation|Land and Real Property Valuation"];
-            } else if (s1.value == "Electrical and computer engineering") {
-                var optionArray = ["select|Select", "Electrical and computer engineering|Electrical and computer engineering"];} 
-             else if (s1.value == "School of Chemical and BioEngineering") {
-                var optionArray = ["select|Select", "Food Processing engineering|Food Processing engineering", "Chemical engineering|Chemical engineering"];} 
-             else if (s1.value == "School of Textile and Fashion Design") {
-                var optionArray = ["select|Select", "Textile engineering|Textile engineering", "Apparel and Fashion design|Apparel and Fashion design"];} 
-             else if (s1.value == "School of Civil Eng and Architecture") {
-                var optionArray = ["select|Select", "Architecture|Architecture", "Civil engineering|Civil engineering", "Construction technology and managment|Construction technology and managment", "Surveying engineering|Surveying engineering"];} 
-             else if (s1.value == "School of Mechanical and Industrial Engineering") {
-                var optionArray = ["select|Select", "Industrial engineering|Industrial engineering", "Mechanical engineering|Mechanical engineering"];} 
-             else if (s1.value == "School of Computing") {
-              var optionArray = ["select|Select", "Software Engineering|Software Engineering", "Information technology|Information technology","Computer Science|Computer Science"];} 
-             else if (s1.value == "College of medicine and health science") {
-                var optionArray = ["select|Select", "Anesthesia|Anesthesia", "Laboratory|Laboratory", "Madicine|Madicine", "Midwifery|Midwifery", "Nursing|Nursing", "Psychiatry|Psychiatry", "public Health|public Health"];} 
-             else if (s1.value == "College of Law") {
-                var optionArray = ["select|Select", "law|Law"];} 
-             else if (s1.value == "College of Natural and Computational Science") {
-                var optionArray = ["select|Select", "Biology|Biology", "Chemistry|Chemistry", "Geology|Geology", "Physics|Physics", "Mathematics|Mathematics", "Statistics|Statistics", "Sport Science|Sport Science"];} 
-                else if (s1.value == "College of Social Science and Humanity") {
-                var optionArray = ["select|Select", "AfSomali and Litrature|AfSomali and Litrature", "AfanOromo and Litrature|AfanOromo and Litrature", "Amharic Language and Litrature|Amharic Language and Litrature", "English Language and Litrature|English Language and Litrature", "Journalism and Communication|Journalism and Communication", "Geography and Enviromental Studies|Geography and Enviromental Studies", "History and Heritage Managment |History and Heritage Managment ", "Sociology and Social Anthropology|Sociology and Social Anthropology", "Political Science and International Relation|Political Science and International Relation", "Civics and Ethical Studies|Civics and Ethical Studies",, "Psychology|Psychology",];
-            }  
 
-            for (var option in optionArray) {
-                var pair = optionArray[option].split("|");
-                var newOption = document.createElement("option");
-                newOption.value = pair[0];
-                newOption.innerHTML = pair[1];
-                s2.options.add(newOption);
+    var placeholderOption = "<option value='' disabled selected>Select</option>";
+
+    if (s1.value == "Business and Economics") {
+        var optionArray = ["Accounting and Finance|Accounting and Finance", "Banking and Finance|Banking and Finance", "Logistics and supplies Chain Managment|Logistics and supplies Chain Managment", "Managment|Managment", "Marketing Management|Marketing Management", "Public Administration and Development Managment|Public Administration and Development Managment", "Economics|Economics", "Land and Real Property Valuation|Land and Real Property Valuation"];
+    } else if (s1.value == "Electrical and computer engineering") {
+        var optionArray = ["Electrical and computer engineering|Electrical and computer engineering"];
+    } else if (s1.value == "School of Chemical and BioEngineering") {
+        var optionArray = ["Food Processing engineering|Food Processing engineering", "Chemical engineering|Chemical engineering"];
+    } else if (s1.value == "School of Textile and Fashion Design") {
+        var optionArray = ["Textile engineering|Textile engineering", "Apparel and Fashion design|Apparel and Fashion design"];
+    } else if (s1.value == "School of Civil Eng and Architecture") {
+        var optionArray = ["Architecture|Architecture", "Civil engineering|Civil engineering", "Construction technology and managment|Construction technology and managment", "Surveying engineering|Surveying engineering"];
+    } else if (s1.value == "School of Mechanical and Industrial Engineering") {
+        var optionArray = ["Industrial engineering|Industrial engineering", "Mechanical engineering|Mechanical engineering"];
+    } else if (s1.value == "School of Computing") {
+        var optionArray = ["Software Engineering|Software Engineering", "Information technology|Information technology", "Computer Science|Computer Science"];
+    } else if (s1.value == "College of medicine and health science") {
+        var optionArray = ["Anesthesia|Anesthesia", "Laboratory|Laboratory", "Madicine|Madicine", "Midwifery|Midwifery", "Nursing|Nursing", "Psychiatry|Psychiatry", "public Health|public Health"];
+    } else if (s1.value == "College of Law") {
+        var optionArray = ["law|Law"];
+    } else if (s1.value == "College of Natural and Computational Science") {
+        var optionArray = ["Biology|Biology", "Chemistry|Chemistry", "Geology|Geology", "Physics|Physics", "Mathematics|Mathematics", "Statistics|Statistics", "Sport Science|Sport Science"];
+    } else if (s1.value == "College of Social Science and Humanity") {
+        var optionArray = ["AfSomali and Litrature|AfSomali and Litrature", "AfanOromo and Litrature|AfanOromo and Litrature", "Amharic Language and Litrature|Amharic Language and Litrature", "English Language and Litrature|English Language and Litrature", "Journalism and Communication|Journalism and Communication", "Geography and Enviromental Studies|Geography and Enviromental Studies", "History and Heritage Managment|History and Heritage Managment", "Sociology and Social Anthropology|Sociology and Social Anthropology", "Political Science and International Relation|Political Science and International Relation", "Civics and Ethical Studies|Civics and Ethical Studies", "Psychology|Psychology"];
+    }
+
+    // Add placeholder option
+    s2.innerHTML = placeholderOption;
+    
+
+    // Add other options
+    for (var option in optionArray) {
+        var pair = optionArray[option].split("|");
+        var newOption = document.createElement("option");
+        newOption.value = pair[0];
+        newOption.innerHTML = pair[1];
+        s2.options.add(newOption);
+    }
+}
+
+
+
+        </script>
+         <script>
+        var isStudentIdValid = false;  // Flag to track student ID validity
+
+        function checkStudentId() {
+            var studentId = document.getElementById('student_id').value;
+            var errorMessage = document.getElementById('id_error');
+            var studentIdField = document.getElementById('student_id');
+            
+            if (studentId.length > 0) {
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', 'check_id.php', true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        if (xhr.responseText === 'exists') {
+                            errorMessage.textContent = 'Student ID already in use.';
+                            studentIdField.classList.add('input-error');
+                            isStudentIdValid = false;  // Set flag to false
+                        } else {
+                            errorMessage.textContent = '';
+                            studentIdField.classList.remove('input-error');
+                            isStudentIdValid = true;  // Set flag to true
+                        }
+                    }
+                };
+                xhr.send('student_id=' + encodeURIComponent(studentId));
+            } else {
+                errorMessage.textContent = '';
+                studentIdField.classList.remove('input-error');
+                isStudentIdValid = false;  // Set flag to false
             }
         }
 
+        function validateForm() {
+            // Check if the student ID is valid before allowing form submission
+            if (!isStudentIdValid) {
+                alert('Please provide a unique student ID.');
+                return false;
+            }
+            return true;
+        }
     </script>
 </head>
 <body>
-
     <main>
-    <div class="container mt-5">
-        <h2 class="text-center">DDU STUDENT ADMISSION FORM</h2>
-        <form action="insert.php" method="post" onsubmit="return validateForm()" enctype="multipart/form-data">
-            <!-- Legend: Student Information -->
-            <fieldset>
-                <legend>Student Information</legend>
-                <div class="form-row">
-                <div class="form-group col-md-4 form-section">
-    <label for="student_id" class="form-label">Student ID:</label>
-    <input type="text" class="form-control" id="student_id" name="student_id" required pattern="^[A-Za-z]{3}\d{7}$" title="Student ID must start with three letters(ddu) followed by seven digits." minlength="10" maxlength="10">
-                    </div>
+        <div class="container mt-5">
+            <h2 class="text-center">DDU STUDENT ADMISSION FORM</h2>
+            <form action="insert.php" method="post" onsubmit="return validateForm()" enctype="multipart/form-data">
+
+                <!-- Legend: Student Information -->
+                <fieldset>
+                    <legend>Student Information</legend>
+                    <div class="form-row">
+                        <div class="form-group col-md-4 form-section">
+                            <label for="student_id" class="form-label">Student ID:</label>
+                            <input type="text" class="form-control" id="student_id" name="student_id" onkeyup="checkStudentId()" required pattern="^[A-Za-z]{3}\d{7}$" title="Student ID must start with three characters(ddu) followed by seven digits." minlength="10" maxlength="10">
+                            <span id="id_error" class="error"></span>
+                        </div>
                     <div class="form-group col-md-4 form-section">
                         <label for="first_name" class="form-label">First Name:</label>
                         <input type="text" class="form-control" id="first_name" name="first_name" required>
@@ -171,7 +230,7 @@
                     </div>
                     <div class="form-group col-md-4 form-section">
                         <label for="semister" class="form-label">Semester:</label>
-                        <input type="number" class="form-control" id="semister" name="semister" min="1" max="2" required>
+                        <input type="number" class="form-control" id="semister" name="semister" min="1" max="3" required>
                     </div>
                 </div>
                 <div class="form-row">
@@ -293,8 +352,8 @@
                 <legend>Birth Information</legend>
                 <div class="form-row">
                 <div class="form-group col-md-6 form-section">
-    <label for="birth_date" class="form-label">Birth Date:</label>
-    <input type="date" class="form-control" id="birth_date" name="birth_date" required max="2009-12-31" min="1984-01-01">
+    <label for="dob2" class="form-label">Birth Date:</label>
+    <input type="date" class="form-control" id="dob2" name="dob2" required max="2009-12-31" min="1984-01-01">
 </div>
                     <div class="form-group col-md-6 form-section">
                         <label for="birth_place" class="form-label">Birth Place:</label>
@@ -331,8 +390,10 @@
                 <legend>Student Legistlation Type</legend>
                 <div class="form-row">
                     <div class="form-group col-md-6 form-section">
-                    <label for="Student Legistlation Type" class="form-label">Student Legistlation Type:</label>
-                    <select class="form-control" id="Student Legistlation Type" name="Student Legistlation Type" required>
+
+                    <label for="Student_Legistlation_Type" class="form-label">Student Legistlation Type:</label>
+                    <select class="form-control" id="Student_Legistlation_Type" name="Student_Legistlation_Type" required>
+
                         <option value="Harmonized Modular">Harmonized Modular</option>
                         <option value="conventional">conventional</option>
                     </select>

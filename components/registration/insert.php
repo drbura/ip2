@@ -1,7 +1,7 @@
 <?php
 $servername = "localhost";
-$username = "root"; // change this if your MySQL user is different
-$password = ""; // change this if your MySQL password is different
+$username = "root";
+$password = "";
 $dbname = "ddu_clerance";
 
 // Create connection
@@ -38,6 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $birth_place = $_POST['birth_place'];
     $religion = $_POST['religion'];
     $ethnic = $_POST['ethnic'];
+    $Student_Legistlation_Type = $_POST['Student_Legistlation_Type'];
 
     // Handle file upload
     $photo = null;
@@ -45,14 +46,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $photo = file_get_contents($_FILES['photo']['tmp_name']);
     }
 
-    $stmt = $conn->prepare("INSERT INTO dduStudentData (student_id, first_name, father_name, gfather_name, dob, gender, enrolment_date, year, semester, marital_status, nationality, school, department, amharic_first_name, amharic_middle_name, amharic_last_name, mother_first_name, mother_last_name, father_occupation, mother_occupation, email, phone_number, dob2, birth_place, religion, ethnic, photo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssssssiiissssssssssssssssb", $student_id, $first_name, $father_name, $gfather_name, $dob, $gender, $enrolment_date, $year, $semester, $marital_status, $nationality, $school, $department, $amharic_first_name, $amharic_middle_name, $amharic_last_name, $mother_first_name, $mother_last_name, $father_occupation, $mother_occupation, $email, $phone_number, $dob2, $birth_place, $religion, $ethnic, $photo);
+    $stmt = $conn->prepare("INSERT INTO dduStudentData (student_id, first_name, father_name, gfather_name, gender, enrolment_date, year, semester, marital_status, nationality, school, department, amharic_first_name, amharic_middle_name, amharic_last_name, mother_first_name, mother_last_name, father_occupation, mother_occupation, email, phone_number, dob2, birth_place, religion, ethnic, Student_Legistlation_Type, photo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssssssiiissssssssssssssssb", $student_id, $first_name, $father_name, $gfather_name, $gender, $enrolment_date, $year, $semester, $marital_status, $nationality, $school, $department, $amharic_first_name, $amharic_middle_name, $amharic_last_name, $mother_first_name, $mother_last_name, $father_occupation, $mother_occupation, $email, $phone_number, $dob2, $birth_place, $religion, $ethnic, $Student_Legistlation_Type, $photo);
 
     if ($stmt->execute()) {
-        header('Location: index.php');
-} else {
-    echo "Error: " . $stmt->error;
-}
+        // Show JavaScript alert and keep the user on the same page
+        echo "<script>alert('Student registered successfully.'); window.location.href='index.php';</script>";
+    } else {
+        echo "Error: " . $stmt->error;
+    }
 
     $stmt->close();
 }
