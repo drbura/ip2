@@ -36,7 +36,7 @@
         }
 
         input[type="submit"] {
-            background-color: #1b5bb1;
+            background-color: #4CAF50;
             color: white;
             padding: 10px 20px;
             border: none;
@@ -54,7 +54,7 @@
         <form id="registrationForm" action="submit_form.php" method="POST">
             <div class="form first">
                 <div class="details personal">
-                    <span class="title"> <b>staff information</b> </span>
+                    <span class="title">User Registration Form</span>
                     <div class="fields">
                         <div class="input-field">
                             <label>First Name</label>
@@ -72,9 +72,9 @@
                             <small class="error" id="lNameError"></small>
                         </div>
                         <div class="input-field">
-                            <label>Staff</label>
+                            <label>Roll</label>
                             <select id="staff" name="staff" onchange="toggleCollegeName()" required>
-                                <option value="" disabled selected>---Select Role---</option>
+                                <option value="" disabled selected>---Select Roll---</option>
                                 <option value="BookStore">Book Store</option>
                                 <option value="Library">Library</option>
                                 <option value="Cafeteria">Cafeteria</option>
@@ -89,26 +89,13 @@
                         </div>
                         <div class="input-field" id="collegeNameField" style="display:none;">
                             <label>College/School Name</label>
-                            <select id="collegeName" name="collegeName" required>
-                                <option value="" disabled selected>Select school or college</option>
-                                <option value="Business and Economics">Business and Economics</option>
-                                <option value="Electrical and computer engineering">Electrical and computer engineering</option>
-                                <option value="School of Chemical and BioEngineering">School of Chemical and BioEngineering</option>
-                                <option value="School of Textile and Fashion Design">School of Textile and Fashion Design</option>
-                                <option value="School of Civil Eng and Architecture">School of Civil Eng and Architecture</option>
-                                <option value="School of Mechanical and Industrial Engineering">School of Mechanical and Industrial Engineering</option>
-                                <option value="School of Computing">School of Computing</option>
-                                <option value="College of Medicine and health science">College of Medicine and health science</option>
-                                <option value="College of Law">College of Law</option>
-                                <option value="College of Natural and Computational Science">College of Natural and Computational Science</option>
-                                <option value="College of Social Science and Humanity">College of Social Science and Humanity</option>
-                            </select>
+                            <input type="text" placeholder="Enter school name" name="collegeName" id="collegeName" required>
                             <small class="error" id="collegeNameError"></small>
                         </div>
                         
                         <div class="input-field">
-                            <label>Role</label>
-                            <input type="text" placeholder="Role" name="role" id="role" required>
+                            <label>Position</label>
+                            <input type="text" placeholder="Position" name="role" id="role" required>
                             <small class="error" id="roleError"></small>
                         </div>
                         <div class="input-field">
@@ -143,203 +130,186 @@
         </form>
     </div>
     <script>
-    function toggleCollegeName() {
-        const roll = document.getElementById('staff').value;
-        const collegeNameField = document.getElementById('collegeNameField');
-        const collegeNameInput = document.getElementById('collegeName');
-        
-        if (roll === 'SchoolDean') {
-            collegeNameField.style.display = 'block';
-            collegeNameInput.setAttribute('required', 'required');
-        } else {
-            collegeNameField.style.display = 'none';
-            collegeNameInput.removeAttribute('required');
-        }
+
+        function toggleCollegeName() {
+    const roll = document.getElementById('staff').value;
+    const collegeNameField = document.getElementById('collegeNameField');
+    const collegeNameInput = document.getElementById('collegeName');
+    
+    if (roll === 'SchoolDean') {
+        collegeNameField.style.display = 'block';
+        collegeNameInput.setAttribute('required', 'required');
+    } else {
+        collegeNameField.style.display = 'none';
+        collegeNameInput.removeAttribute('required');
     }
+}
 
-    // Ensure to call toggleCollegeName function on page load to set the initial state
-    document.addEventListener('DOMContentLoaded', toggleCollegeName);
+// Ensure to call toggleCollegeName function on page load to set the initial state
+document.addEventListener('DOMContentLoaded', toggleCollegeName);
 
-    function validateName(inputId, errorId) {
-        const input = document.getElementById(inputId);
-        const error = document.getElementById(errorId);
-        const namePattern = /^[A-Za-z]+$/;
-        if (!input.value.match(namePattern)) {
-            error.textContent = 'Must be letters only.';
-            return false;
-        } else {
-            error.textContent = '';
-            input.value = input.value.toUpperCase();
-            return true;
-        }
+
+function validateName(inputId, errorId) {
+    const input = document.getElementById(inputId);
+    const error = document.getElementById(errorId);
+    const namePattern = /^[A-Za-z]+$/;
+    if (!input.value.match(namePattern)) {
+        error.textContent = 'Must be letters only.';
+        return false;
+    } else {
+        error.textContent = '';
+        input.value = input.value.toUpperCase();
+        return true;
     }
+}
 
-    function validatePosition() {
-        const input = document.getElementById('role');
-        const error = document.getElementById('roleError');
-        const rolePattern = /^[A-Za-z\s]+$/;
-        if (!input.value.match(rolePattern)) {
-            error.textContent = ' must be letters only.';
-            return false;
-        } else {
-            error.textContent = '';
-            return true;
-        }
+function validatePosition() {
+    const input = document.getElementById('role');
+    const error = document.getElementById('roleError');
+    const rolePattern = /^[A-Za-z\s]+$/;
+    if (!input.value.match(rolePattern)) {
+        error.textContent = 'Position must be letters only.';
+        return false;
+    } else {
+        error.textContent = '';
+        return true;
     }
+}
 
-    function validatePhone() {
-        const input = document.getElementById('phone');
-        const error = document.getElementById('phoneError');
-        const phonePattern = /^(07|09)\d{8}$/;
-        if (!input.value.match(phonePattern)) {
-            error.textContent = 'Must start with 07 or 09 and be 10 digits long.';
-            return false;
-        } else {
-            error.textContent = '';
-            return true;
-        }
+function validatePhone() {
+    const input = document.getElementById('phone');
+    const error = document.getElementById('phoneError');
+    const phonePattern = /^(07|09)\d{8}$/;
+    if (!input.value.match(phonePattern)) {
+        error.textContent = 'Must start with 07 or 09 and be 10 digits long.';
+        return false;
+    } else {
+        error.textContent = '';
+        return true;
     }
+}
 
-    async function validateEmail() {
-        const input = document.getElementById('email');
-        const error = document.getElementById('emailError');
-        const response = await fetch('check_email.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: 'email=' + encodeURIComponent(input.value),
-        });
-        const data = await response.text();
-        if (data === 'exists') {
-            error.textContent = 'Email is already taken.';
-            return false;
-        } else {
-            error.textContent = '';
-            return true;
-        }
-    }
-
-    function validatePassword() {
-        const input = document.getElementById('password');
-        const error = document.getElementById('passwordError');
-        if (input.value.length !== 6) {
-            error.textContent = 'Password must be 6 digits long.';
-            return false;
-        } else {
-            error.textContent = '';
-            return true;
-        }
-    }
-
-    function validateDate() {
-        const input = document.getElementById('date');
-        const error = document.getElementById('dateError');
-        if (!input.value) {
-            error.textContent = 'Please select a date.';
-            return false;
-        } else {
-            error.textContent = '';
-            return true;
-        }
-    }
-
-    function validateStaff() {
-        const select = document.getElementById('staff');
-        const error = document.getElementById('staffError');
-        if (select.value === '') {
-            error.textContent = 'Please choose staff.';
-            return false;
-        } else {
-            error.textContent = '';
-            return true;
-        }
-    }
-
-    function validateCollegeName() {
-        const collegeNameSelect = document.getElementById('collegeName');
-        const error = document.getElementById('collegeNameError');
-        const staffRole = document.getElementById('staff').value;
-
-        if (staffRole === 'SchoolDean' && collegeNameSelect.value === '') {
-            error.textContent = 'select a college/school.';
-            return false;
-        } else {
-            error.textContent = '';
-            return true;
-        }
-    }
-
-    // Call validateCollegeName function on staff role change to provide immediate feedback
-    document.getElementById('staff').addEventListener('change', validateCollegeName);
-
-    document.getElementById('fName').addEventListener('blur', () => validateName('fName', 'fNameError'));
-    document.getElementById('mName').addEventListener('blur', () => validateName('mName', 'mNameError'));
-    document.getElementById('lName').addEventListener('blur', () => validateName('lName', 'lNameError'));
-    document.getElementById('role').addEventListener('blur', validatePosition);
-    document.getElementById('phone').addEventListener('blur', validatePhone);
-    document.getElementById('email').addEventListener('blur', validateEmail);
-    document.getElementById('password').addEventListener('blur', validatePassword);
-    document.getElementById('date').addEventListener('blur', validateDate);
-    document.getElementById('staff').addEventListener('blur', validateStaff);
-
-    document.getElementById('registrationForm').addEventListener('submit', async function(event) {
-        event.preventDefault(); // Prevent default form submission
-
-        let valid = true;
-        valid = validateName('fName', 'fNameError') && valid;
-        valid = validateName('mName', 'mNameError') && valid;
-        valid = validateName('lName', 'lNameError') && valid;
-        valid = validatePosition() && valid;
-        valid = validatePhone() && valid;
-        valid = await validateEmail() && valid; // Wait for validateEmail to complete
-        valid = validatePassword() && valid;
-        valid = validateDate() && valid;
-        valid = validateStaff() && valid;
-        valid = validateCollegeName() && valid; // Add validation for collegeName
-
-        const staff = document.getElementById('staff').value;
-        if (staff === 'SchoolDean') {
-            valid = valid && document.getElementById('collegeName').value !== '';
-        }
-
-        if (valid) {
-            const formData = new FormData(document.getElementById('registrationForm'));
-            
-            // Only include collegeName if staff is SchoolDean
-            if (staff !== 'SchoolDean') {
-                formData.delete('collegeName');
-            }
-
-            fetch('submit_form.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.text())
-            .then(text => {
-                try {
-                    const data = JSON.parse(text);
-                    if (data.success) {
-                        alert('User added successfully');
-                        window.location.reload(); // Reload the form after user clicks "OK"
-                    } else {
-                        console.error('Server error:', data.error);
-                        alert('There was an error adding the user.');
-                    }
-                } catch (error) {
-                    console.error('Error parsing JSON:', error);
-                    console.error('Response text:', text);
-                    alert('There was an error processing the response from the server.');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('There was an error adding the user.');
-            });
-        }
+async function validateEmail() {
+    const input = document.getElementById('email');
+    const error = document.getElementById('emailError');
+    const response = await fetch('check_email.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: 'email=' + encodeURIComponent(input.value),
     });
+    const data = await response.text();
+    if (data === 'exists') {
+        error.textContent = 'Email is already taken.';
+        return false;
+    } else {
+        error.textContent = '';
+        return true;
+    }
+}
 
-</script>
+function validatePassword() {
+    const input = document.getElementById('password');
+    const error = document.getElementById('passwordError');
+    if (input.value.length !== 6) {
+        error.textContent = 'Password must be 6 digits long.';
+        return false;
+    } else {
+        error.textContent = '';
+        return true;
+    }
+}
 
+function validateDate() {
+    const input = document.getElementById('date');
+    const error = document.getElementById('dateError');
+    if (!input.value) {
+        error.textContent = 'Please select a date.';
+        return false;
+    } else {
+        error.textContent = '';
+        return true;
+    }
+}
+
+function validateStaff() {
+    const select = document.getElementById('staff');
+    const error = document.getElementById('staffError');
+    if (select.value === '') {
+        error.textContent = 'Please choose your staff.';
+        return false;
+    } else {
+        error.textContent = '';
+        return true;
+    }
+}
+
+document.getElementById('fName').addEventListener('blur', () => validateName('fName', 'fNameError'));
+document.getElementById('mName').addEventListener('blur', () => validateName('mName', 'mNameError'));
+document.getElementById('lName').addEventListener('blur', () => validateName('lName', 'lNameError'));
+document.getElementById('role').addEventListener('blur', validatePosition);
+document.getElementById('phone').addEventListener('blur', validatePhone);
+document.getElementById('email').addEventListener('blur', validateEmail);
+document.getElementById('password').addEventListener('blur', validatePassword);
+document.getElementById('date').addEventListener('blur', validateDate);
+document.getElementById('staff').addEventListener('blur', validateStaff);
+
+document.getElementById('registrationForm').addEventListener('submit', async function(event) {
+    event.preventDefault(); // Prevent default form submission
+
+    let valid = true;
+    valid = validateName('fName', 'fNameError') && valid;
+    valid = validateName('mName', 'mNameError') && valid;
+    valid = validateName('lName', 'lNameError') && valid;
+    valid = validatePosition() && valid;
+    valid = validatePhone() && valid;
+    valid = await validateEmail() && valid;
+    valid = validatePassword() && valid;
+    valid = validateDate() && valid;
+    valid = validateStaff() && valid;
+
+    const staff = document.getElementById('staff').value;
+    if (staff === 'SchoolDean') {
+        valid = valid && validateName('collegeName', 'collegeNameError');
+    }
+
+    if (valid) {
+        const formData = new FormData(document.getElementById('registrationForm'));
+        
+        // Only include collegeName if staff is SchoolDean
+        if (staff !== 'SchoolDean') {
+            formData.delete('collegeName');
+        }
+
+        fetch('submit_form.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(text => {
+            try {
+                const data = JSON.parse(text);
+                if (data.success) {
+                    alert('User added successfully');
+                    window.location.reload(); // Reload the form after user clicks "OK"
+                } else {
+                    console.error('Server error:', data.error);
+                    alert('There was an error adding the user.');
+                }
+            } catch (error) {
+                console.error('Error parsing JSON:', error);
+                console.error('Response text:', text);
+                alert('There was an error processing the response from the server.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('There was an error adding the user.');
+        });
+    }
+});
+
+    </script>
 </body>
 </html>

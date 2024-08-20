@@ -108,25 +108,30 @@
           <i class="bi bi-grid"></i>
           <span>DepartmentHead Dashboard</span>
         </a>
-      </li><!-- End Dashboard Nav -->
+
+        
+      </li>
+
+      
+      <!-- End Dashboard Nav -->
 
       <!-- <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-menu-button-wide"></i><span>Registration</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
+        <a data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-menu-button-wide"></i><span>information</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a> -->
+        <!-- <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav"> -->
+          <!-- <li>
             <a href="admition.php">
               <i class="bi bi-circle"></i><span>Student Registration</span>
             </a>
-          </li>
-          <li>
+          </li> -->
+           <!-- <li>
             <a href="privilage.php">
               <i class="bi bi-circle"></i><span>User Previlage</span>
             </a>
           </li>
-        </ul> -->
-      </li><!-- End Components Nav -->
+         </ul>  -->
+      <!-- End Components Nav -->
 
       <!-- New Substaff link for School Dean actor -->
       
@@ -136,6 +141,8 @@
           <span>Substaff Registration</span>
         </a>
       </li>
+     
+      
       
 
       <li class="nav-heading">Pages</li>

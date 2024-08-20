@@ -2,7 +2,7 @@
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Database connection
+    // Database connection details
     $servername = "localhost";
     $username = "root";
     $password_db = "";
@@ -51,15 +51,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $row = $result->fetch_assoc();
                 $storedPassword = $row['password'];
                 $staff = $row['staff'];
-
-                // Set session email
                 $_SESSION['email'] = $email;
 
                 // Define placeholder redirect URLs for each table
                 $redirects = [
                     './components/admin/dashboard.php', // Placeholder URL for ddu_admin
-                    './components/actors/actor_dashboard.php?actor=' . urlencode($staff), // Placeholder URL for ddu_staff
-                    './components/actors/actor_dashboard.php?actor=' . urlencode($staff) // Placeholder URL for ddu_substaff
+                    './components/actors/actor_dashboard.php?actor='.urlencode($staff), // Placeholder URL for ddu_staff
+                    './components/actors/actor_dashboard.php?actor='.urlencode($staff), // Placeholder URL for ddu_substaff
                 ];
 
                 // Determine if the password is MD5 or securely hashed
@@ -84,7 +82,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         if (!$user_found) {
-            echo '<script>alert("Invalid credentials");</script>';
+            $_SESSION['error'] = "Invalid email or password. Please try again.";
+            header("Location: login_check.php");
+            exit();
         }
     }
 
