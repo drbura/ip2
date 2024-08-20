@@ -28,12 +28,19 @@ if ($result->num_rows > 0) {
     $checkRequestQuery = "SELECT * FROM request WHERE StudentID = '$studentId'";
     $requestResult = $conn->query($checkRequestQuery);
 
+    $checksRequestQuery = "SELECT * FROM clearedstudentslist WHERE student_id = '$studentId'";
+    $requestsResult = $conn->query($checksRequestQuery);
+
     // Set session ID
     $_SESSION['id'] = $studentId;
 
-    if ($requestResult->num_rows > 0) {
-        header("Location: status.php");
-    } else {
+    if ($requestsResult->num_rows > 0) {
+        header("Location: final_status.php");
+
+    }elseif ($requestResult->num_rows > 0){
+        header ("Location: status.php");
+    }
+    else {
         header("Location: agree.php");
     }
     exit;

@@ -9,6 +9,26 @@ include 'connect.php'; // Ensure this file correctly sets up $conn
 
 $studentId = $_SESSION['id']; // Ensure student_id is stored in session
 
+// Query to get the latest request for the student
+$sql = "SELECT Advisor, LabAssistant, DepartmentHead, SchoolDean, BookStore, Library, Cafeteria, StudentLoan, Dormitory, StudentService, Store, AcademicEnrollment FROM request WHERE StudentId = ? ORDER BY RequestDate DESC LIMIT 1";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("s", $studentId);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($row = $result->fetch_assoc()) {
+    // // Simulate that all statuses are "APPROVED"
+    // $statuses = array_map(function() {
+    //     return 'APPROVED';
+    // }, $row);
+    // Filter out statuses that are "PENDING"
+    $statuses = array_filter($row, function($status) {
+        return $status !== 'Pending';
+    });
+} else {
+    $statuses = []; // No status to show
+}
+
 // Handle form submission to update the status
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm'])) {
     // Check if student is already in clearedstudentslist
@@ -64,21 +84,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm'])) {
     }
 }
 
-// Query to get the latest request for the student
-$sql = "SELECT Advisor, LabAssistant, DepartmentHead, SchoolDean, BookStore, Library, Cafeteria, StudentLoan, Dormitory, StudentService, Store, AcademicEnrollment FROM request WHERE StudentId = ? ORDER BY RequestDate DESC LIMIT 1";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("s", $studentId);
-$stmt->execute();
-$result = $stmt->get_result();
-
-if ($row = $result->fetch_assoc()) {
-    // Simulate that all statuses are "APPROVED"
-    $statuses = array_map(function() {
-        return 'APPROVED';
-    }, $row);
-} else {
-    $statuses = []; // No status to show
-}
 
 $stmt->close();
 $conn->close();

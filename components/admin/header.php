@@ -7,6 +7,8 @@
   <title>Dashboard - Student Clearance Management System</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
+  <!-- Template Main JS File -->
+  <script src="../../assets/js/main.js"></script>
 </head>
 <body>
 
@@ -22,26 +24,94 @@
     </div><!-- End Logo -->
 
 
-    <!-- <div class="search-bar">
+    <div class="search-bar">
       <form class="search-form d-flex align-items-center" method="POST" action="#">
         <input type="text" name="query" placeholder="Search" title="Enter search keyword">
         <button type="submit" title="Search"><i class="bi bi-search"></i></button>
       </form>
-    </div> -->
+    </div>
     <!-- End Search Bar -->
 
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
 
         <li class="nav-item d-block d-lg-none">
-          <!-- <a class="nav-link nav-icon search-bar-toggle " href="#">
+          <a class="nav-link nav-icon search-bar-toggle " href="#">
             <i class="bi bi-search"></i>
-          </a> -->
+          </a>
         </li>
         <!-- End Search Icon-->
 
         
           <!-- End Notification Dropdown Items -->
+        <li class="nav-item dropdown">
+    <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+        <i class="bi bi-bell"></i>
+        <span class="badge bg-primary badge-number">
+            <?php
+            // Database connection
+            $servername = "localhost";
+            $username = "root";
+            $password_db = "";
+            $dbname = "ddu_clerance";
+
+            // Create connection
+            $conn = new mysqli($servername, $username, $password_db, $dbname);
+
+            // Check connection
+            if ($conn->connect_error) {
+                die("Connection failed: " . $conn->connect_error);
+            }
+
+            // Fetch pending forget password requests
+            $stmt = $conn->prepare("SELECT id, user_email, status, TIMESTAMPDIFF(MINUTE, date, NOW()) AS minutes_ago FROM forget_password WHERE status = 'PENDING'");
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            $notification_count = $result->num_rows;
+            echo $notification_count;
+            ?>
+        </span>
+
+        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+            <li class="dropdown-header">
+                You have <?php echo $notification_count; ?> new notification<?php echo $notification_count > 1 ? 's' : ''; ?>
+                <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+            </li>
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+
+            <?php
+            while ($row = $result->fetch_assoc()) {
+                ?>
+                <li class="notification-item">
+                    <i class="bi bi-exclamation-circle text-warning"></i>
+                    <div>
+                        <h4>Forget Password</h4>
+                        <p><?php echo htmlspecialchars($row['user_email']); ?></p>
+                        <form method="post" action="set_default_password.php">
+                            <input type="hidden" name="user_id" value="<?php echo $row['id']; ?>">
+                            <button type="submit" class="btn btn-sm btn-primary">Set Default</button>
+                        </form>
+                        <p><?php echo $row['minutes_ago']; ?> min. ago</p>
+                    </div>
+                </li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <?php
+            }
+
+            $stmt->close();
+            $conn->close();
+            ?>
+            <li class="dropdown-footer">
+                <a href="#">Show all notifications</a>
+            </li>
+        </ul>
+    </a>
+</li>
 
         </li><!-- End Notification Nav -->
 
@@ -281,6 +351,6 @@
   </aside><!-- End Sidebar-->
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-
+<script src="../../assets/js/main.js"></script>
 </body>
 </html>
