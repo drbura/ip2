@@ -126,7 +126,7 @@
             </a>
           </li>
         </ul> -->
-      </li><!-- End Components Nav -->
+     <!-- </li> End Components Nav -->
 
       <!-- New Substaff link for School Dean actor -->
       
@@ -135,7 +135,24 @@
           <i class="bi bi-people"></i>
           <span>Substaff Registration</span>
         </a>
+       </li>
+
+       <li class="nav-item">
+        <a class="nav-link collapsed" href="AA.php">
+          <i class="bi bi-people"></i>
+          <span>information table </span>
+        </a>
+       </li>
+       
+      <li class="nav-item">
+        
       </li>
+      <!-- <li class="nav-item">
+        <a class="nav-link collapsed" href="#">
+          <i class="bi bi-person"></i>
+          <span>user data</span>
+        </a>
+      </li> -->
       
 
       <li class="nav-heading">Pages</li>

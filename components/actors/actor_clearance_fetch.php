@@ -2,7 +2,7 @@
 session_start();
 $actor = $_GET['actor'] ?? '';
 $searchTerm = $_GET['search'] ?? '';
-$userEmail = $_SESSION['UserEmail'] ?? '';
+$userEmail = $_SESSION['email'] ?? '';
 
 // Database connection
 $servername = "localhost";
@@ -19,34 +19,80 @@ if ($conn->connect_error) {
 }
 
 function fetchRequests($conn, $actor, $searchTerm = '', $userEmail = '') {
+    $allowedActors = ['Advisor', 'LabAssistant', 'DepartmentHead', 'SchoolDean', 'Store', 'Library', 'BookStore', 'Cafeteria', 'AcademicEnrollment', 'StudentService', 'Dormitory', 'StudentLoan'];
+
+    if (!in_array($actor, $allowedActors)) {
+        die("Invalid actor specified.");
+    }
+
     $sql = "SELECT request.StudentId, request.RequestId, request.$actor, 
             request.Advisor, request.LabAssistant, request.DepartmentHead, 
             ddustudentdata.first_name, ddustudentdata.father_name, ddustudentdata.school, ddustudentdata.department, ddustudentdata.year, ddustudentdata.semester
             FROM request 
             JOIN ddustudentdata ON request.StudentId = ddustudentdata.student_id";
 
-    if ($actor === 'Advisor' && !empty($userEmail)) {
-        $advisorQuery = "SELECT department, school, year, semester FROM ddu_substaff WHERE UserEmail = '" . $conn->real_escape_string($userEmail) . "'";
-        $advisorResult = $conn->query($advisorQuery);
+    $conditions = [];
+    $params = [];
+    $types = '';
 
-        if ($advisorResult->num_rows > 0) {
-            $advisor = $advisorResult->fetch_assoc();
-            $sql .= " WHERE ddustudentdata.department = '" . $conn->real_escape_string($advisor['department']) . "'
-                      AND ddustudentdata.school = '" . $conn->real_escape_string($advisor['school']) . "'
-                      AND ddustudentdata.year = '" . $conn->real_escape_string($advisor['year']) . "'
-                      AND ddustudentdata.semester = '" . $conn->real_escape_string($advisor['semester']) . "'";
+    // Check for actor-specific conditions
+    if (!empty($userEmail)) {
+        if ($actor === 'SchoolDean') {
+            $substaffQuery = "SELECT schoolName FROM ddu_staff WHERE email = ?";
+        } elseif ($actor === 'DepartmentHead') {
+            $substaffQuery = "SELECT department, collegeName FROM ddu_subStaff WHERE email = ?";
+        } else { // Advisor or LabAssistant
+            $substaffQuery = "SELECT department, year, semester FROM ddu_subStaff WHERE email = ?";
+        }
+
+        $stmt = $conn->prepare($substaffQuery);
+        $stmt->bind_param("s", $userEmail);
+        $stmt->execute();
+        $substaffResult = $stmt->get_result();
+
+        if ($substaffResult->num_rows > 0) {
+            $substaff = $substaffResult->fetch_assoc();
+
+            if ($actor === 'SchoolDean') {
+                $conditions[] = "ddustudentdata.school = ?";
+                $params[] = $substaff['schoolName'];
+                $types .= 's';
+            } elseif ($actor === 'DepartmentHead') {
+                $conditions[] = "ddustudentdata.department = ?";
+                $conditions[] = "ddustudentdata.school = ?";
+                $params[] = $substaff['department'];
+                $params[] = $substaff['collegeName'];
+                $types .= 'ss';
+            } elseif ($actor === 'Advisor' || $actor === 'LabAssistant') {
+                $conditions[] = "ddustudentdata.department = ?";
+                $conditions[] = "ddustudentdata.year = ?";
+                $conditions[] = "ddustudentdata.semester = ?";
+                $params[] = $substaff['department'];
+                $params[] = $substaff['year'];
+                $params[] = $substaff['semester'];
+                $types .= 'sss';
+            }
         }
     }
 
+    // Add search term condition
     if (!empty($searchTerm)) {
-        if (strpos($sql, 'WHERE') !== false) {
-            $sql .= " AND request.StudentId LIKE '%" . $conn->real_escape_string($searchTerm) . "%'";
-        } else {
-            $sql .= " WHERE request.StudentId LIKE '%" . $conn->real_escape_string($searchTerm) . "%'";
-        }
+        $conditions[] = "request.StudentId LIKE ?";
+        $params[] = '%' . $searchTerm . '%';
+        $types .= 's';
     }
 
-    $result = $conn->query($sql);
+    // Build the SQL query with the conditions
+    if (!empty($conditions)) {
+        $sql .= " WHERE " . implode(" AND ", $conditions);
+    }
+
+    $stmt = $conn->prepare($sql);
+    if (!empty($params)) {
+        $stmt->bind_param($types, ...$params);
+    }
+    $stmt->execute();
+    $result = $stmt->get_result();
 
     if (!$result) {
         die("Query error: " . $conn->error);
@@ -72,6 +118,7 @@ function fetchRequests($conn, $actor, $searchTerm = '', $userEmail = '') {
 }
 
 $requests = fetchRequests($conn, $actor, $searchTerm, $userEmail);
+
 $conn->close();
 
 foreach ($requests as $request) {
@@ -96,4 +143,3 @@ foreach ($requests as $request) {
             }
     echo '</td></tr>';
 }
-?>

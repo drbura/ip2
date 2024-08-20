@@ -1,55 +1,52 @@
 <?php
-// Database connection parameters
-$servername = "localhost";
-$username = "root"; // replace with your database username
-$password = ""; // replace with your database password
-$dbname = "ddu_clerance";
+session_start();
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $fName = filter_input(INPUT_POST, 'fName', FILTER_SANITIZE_STRING);
+    $mName = filter_input(INPUT_POST, 'mName', FILTER_SANITIZE_STRING);
+    $lName = filter_input(INPUT_POST, 'lName', FILTER_SANITIZE_STRING);
+    $collegeName = filter_input(INPUT_POST, 'collegeName', FILTER_SANITIZE_STRING);
+    $department = filter_input(INPUT_POST, 'department', FILTER_SANITIZE_STRING);
+    $staff = filter_input(INPUT_POST, 'role', FILTER_SANITIZE_STRING);
+    $phone = filter_input(INPUT_POST, 'phone', FILTER_SANITIZE_STRING);
+    $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+    $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
+    $date = filter_input(INPUT_POST, 'date', FILTER_SANITIZE_STRING);
 
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+    if (!$email) {
+        echo json_encode(['status' => 'error', 'message' => 'Invalid email.']);
+        exit;
+    }
 
-// Fetch and sanitize input data
-$fName = mysqli_real_escape_string($conn, $_POST['fName']);
-$mName = mysqli_real_escape_string($conn, $_POST['mName']);
-$lName = mysqli_real_escape_string($conn, $_POST['lName']);
-$collegeName = mysqli_real_escape_string($conn, $_POST['collegeName']);
-$department = mysqli_real_escape_string($conn, $_POST['department']);
-$year = mysqli_real_escape_string($conn, $_POST['year']);
-$semester = mysqli_real_escape_string($conn, $_POST['semester']);
-$role = mysqli_real_escape_string($conn, $_POST['role']);
-$position = mysqli_real_escape_string($conn, $_POST['position']);
-$phone = mysqli_real_escape_string($conn, $_POST['phone']);
-$email = mysqli_real_escape_string($conn, $_POST['email']);
-$password = password_hash(trim($_POST["password"]), PASSWORD_DEFAULT);
-$date = mysqli_real_escape_string($conn, $_POST['date']);
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-// Check if the email already exists
-$emailCheckQuery = "SELECT * FROM ddu_substaff WHERE email='$email'";
-$emailCheckResult = $conn->query($emailCheckQuery);
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "ddu_clerance";
 
-if ($emailCheckResult->num_rows > 0) {
-    echo json_encode(['success' => false, 'error' => 'Email already exists']);
-    exit;
-}
+    // Create connection
+    $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Prepare and bind
-$stmt = $conn->prepare("INSERT INTO ddu_substaff (fName, mName, lName, collegeName, department, year, semester, staff, role, phone, email, password, date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)");
-$stmt->bind_param("sssssssssssss", $fName, $mName, $lName, $collegeName, $department, $year, $semester, $role,$position, $phone, $email, $password, $date);
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
 
-// Execute statement
-if ($stmt->execute()) {
-    include ('index.php');
-    //echo json_encode(['success' => true]);
+    $stmt = $conn->prepare("INSERT INTO ddu_subStaff (fName, mName, lName, collegeName, department, staff, phone, email, password, date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssssssssss", $fName, $mName, $lName, $collegeName, $department, $staff, $phone, $email, $hashedPassword, $date);
+
+    $formSubmissionSuccess = $stmt->execute();
+
+    if ($formSubmissionSuccess) {
+        echo json_encode(['status' => 'success']);
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'Form submission failed.']);
+    }
+
+    $stmt->close();
+    $conn->close();
 } else {
-    echo json_encode(['success' => false, 'error' => 'Database insert error']);
+    echo json_encode(['status' => 'error', 'message' => 'Invalid request method.']);
 }
-
-// Close connections
-$stmt->close();
-$conn->close();
 ?>

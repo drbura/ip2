@@ -54,7 +54,8 @@
         <form id="registrationForm" action="submit_form.php" method="POST">
             <div class="form first">
                 <div class="details personal">
-                    <span class="title">Substaff Registration Form</span>
+                <b><span class="title">department staff information</span></b>
+                   
                     <div class="fields">
                         <div class="input-field">
                             <label>First Name</label>
@@ -75,10 +76,6 @@
                         <div class="input-field">
                             <label>College/School Name</label>
                             <select id="collegeName" name="collegeName" required>
-                                <option value="" disabled selected>School/College</option>
-                                <option value="computation">School of Computation</option>
-                                <option value="law">School of Law</option>
-                                <option value="medicine">College of Medicine</option>
                             </select>
                             <small class="error" id="collegeNameError"></small>
                         </div>
@@ -120,15 +117,15 @@
                             <select id="role" name="role" required>
                                 <option value="" disabled selected>Select Position</option>
                                 <option value="Advisor">Advisor</option>
-                                <option value="LabAssistant">Lab Assistant</option>
+                                <option value="LabAssistant">LabAssistant</option>
                             </select>
                             <small class="error" id="roleError"></small>
                         </div>
-                        <div class="input-field">
-                            <label>Roll</label>
+                        <!-- <div class="input-field">
+                            <label>Role</label>
                             <input type="text" placeholder="Roll" name="position" id="position" required>
                             <small class="error" id="positionError"></small>
-                        </div>
+                        </div> -->
                         <div class="input-field">
                             <label>Mobile Number</label>
                             <input type="text" placeholder="Enter mobile number" name="phone" id="phone" required>
@@ -164,22 +161,7 @@
         </form>
     </div>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const departmentOptions = {
-                computation: [
-                    { value: 'cs', text: 'Computer Science' },
-                    { value: 'it', text: 'Information Technology' },
-                    { value: 'se', text: 'Software Engineering' }
-                ],
-                law: [
-                    { value: 'civil', text: 'Civil Law' },
-                    { value: 'criminal', text: 'Criminal Law' }
-                ],
-                medicine: [
-                    { value: 'general', text: 'General Medicine' },
-                    { value: 'dentistry', text: 'Dentistry' }
-                ]
-            };
+       
 
             document.getElementById('collegeName').addEventListener('change', function() {
                 const college = this.value;
@@ -192,10 +174,10 @@
                         option.value = department.value;
                         option.textContent = department.text;
                         departmentSelect.appendChild(option);
-                    });
+                });
                 }
             });
-        });
+        
 
         function validateName(inputId, errorId) {
             const input = document.getElementById(inputId);
@@ -238,24 +220,34 @@
         }
 
         async function validateEmail() {
-            const input = document.getElementById('email');
-            const error = document.getElementById('emailError');
-            const response = await fetch('check_email.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: 'email=' + encodeURIComponent(input.value),
-            });
-            const data = await response.text();
-            if (data === 'exists') {
-                error.textContent = 'Email is already taken.';
-                return false;
-            } else {
-                error.textContent = '';
-                return true;
-            }
+    const input = document.getElementById('email');
+    const error = document.getElementById('emailError');
+    
+    try {
+        const response = await fetch('check_email.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'email=' + encodeURIComponent(input.value),
+        });
+        
+        const data = await response.text();
+        
+        if (data === 'exists') {
+            error.textContent = 'Email is already taken.';
+            return false;
+        } else {
+            error.textContent = '';
+            return true;
         }
+    } catch (err) {
+        console.error('Error validating email:', err);
+        error.textContent = 'Error validating email.';
+        return false;
+    }
+}
+
 
         function validatePassword() {
             const input = document.getElementById('password');
@@ -280,6 +272,43 @@
                 return true;
             }
         }
+        
+    document.addEventListener('DOMContentLoaded', async function () {
+        try {
+            // Fetch school name and department based on logged-in user
+            const response = await fetch('fetch_user_details.php');
+            const data = await response.json();
+
+            if (data.error) {
+                console.error(data.error);
+                document.getElementById('collegeNameError').innerText = data.error;
+                document.getElementById('departmentNameError').innerText = data.error;
+                return;
+            }
+
+            const collegeNameSelect = document.getElementById('collegeName');
+            const departmentSelect = document.getElementById('department');
+
+            // Populate college name and department fields
+            if (data.collegeName) {
+                collegeNameSelect.innerHTML = `<option value="${data.collegeName}" selected>${data.collegeName}</option>`;
+                collegeNameSelect.disabled = false; // Make it read-only
+            } else {
+                collegeNameSelect.innerHTML = '<option value="" disabled>No college name found</option>';
+                collegeNameSelect.disabled = true; // Make it read-only
+            }
+
+            if (data.department) {
+                departmentSelect.innerHTML = `<option value="${data.department}" selected>${data.department}</option>`;
+                departmentSelect.disabled = false; // Make it read-only
+            } else {
+                departmentSelect.innerHTML = '<option value="" disabled>No department found</option>';
+                departmentSelect.disabled = true; // Make it read-only
+            }
+        } catch (error) {
+            console.error('Error fetching user details:', error);
+        }
+    });    
 
         function validateSelect(selectId, errorId) {
             const select = document.getElementById(selectId);
@@ -297,7 +326,7 @@
         document.getElementById('mName').addEventListener('blur', () => validateName('mName', 'mNameError'));
         document.getElementById('lName').addEventListener('blur', () => validateName('lName', 'lNameError'));
         document.getElementById('role').addEventListener('blur', validateRole);
-        document.getElementById('position').addEventListener('blur', validatePosition);
+        // document.getElementById('position').addEventListener('blur', validatePosition);
         document.getElementById('phone').addEventListener('blur', validatePhone);
         document.getElementById('email').addEventListener('blur', validateEmail);
         document.getElementById('password').addEventListener('blur', validatePassword);
@@ -315,7 +344,7 @@
             valid = validateName('mName', 'mNameError') && valid;
             valid = validateName('lName', 'lNameError') && valid;
             valid = validateRole() && valid;
-            valid = validatePosition() && valid;
+            // valid = validatePosition() && valid;
             valid = validatePhone() && valid;
             valid = await validateEmail() && valid;
             valid = validatePassword() && valid;
@@ -324,6 +353,8 @@
             valid = validateSelect('department', 'departmentNameError') && valid;
             valid = validateSelect('year', 'yearError') && valid;
             valid = validateSelect('semester', 'semesterError') && valid;
+
+            console.log(valid );
 
             if (valid) {
                 const formData = new FormData(document.getElementById('registrationForm'));
