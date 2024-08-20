@@ -46,6 +46,8 @@ $stmt_request->close();
 
 $conn->close();
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -83,6 +85,24 @@ $conn->close();
             color: white;
             border: none;
         }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .header img {
+            height: 80px;
+            width: 80px;
+            margin: 0 10px;
+        }
+        .header h1 {
+            display: inline-block;
+            margin: 0;
+            vertical-align: middle;
+            font-size: 34px;
+        }
     </style>
 </head>
 <body>
@@ -106,8 +126,16 @@ $conn->close();
             </ul>
         </div>
     </nav>
+    <div class="header">
+        <img src="Images\download.jpg" alt="University Logo">
+        <h1>
+            Dire Dawa University<br>
+            Student Clearance (Withdraw Form)<br>
+            for Regular Undergraduate Students
+        </h1>
+        <img src="Images\download.jpg" alt="University Logo">
+    </div>
     <div class="container">
-        <h1 class="text-center">dduclerance Final Status</h1>
         <table class="table table-striped">
            
             <tbody>
@@ -163,9 +191,16 @@ $conn->close();
                 <?php endforeach; ?>
             </tbody>
         </table>
-        <div class="text-center mt-4">
-            <a href="generate_pdf.php" class="btn btn-confirm">Download PDF</a>
-        </div>
+        <form action="generate_pdf.php" method="post">
+    <div class="text-center mt-4">
+        <a href="generate_pdf.php" class="btn btn-confirm">Download PDF</a>
+    </div>
+</form>
+<form action="view_pdf.php" method="post" target="_blank">
+    <div class="text-center mt-4">
+        <button type="submit" class="btn btn-secondary">View PDF</button>
+    </div>
+</form>
     </div>
 </body>
 </html>

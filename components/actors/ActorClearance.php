@@ -1,10 +1,14 @@
 <?php
-session_start();
-
-$UserEmail = isset($_SESSION['email']) ? $_SESSION['email'] : ''; // Retrieve the email from the session
+// session_start();
 
 $actor = $_GET['actor'] ?? '';
 
+// Ensure $actor is a valid column name
+$validActors = ['Advisor', 'LabAssistant', 'DepartmentHead', 'SchoolDean', 'Store', 'Library', 'BookStore', 'Cafeteria', 'AcademicEnrollment', 'StudentService', 'Dormitory', 'StudentLoan'];
+
+if (!in_array($actor, $validActors)) {
+    die("Invalid actor specified.");
+}
 
 // Database connection
 $servername = "localhost";
@@ -21,6 +25,7 @@ if ($conn->connect_error) {
 }
 
 function fetchRequests($conn, $actor, $searchTerm = '') {
+    // Prepare the SQL query
     $sql = "SELECT request.StudentId, request.RequestId, request.$actor, 
             request.Advisor, request.LabAssistant, request.DepartmentHead, 
             ddustudentdata.first_name, ddustudentdata.father_name, ddustudentdata.school, ddustudentdata.department, ddustudentdata.year, ddustudentdata.semester
@@ -28,10 +33,17 @@ function fetchRequests($conn, $actor, $searchTerm = '') {
             JOIN ddustudentdata ON request.StudentId = ddustudentdata.student_id";
 
     if (!empty($searchTerm)) {
-        $sql .= " WHERE request.StudentId LIKE '%" . $conn->real_escape_string($searchTerm) . "%'";
+        $sql .= " WHERE request.StudentId LIKE ?";
     }
 
-    $result = $conn->query($sql);
+    // Prepare and execute the query
+    $stmt = $conn->prepare($sql);
+    if (!empty($searchTerm)) {
+        $searchTerm = "%" . $searchTerm . "%";
+        $stmt->bind_param('s', $searchTerm);
+    }
+    $stmt->execute();
+    $result = $stmt->get_result();
 
     $requests = [];
     if ($result->num_rows > 0) {
@@ -56,8 +68,9 @@ $searchTerm = $_GET['search'] ?? '';
 $requests = fetchRequests($conn, $actor, $searchTerm);
 $conn->close();
 
-$showSearchAndApproveAll = in_array($actor, ['LabAssistant', 'Advisor','DepartmentHead','SchoolDean','Store', 'Library', 'BookStore', 'Cafeteria', 'AcademicEnrollment', 'StudentService', 'Dormitary', 'StudentLoan']);
+$showSearchAndApproveAll = in_array($actor, $validActors);
 ?>
+
 <script>
 comfirm("This is your email" $UserEmail)
 </script>

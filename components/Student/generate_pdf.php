@@ -54,7 +54,7 @@ $html = '
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>dduclerance Final Status</title>
+    <title>Dire Dawa University Student Clearance (Withdraw Form) for Regular Undergraduate Students</title>
     <style>
         body { font-family: Arial, sans-serif; }
         .container { max-width: 800px; margin: 0 auto; padding: 20px; }
@@ -65,14 +65,34 @@ $html = '
         .status-approved { background-color: #d4edda; }
         .status-rejected { background-color: #f8d7da; }
         .status-pending { background-color: #fff3cd; }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .header img {
+            height: 80px;
+            width: 80px;
+            margin: 0 10px;
+        }
+        .header h1 {
+            display: inline-block;
+            margin: 0 20px;
+            vertical-align: middle;
+        }
     </style>
 </head>
 <body>
+   <div class="header">
+        <img src="Images\download.jpg" alt="University Logo">
+        <h1>
+            Dire Dawa University<br>
+            Student Clearance (Withdraw Form)<br>
+            for Regular Undergraduate Students
+        </h1>
+    </div>
     <div class="container">
-        <h1>Final Status</h1>
+
         <table>
-            
-           
             <tbody>
                 <tr>
                     <td>Full Name</td>
@@ -110,7 +130,6 @@ $html = '
         </table>
         <h2>Approvals</h2>
         <table>
-           
             <tbody>';
 foreach ($request as $actor => $status) {
     if (in_array($actor, ['Advisor', 'LabAssistant', 'DepartmentHead', 'SchoolDean', 'BookStore', 'Library', 'Cafeteria', 'StudentLoan', 'Dormitory', 'StudentService', 'Store', 'AcademicEnrollment'])) {
@@ -133,3 +152,105 @@ $mpdf->WriteHTML($html);
 $mpdf->Output('Final_Status_' . htmlspecialchars($student['student_id']) . '.pdf', 'D');
 exit;
 ?>
+
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+$html = '
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dire Dawa University Student Clearance (Withdraw Form) for Regular Undergraduate Students</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+        h1, h2 { text-align: center; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 10px; border: 1px solid #ddd; }
+        th { background-color: #f2f2f2; }
+        .status-approved { background-color: #d4edda; }
+        .status-rejected { background-color: #f8d7da; }
+        .status-pending { background-color: #fff3cd; }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .header img {
+            height: 50px; /* Adjust size as needed */
+            width: auto;
+        }
+        .header h1 {
+            text-align: center;
+            margin: 0;
+            font-size: 16px; /* Adjust font size as needed */
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+   <div class="header">
+        <img src="Images/download.jpg" alt="University Logo">
+        <h1>
+            Dire Dawa University<br>
+            Student Clearance (Withdraw Form)<br>
+            for Regular Undergraduate Students
+        </h1>
+        <img src="Images/download.jpg" alt="University Logo">
+    </div>
+    <div class="container">
+        <table>
+            <tbody>
+                <tr>
+                    <td>Full Name</td>
+                    <td>' . htmlspecialchars($fullName) . '</td>
+                </tr>
+                <tr>
+                    <td>ID</td>
+                    <td>' . htmlspecialchars($student['student_id']) . '</td>
+                </tr>
+                <tr>
+                    <td>College</td>
+                    <td>' . htmlspecialchars($student['school']) . '</td>
+                </tr>
+                <tr>
+                    <td>Department</td>
+                    <td>' . htmlspecialchars($student['Department']) . '</td>
+                </tr>
+                <tr>
+                    <td>Year</td>
+                    <td>' . htmlspecialchars($student['year']) . '</td>
+                </tr>
+                <tr>
+                    <td>Semester</td>
+                    <td>' . htmlspecialchars($student['semester']) . '</td>
+                </tr>
+                <tr>
+                    <td>Reason</td>
+                    <td>' . htmlspecialchars($request['Reason']) . '</td>
+                </tr>
+                <tr>
+                    <td>Request Date</td>
+                    <td>' . htmlspecialchars($request['RequestDate']) . '</td>
+                </tr>
+            </tbody>
+        </table>
+        <h2>Approvals</h2>
+        <table>
+            <tbody>';
+foreach ($request as $actor => $status) {
+    if (in_array($actor, ['Advisor', 'LabAssistant', 'DepartmentHead', 'SchoolDean', 'BookStore', 'Library', 'Cafeteria', 'StudentLoan', 'Dormitory', 'StudentService', 'Store', 'AcademicEnrollment'])) {
+        $class = $status === 'REJECT' ? 'status-rejected' : ($status === 'APPROVED' ? 'status-approved' : 'status-pending');
+        $html .= '
+                <tr>
+                    <td>' . htmlspecialchars($actor) . '</td>
+                    <td class="' . $class . '">' . htmlspecialchars($status) . '</td>
+                </tr>';
+    }
+}
+$html .= '
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>';
