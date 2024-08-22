@@ -124,8 +124,8 @@
             <a href="admition.php">
               <i class="bi bi-circle"></i><span>Student Registration</span>
             </a>
-          </li> -->
-           <!-- <li>
+          </li>
+           <li>
             <a href="privilage.php">
               <i class="bi bi-circle"></i><span>User Previlage</span>
             </a>
