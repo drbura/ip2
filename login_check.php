@@ -17,11 +17,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (isset($_POST['signIn'])) {
-        // Get user input
         $email = $_POST['email'];
         $password = $_POST['password'];
 
-        // Define queries for each table
         $queries = [
             "SELECT * FROM ddu_admin WHERE email = ?",
             "SELECT * FROM ddu_staff WHERE email = ?",
@@ -30,17 +28,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $user_found = false;
 
-        // Function to check if a password is MD5
         function isMd5($password) {
             return preg_match('/^[a-f0-9]{32}$/', $password);
         }
 
-        // Function to handle MD5 password check
         function checkMd5Password($storedPassword, $inputPassword) {
             return md5($inputPassword) === $storedPassword;
         }
 
-        // Loop through queries to check each table
         for ($i = 0; $i < count($queries); $i++) {
             $stmt = $conn->prepare($queries[$i]);
             $stmt->bind_param("s", $email);
@@ -53,23 +48,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $staff = $row['staff'];
                 $_SESSION['email'] = $email;
 
-                // Define placeholder redirect URLs for each table
                 $redirects = [
-                    './components/admin/dashboard.php', // Placeholder URL for ddu_admin
-                    './components/actors/actor_dashboard.php?actor='.urlencode($staff), // Placeholder URL for ddu_staff
-                    './components/actors/actor_dashboard.php?actor='.urlencode($staff), // Placeholder URL for ddu_substaff
+                    './components/admin/dashboard.php', // For ddu_admin
+                    './components/actors/actor_dashboard.php?actor='.urlencode($staff), // For ddu_staff
+                    './components/actors/actor_dashboard.php?actor='.urlencode($staff), // For ddu_substaff
                 ];
 
-                // Determine if the password is MD5 or securely hashed
                 if (isMd5($storedPassword)) {
-                    // Check MD5 password
                     if (checkMd5Password($storedPassword, $password)) {
                         $user_found = true;
                         header("Location: " . $redirects[$i]);
                         exit();
                     }
                 } else {
-                    // Check password using password_verify for modern hashing
                     if (password_verify($password, $storedPassword)) {
                         $user_found = true;
                         header("Location: " . $redirects[$i]);
@@ -83,12 +74,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if (!$user_found) {
             $_SESSION['error'] = "Invalid email or password. Please try again.";
-            header("Location: login_check.php");
+            header("Location: index.php"); // Redirect back to the login page
             exit();
         }
     }
 
-    // Close the connection
     $conn->close();
 }
-?>
