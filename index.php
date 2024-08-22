@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -10,11 +14,13 @@
     <link href="assetes/css/style.css" rel="stylesheet">
 
     <style>
+    
       .error-message {
         color: red;
         text-align: center;
         margin-bottom: 10px;
       }
+      
     </style>
   </head>
   <body>
