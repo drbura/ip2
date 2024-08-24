@@ -284,20 +284,55 @@
                     document.getElementById('collegeNameError').innerText = 'Error fetching school name';
                 }
             }
+            async function fetchDepartments() {
+        const collegeName = document.getElementById('collegeName').value;
+        const departmentSelect = document.getElementById('department');
+        departmentSelect.innerHTML = '<option value="" disabled selected>Select Department</option>';
 
-            function fetchDepartments() {
-                const collegeName = document.getElementById('collegeName').value;
-                const departmentSelect = document.getElementById('department');
-                departmentSelect.innerHTML = '<option value="" disabled selected>Select Department</option>';
+        if (collegeName) {
+            try {
+                const response = await fetch('check_department.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `collegeName=${encodeURIComponent(collegeName)}`,
+                });
+                const takenDepartments = await response.json();
+
                 if (departmentOptions[collegeName]) {
                     departmentOptions[collegeName].forEach(dept => {
                         const option = document.createElement('option');
                         option.value = dept.value;
                         option.textContent = dept.text;
+
+                        if (takenDepartments.includes(dept.value)) {
+                            option.disabled = true; // Disable if Department Head is already assigned
+                            option.textContent += " (!assigned already 😎)";
+                        }
+
                         departmentSelect.appendChild(option);
                     });
                 }
+            } catch (error) {
+                console.error('Error fetching departments:', error);
             }
+        }
+    }
+    document.getElementById('fName').addEventListener('input', () => validateName('fName', 'fNameError'));
+        document.getElementById('mName').addEventListener('input', () => validateName('mName', 'mNameError'));
+        document.getElementById('lName').addEventListener('input', () => validateName('lName', 'lNameError'));
+        document.getElementById('phone').addEventListener('input', validatePhone);
+        document.getElementById('password').addEventListener('input', validatePassword);
+        document.getElementById('date').addEventListener('change', validateDate);
+        document.getElementById('email').addEventListener('change', validateEmail);
+
+        // fetchSchoolName().then(fetchDepartments);
+
+        document.getElementById('collegeName').addEventListener('change', fetchDepartments);
+    
+
+   
 
             await fetchSchoolName();
             fetchDepartments();
