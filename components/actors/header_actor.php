@@ -132,7 +132,7 @@
       <!-- New Substaff link for School Dean actor -->
       <?php if ($_GET['actor'] === 'SchoolDean'): ?>
       <li class="nav-item">
-        <a class="nav-link collapsed" href="../subStaffs/">
+        <a class="nav-link collapsed" href="" data-page="../subStaffs/subStaff">
           <i class="bi bi-people"></i>
           <span>Substaff Registration</span>
         </a>
@@ -141,7 +141,7 @@
 
       <?php if ($_GET['actor'] === 'DepartmentHead'): ?>
       <li class="nav-item">
-        <a class="nav-link collapsed" href="../subStaff/">
+        <a class="nav-link collapsed" href="#" data-page="../subStaff/subStaff">
           <i class="bi bi-people"></i>
           <span>Substaff Registration</span>
         </a>

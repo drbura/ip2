@@ -198,7 +198,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="userss-profile.php">
+              <a class="dropdown-item d-flex align-items-center" href="#" data-page="userss-profile">
                 <i class="bi bi-person"></i>
                 <span>My Profile</span>
               </a>
@@ -260,12 +260,12 @@
           <i class="bi bi-menu-button-wide"></i><span>Registration</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-            <a href="../registration">
+            <a href="../registration" data-page="../registration/registration">
               <i class="bi bi-circle"></i><span>Student Registration</span>
             </a>
           </li>
           <li>
-            <a href="../user/">
+            <a href="#" data-page="../user/user">
               <i class="bi bi-circle"></i><span>User Previlage</span>
             </a>
           </li>
@@ -278,12 +278,12 @@
         </a>
         <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="../Student/display_data.php">
+            <a href="#" data-page="../Student/user_data">
               <i class="bi bi-circle"></i><span>Student Data</span>
             </a>
           </li>
           <li>
-            <a href="display_data.php">
+            <a href="#" data-page="user_data">
               <i class="bi bi-circle"></i><span>User Data</span>
             </a>
           </li>
@@ -293,7 +293,7 @@
       <li class="nav-heading">Pages</li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="userss-profile.php">
+        <a class="nav-link collapsed" href="#" data-page="userss-profile">
           <i class="bi bi-person"></i>
           <span>Profile</span>
         </a>

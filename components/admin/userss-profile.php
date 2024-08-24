@@ -209,11 +209,12 @@ $email = $user['email'];
 
                             <div class="tab-pane fade" id="profile-change-password">
                                 <!-- Change Password Form -->
-                                <form>
+                                <form action="change_password.php" method="post">
+                                    
                                     <div class="row mb-3">
                                         <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <input name="password" type="password" class="form-control" id="currentPassword">
+                                            <input name="currentpassword" type="password" class="form-control" id="currentPassword">
                                         </div>
                                     </div>
                                     <div class="row mb-3">

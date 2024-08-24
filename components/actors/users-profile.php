@@ -208,11 +208,12 @@ $email = $user['email'];
 
                             <div class="tab-pane fade" id="profile-change-password">
                                 <!-- Change Password Form -->
-                                <form>
+                                <form action="change_password.php" method="post">
+                                    
                                     <div class="row mb-3">
                                         <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <input name="password" type="password" class="form-control" id="currentPassword">
+                                            <input name="currentpassword" type="password" class="form-control" id="currentPassword">
                                         </div>
                                     </div>
                                     <div class="row mb-3">
@@ -231,6 +232,16 @@ $email = $user['email'];
                                         <button type="submit" class="btn btn-primary">Change Password</button>
                                     </div>
                                 </form><!-- End Change Password Form -->
+                                <!-- Below is the HTML snippet to be added under the change password form in your existing interface -->
+<?php if (!empty($successMessage)): ?>
+    <div class="alert alert-success text-center" role="alert">
+        <?php echo $successMessage; ?>
+    </div>
+<?php elseif (!empty($errorMessage)): ?>
+    <div class="alert alert-danger text-center" role="alert">
+        <?php echo $errorMessage; ?>
+    </div>
+<?php endif; ?>
                             </div>
                         </div><!-- End Bordered Tabs -->
                     </div>
