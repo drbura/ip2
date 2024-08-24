@@ -50,7 +50,6 @@
         </li><!-- End Messages Nav -->
         <li class="nav-item dropdown pe-3">
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            <img width="40vh" height="60vh" src="" alt="Profile" class="rounded-circle">
             <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo($_GET['actor']) ?></span>
           </a><!-- End Profile Iamge Icon -->
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
@@ -67,6 +66,7 @@
                 <span>My Profile</span>
               </a>
             </li>
+            <!--
             <li>
               <hr class="dropdown-divider">
             </li>
@@ -86,6 +86,7 @@
               </a>
             </li>
             <li>
+-->
               <hr class="dropdown-divider">
             </li>
             <li>
@@ -150,7 +151,7 @@
       <li class="nav-heading">Pages</li>
 
       <li class="nav-item">
-  <a class="nav-link collapsed" href="#" data-page="user-profile">
+  <a class="nav-link collapsed" href="#" data-page="users-profile">
     <i class="bi bi-person"></i>
     <span>Profile</span>
   </a>
