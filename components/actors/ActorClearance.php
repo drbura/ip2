@@ -118,7 +118,7 @@ comfirm("This is your email" $UserEmail)
 </head>
 <body>
     <div class="container">
-        <h1 class="text-center"><?php echo htmlspecialchars($actor); ?> Clearance Requests</h1>
+    
         <?php if ($showSearchAndApproveAll): ?>
             <div class="search-bar">
                 <input type="hidden" id="actor" value="<?php echo htmlspecialchars($actor); ?>">

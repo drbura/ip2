@@ -141,6 +141,12 @@
           <span>Substaff Registration</span>
         </a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="../subStaff/BB.php">
+          <i class="bi bi-people"></i>
+          <span>user information</span>
+        </a>
+      </li>
      
       
       
