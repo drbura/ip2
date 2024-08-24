@@ -328,51 +328,55 @@ $conn->close();
 
 <script>
     $(document).ready(function() {
-        // Edit functionality
-        $('.edit-btn').click(function() {
-            var $row = $(this).closest('tr');
-            $row.toggleClass('editable');
-            $(this).text($row.hasClass('editable') ? 'Save' : 'Edit');
+    // Edit functionality
+    $('.edit-btn').click(function() {
+        var $row = $(this).closest('tr');
+        $row.toggleClass('editable');
+        $(this).text($row.hasClass('editable') ? 'Save' : 'Edit');
 
-            if ($row.hasClass('editable')) {
-                $row.find('td:not(:first-child):not(:nth-child(2)):not(:nth-last-child(1))').each(function() {
-                    var $cell = $(this);
-                    var text = $cell.text().trim();
-                    $cell.html('<input type="text" value="' + text + '">');
-                });
-            } else {
-                var rowData = {};
-                $row.find('input').each(function() {
-                    var $input = $(this);
-                    var value = $input.val();
-                    var column = $(this).closest('td').index();
-                    var key = $row.data('id') + '-' + column; // Create a unique key for each cell
-                    rowData[key] = value;
-                    $input.parent().text(value);
-                });
+        if ($row.hasClass('editable')) {
+            $row.find('td:not(:first-child):not(:nth-child(2)):not(:nth-last-child(1))').each(function() {
+                var $cell = $(this);
+                var text = $cell.text().trim();
+                $cell.html('<input type="text" value="' + text + '">');
+            });
+        } else {
+            var rowData = {};
+            $row.find('input').each(function() {
+                var $input = $(this);
+                var value = $input.val();
+                var column = $(this).closest('td').index();
+                var key = $input.closest('tr').data('id') + '-' + column; // Unique key for each cell
+                rowData[key] = value;
+                $input.parent().text(value);
+            });
 
-                // Send AJAX request to update the database
-                var rowId = $row.data('id');
-                var tableId = $row.closest('table').attr('id');
-                $.post('update.php', { id: rowId, table: tableId, data: rowData });
-            }
-        });
-
-        // Delete functionality
-        $('#bulk-action-form').on('click', '.delete-btn', function() {
-            var $row = $(this).closest('tr');
-            var confirmed = confirm("Are you sure you want to delete this row?");
-            if (confirmed) {
-                var rowId = $row.data('id');
-                var tableId = $row.closest('table').attr('id');
-
-                // Send AJAX request to delete the record from the database
-                $.post('delete.php', { id: rowId, table: tableId }, function() {
-                    $row.remove();
-                });
-            }
-        });
+            // Send AJAX request to update the database
+            var rowId = $row.data('id');
+            var tableId = $row.closest('table').attr('id');
+            $.post('update&delete.php', { action: 'update', id: rowId, table: tableId, data: rowData }, function(response) {
+                console.log(response);
+            });
+        }
     });
+
+    // Delete functionality
+    $('#bulk-action-form').on('click', '.delete-btn', function() {
+        var $row = $(this).closest('tr');
+        var confirmed = confirm("Are you sure you want to delete this row?");
+        if (confirmed) {
+            var rowId = $row.data('id');
+            var tableId = $row.closest('table').attr('id');
+
+            // Send AJAX request to delete the record from the database
+            $.post('update&delete.php', { action: 'delete', id: rowId, table: tableId }, function(response) {
+                console.log(response);
+                $row.remove();
+            });
+        }
+    });
+});
+
 </script>
 
 </body>

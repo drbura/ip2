@@ -6,7 +6,7 @@ ini_set('display_errors', 1);
 $host = "localhost";
 $username = "root";
 $password = "";
-$dbname = "Clearance";
+$dbname = "ddu_clerance";
 
 $conn = mysqli_connect($host, $username, $password, $dbname);
 
@@ -19,7 +19,7 @@ if (!$conn) {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Retrieve and sanitize form data
     $email = mysqli_real_escape_string($conn, $_POST['email']);
-    $ccurrent_password = mysqli_real_escape_string($conn, $_POST['current_password']);
+    $current_password = mysqli_real_escape_string($conn, $_POST['current_password']);
     $new_password = mysqli_real_escape_string($conn, $_POST['new_password']);
     // $renew_password = mysqli_real_escape_string($conn, $_POST['renewpassword']);
 
@@ -29,13 +29,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // }
 
     // Query to check if the email exists
-    $sql = "SELECT password FROM admin WHERE email='$email'";
+    $sql = "SELECT password FROM ddu_admin WHERE email='$email'";
     $result = mysqli_query($conn, $sql);
 
     if (mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_assoc($result);
         $hashed_password = $row['password'];
-        $current_password = md5($ccurrent_password);
+        $current_password = md5($current_password);
 
         // Verify current password
         if ($current_password == $hashed_password) {
@@ -43,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $new_hashed_password = md5 ($new_password);
 
             // Update the password in the database
-            $update_sql = "UPDATE admin SET password='$new_hashed_password' WHERE email='$email'";
+            $update_sql = "UPDATE ddu_admin SET password='$new_hashed_password' WHERE email='$email'";
             if (mysqli_query($conn, $update_sql)) {
                 echo "Password updated successfully.";
             } else {
@@ -60,4 +60,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     mysqli_close($conn);
 }
 ?>
-<?php include 'users-profile.php' ?>

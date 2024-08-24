@@ -208,6 +208,57 @@ comfirm("This is your email" $UserEmail)
                 });
             }
         }
+
+        function showRejectPopup(requestId) {
+    $('#rejectRequestId').val(requestId);
+    $('#rejectModal').modal('show');
+}
+
+function submitReject() {
+    const requestId = $('#rejectRequestId').val();
+    const reason = $('#reason').val();
+    
+    $.ajax({
+        type: 'POST',
+        url: 'actor_reject.php',
+        data: { requestId: requestId, reason: reason },
+        success: function(response) {
+            $('#rejectModal').modal('hide');
+            location.reload(); // Reload the page to reflect changes
+        },
+        error: function(xhr, status, error) {
+            console.error("AJAX error:", error);
+            console.error("Response text:", xhr.responseText);
+        }
+    });
+}
+
     </script>
+    <div class="modal fade" id="rejectModal" tabindex="-1" aria-labelledby="rejectModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="rejectModalLabel">Reject Request</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="rejectForm">
+                    <div class="form-group">
+                        <label for="reason">Reason for rejection</label>
+                        <textarea class="form-control" id="reason" name="reason" rows="3" required></textarea>
+                    </div>
+                    <input type="hidden" id="rejectRequestId">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" onclick="submitReject()">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>
