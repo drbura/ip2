@@ -104,9 +104,9 @@
   <aside id="sidebar" class="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
       <li class="nav-item">
-        <a class="nav-link " href="dashboard.php">
+        <a class="nav-link " href="" data-page="ActorClearance">
           <i class="bi bi-grid"></i>
-          <span><?php echo($_GET['actor']) ?> Dashboard</span>
+          <span> Dashboard</span>
         </a>
       </li><!-- End Dashboard Nav -->
 
@@ -150,11 +150,11 @@
       <li class="nav-heading">Pages</li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#">
-          <i class="bi bi-person"></i>
-          <span>Profile</span>
-        </a>
-      </li><!-- End Profile Page Nav -->
+  <a class="nav-link collapsed" href="#" data-page="user-profile">
+    <i class="bi bi-person"></i>
+    <span>Profile</span>
+  </a>
+</li><!-- End Profile Page Nav -->
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="../../index.php">
