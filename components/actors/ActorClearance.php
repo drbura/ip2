@@ -217,11 +217,15 @@ comfirm("This is your email" $UserEmail)
 function submitReject() {
     const requestId = $('#rejectRequestId').val();
     const reason = $('#reason').val();
+    const actor = '<?php echo $actor; ?>'; 
+    const status = 'REJECT'; 
+
     
     $.ajax({
         type: 'POST',
         url: 'actor_reject.php',
-        data: { requestId: requestId, reason: reason },
+        data: { requestId: requestId, reason: reason, actor: actor,
+            status: status },
         success: function(response) {
             $('#rejectModal').modal('hide');
             location.reload(); // Reload the page to reflect changes
