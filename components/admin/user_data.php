@@ -155,13 +155,13 @@ $conn->close();
                     <tr>
                         <th></th>
                         <th></th>
-                        <th>fName</th>
-                        <th>mName</th>
-                        <th>lName</th>
-                        <th>staff</th>
-                        <th>schoolName</th>
-                        <th>position</th>
-                        <th>phone</th>
+                        <th data-column="fName">fName</th>
+                        <th data-column="mName">mName</th>
+                        <th data-column="lName">lName</th>
+                        <th data-column="staff">staff</th>
+                        <th data-column="schoolName">schoolName</th>
+                        <th data-column="position">position</th>
+                        <th data-column="phone">phone</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -170,13 +170,13 @@ $conn->close();
                             <tr data-id="<?php echo $row["staff_id"]; ?>">
                                 <td><button type="button" class="btn btn-primary edit-btn">Edit</button></td>
                                 <td><button type="button" class="btn btn-danger delete-btn">Delete</button></td>
-                                <td><?php echo $row["fName"]; ?></td>
-                                <td><?php echo $row["mName"]; ?></td>
-                                <td><?php echo $row["lName"]; ?></td>
-                                <td><?php echo $row["staff"]; ?></td>
-                                <td><?php echo $row["schoolName"]; ?></td>
-                                <td><?php echo $row["position"]; ?></td>
-                                <td><?php echo $row["phone"]; ?></td>
+                        <td data-column="fName"><?php echo $row["fName"]; ?></td>
+                        <td data-column="mName"><?php echo $row["mName"]; ?></td>
+                        <td data-column="lName"><?php echo $row["lName"]; ?></td>
+                        <td data-column="staff"><?php echo $row["staff"]; ?></td>
+                        <td data-column="schoolName"><?php echo $row["schoolName"]; ?></td>
+                        <td data-column="position"><?php echo $row["position"]; ?></td>
+                        <td data-column="phone"><?php echo $row["phone"]; ?></td>
                             </tr>
                         <?php endforeach; ?>
                     <?php else: ?>
@@ -192,12 +192,12 @@ $conn->close();
                     <tr>
                         <th></th>
                         <th></th>
-                        <th>fName</th>
-                        <th>mName</th>
-                        <th>lName</th>
-                        <th>staff</th>
-                        <th>position</th>
-                        <th>phone</th>
+                        <th data-column="fName">fName</th>
+                        <th data-column="mName">mName</th>
+                        <th data-column="lName">lName</th>
+                        <th data-column="staff">staff</th>
+                        <th data-column="position">position</th>
+                        <th data-column="phone">phone</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -206,12 +206,12 @@ $conn->close();
                             <tr data-id="<?php echo $row["staff_id"]; ?>">
                                 <td><button type="button" class="btn btn-primary edit-btn">Edit</button></td>
                                 <td><button type="button" class="btn btn-danger delete-btn">Delete</button></td>
-                                <td><?php echo $row["fName"]; ?></td>
-                                <td><?php echo $row["mName"]; ?></td>
-                                <td><?php echo $row["lName"]; ?></td>
-                                <td><?php echo $row["staff"]; ?></td>
-                                <td><?php echo $row["position"]; ?></td>
-                                <td><?php echo $row["phone"]; ?></td>
+                                <td data-column="fName"><?php echo $row["fName"]; ?></td>
+                                <td data-column="mName"><?php echo $row["mName"]; ?></td>
+                                <td data-column="lName"><?php echo $row["lName"]; ?></td>
+                                <td data-column="staff"><?php echo $row["staff"]; ?></td>
+                                <td data-column="position"><?php echo $row["position"]; ?></td>
+                                <td data-column="phone"><?php echo $row["phone"]; ?></td>
                             </tr>
                         <?php endforeach; ?>
                     <?php else: ?>
@@ -328,38 +328,45 @@ $conn->close();
 
 <script>
     $(document).ready(function() {
-    // Edit functionality
-    $('.edit-btn').click(function() {
+        // Enable editing
+    $('#bulk-action-form').on('click', '.edit-btn', function() {
         var $row = $(this).closest('tr');
-        $row.toggleClass('editable');
-        $(this).text($row.hasClass('editable') ? 'Save' : 'Edit');
-
-        if ($row.hasClass('editable')) {
-            $row.find('td:not(:first-child):not(:nth-child(2)):not(:nth-last-child(1))').each(function() {
-                var $cell = $(this);
-                var text = $cell.text().trim();
-                $cell.html('<input type="text" value="' + text + '">');
-            });
-        } else {
-            var rowData = {};
-            $row.find('input').each(function() {
-                var $input = $(this);
-                var value = $input.val();
-                var column = $(this).closest('td').index();
-                var key = $input.closest('tr').data('id') + '-' + column; // Unique key for each cell
-                rowData[key] = value;
-                $input.parent().text(value);
-            });
-
-            // Send AJAX request to update the database
-            var rowId = $row.data('id');
-            var tableId = $row.closest('table').attr('id');
-            $.post('update&delete.php', { action: 'update', id: rowId, table: tableId, data: rowData }, function(response) {
-                console.log(response);
-            });
-        }
+        $row.addClass('editable');
+        $row.find('td').each(function(index, td) {
+            if (index > 1) { // Skip the edit and delete buttons
+                var $td = $(td);
+                var text = $td.text().trim();
+                $td.html('<input type="text" value="' + text + '">');
+            }
+        });
+        $(this).text('Save').removeClass('edit-btn').addClass('save-btn');
     });
 
+    // Handle save functionality
+    $('#bulk-action-form').on('click', '.save-btn', function() {
+        var $row = $(this).closest('tr');
+        var tableId = $row.closest('table').attr('id');
+        var rowId = $row.data('id');
+
+        $row.find('input').each(function(index, input) {
+            var $input = $(input);
+            var column = $input.closest('td').attr('data-column');
+            var value = $input.val();
+
+            // Send AJAX request to update the record
+            $.post('update.php', { id: rowId, table: tableId, column: column, value: value }, function(response) {
+                response = JSON.parse(response);
+                if (response.status === 'success') {
+                    $input.closest('td').text(value); // Update the table cell with the new value
+                } else {
+                    alert(response.message);
+                }
+            });
+        });
+
+        $row.removeClass('editable');
+        $(this).text('Edit').removeClass('save-btn').addClass('edit-btn');
+    });
     // Delete functionality
     $('#bulk-action-form').on('click', '.delete-btn', function() {
         var $row = $(this).closest('tr');
@@ -376,8 +383,6 @@ $conn->close();
         }
     });
 });
-
 </script>
-
 </body>
 </html>

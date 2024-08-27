@@ -28,8 +28,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Update the request status to 'REJECT'
     $stmt = $conn->prepare("UPDATE request SET $actor = ? WHERE RequestId = ?");
-    $stmt->bind_param("i",$status, $requestId);
-    $stmt->execute();
+    $stmt->bind_param("si", $status, $requestId);
+    if ($stmt->execute()) {
+        echo "Status updated successfully";
+    } else {
+        echo "Error: " . $stmt->error;
+    }
 
     $stmt->close();
     $conn->close();
