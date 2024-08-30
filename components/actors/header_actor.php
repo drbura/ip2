@@ -62,33 +62,7 @@
             <li>
               <hr class="dropdown-divider">
             </li>
-            <!-- <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.php">
-                <i class="bi bi-person"></i>
-                <span>My Profile</span>
-              </a>
-            </li> -->
-            <!--
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.php">
-                <i class="bi bi-gear"></i>
-                <span>Account Settings</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="#">
-                <i class="bi bi-question-circle"></i>
-                <span>Need Help?</span>
-              </a>
-            </li>
-            <li>
--->
+
               <hr class="dropdown-divider">
             </li>
             <li>
@@ -139,6 +113,12 @@
           <span>Substaff Registration</span>
         </a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="" data-page="../subStaffs/display_data">
+          <i class="bi bi-people"></i>
+          <span>information</span>
+        </a>
+      </li>
       <?php endif; ?>
 
       <?php if ($_GET['actor'] === 'DepartmentHead'): ?>
@@ -149,9 +129,10 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link collapsed" href="../subStaff/subStaff" >
+
+        <a class="nav-link collapsed" href="" data-page="../subStaff/display_data">
           <i class="bi bi-people"></i>
-          <span>Info</span>
+          <span>info </span>
         </a>
       </li>
       <?php endif; ?>
