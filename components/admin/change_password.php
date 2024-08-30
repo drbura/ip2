@@ -1,62 +1,106 @@
 <?php
-// Enable error reporting
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+session_start();
 
-$host = "localhost";
+// Ensure user is logged in
+if (!isset($_SESSION['email'])) {
+    header('Location: index.php');
+    exit;
+}
+
+$servername = "localhost";
 $username = "root";
-$password = "";
+$password_db = "";
 $dbname = "ddu_clerance";
 
-$conn = mysqli_connect($host, $username, $password, $dbname);
+// Create connection
+$conn = new mysqli($servername, $username, $password_db, $dbname);
 
 // Check connection
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 
-// Check if the form was submitted
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Retrieve and sanitize form data
-    $email = mysqli_real_escape_string($conn, $_POST['email']);
-    $current_password = mysqli_real_escape_string($conn, $_POST['current_password']);
-    $new_password = mysqli_real_escape_string($conn, $_POST['new_password']);
-    // $renew_password = mysqli_real_escape_string($conn, $_POST['renewpassword']);
+$email = $_SESSION['email'];
+$successMessage = '';
+$errorMessage = '';
 
-    // // Check if new passwords match
-    // if ($new_password !== $renew_password) {
-    //     die("New passwords do not match.");
-    // }
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $currentPassword = $_POST['currentpassword'];
+    $newPassword = trim($_POST['newpassword']);
+    $renewPassword = trim($_POST['renewpassword']);
 
-    // Query to check if the email exists
-    $sql = "SELECT password FROM ddu_admin WHERE email='$email'";
-    $result = mysqli_query($conn, $sql);
+    if ($newPassword === $renewPassword) {
+        // Fetch the current password from the database
+        $sql = "SELECT password FROM ddu_staff WHERE email = ?
+                UNION
+                SELECT password FROM ddu_substaff WHERE email = ?
+                UNION
+                SELECT password FROM ddu_admin WHERE email = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("sss", $email, $email, $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-    if (mysqli_num_rows($result) > 0) {
-        $row = mysqli_fetch_assoc($result);
-        $hashed_password = $row['password'];
-        $current_password = md5($current_password);
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
 
-        // Verify current password
-        if ($current_password == $hashed_password) {
-            // Hash the new password
-            $new_hashed_password = md5 ($new_password);
+            // Verify the current password
+            if (password_verify($currentPassword, $row['password'])) {
+                // Hash the new password
+                $hashedNewPassword = password_hash($newPassword, PASSWORD_DEFAULT);
 
-            // Update the password in the database
-            $update_sql = "UPDATE ddu_admin SET password='$new_hashed_password' WHERE email='$email'";
-            if (mysqli_query($conn, $update_sql)) {
-                echo "Password updated successfully.";
+                // Update the password in the respective table
+                $updateSuccess = false;
+
+                // Update in ddu_staff
+                $updateSql = "UPDATE ddu_staff SET password = ? WHERE email = ?";
+                $updateStmt = $conn->prepare($updateSql);
+                $updateStmt->bind_param("ss", $hashedNewPassword, $email);
+                $updateStmt->execute();
+                if ($updateStmt->affected_rows > 0) {
+                    $updateSuccess = true;
+                }
+
+                // Update in ddu_substaff
+                $updateSql = "UPDATE ddu_substaff SET password = ? WHERE email = ?";
+                $updateStmt = $conn->prepare($updateSql);
+                $updateStmt->bind_param("ss", $hashedNewPassword, $email);
+                $updateStmt->execute();
+                if ($updateStmt->affected_rows > 0) {
+                    $updateSuccess = true;
+                }
+
+                // Update in ddu_admin
+                $updateSql = "UPDATE ddu_admin SET password = ? WHERE email = ?";
+                $updateStmt = $conn->prepare($updateSql);
+                $updateStmt->bind_param("ss", $hashedNewPassword, $email);
+                $updateStmt->execute();
+                if ($updateStmt->affected_rows > 0) {
+                    $updateSuccess = true;
+                }
+
+                $updateStmt->close();
+
+                if ($updateSuccess) {
+                    $successMessage = "Password successfully changed.";
+                } else {
+                    $errorMessage = "Failed to update the password.";
+                }
             } else {
-                echo "Error updating password: " . mysqli_error($conn);
+                $errorMessage = "Current password is incorrect.";
             }
         } else {
-            echo "Current password is incorrect.";
+            $errorMessage = "User not found.";
         }
+        $stmt->close();
     } else {
-        echo "Email not found.";
+        $errorMessage = "New passwords do not match.";
     }
-
-    // Close the database connection
-    mysqli_close($conn);
 }
+
+$conn->close();
+header('Location: ' . $_SERVER['HTTP_REFERER']);
+exit;
 ?>
+
+

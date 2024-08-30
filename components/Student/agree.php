@@ -48,14 +48,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['agree'])) {
         <p>Please read the following guidelines and terms carefully:</p>
         <div class="content">
             <ul>
-                <li>Guideline 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum.</li>
-                <li>Guideline 2: Cras vehicula dapibus cursus. Morbi luctus vel neque at faucibus.</li>
-                <li>Guideline 3: Suspendisse potenti. Nam facilisis, nisl a bibendum consectetur, elit est facilisis quam, vel sollicitudin massa magna a lorem.</li>
-                <li>Guideline 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum.</li>
-                <li>Guideline 2: Cras vehicula dapibus cursus. Morbi luctus vel neque at faucibus.</li>
-                <li>Guideline 3: Suspendisse potenti. Nam facilisis, nisl a bibendum consectetur, elit est facilisis quam, vel sollicitudin massa magna a lorem.</li>
-                <li>Guideline 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum.</li>
-                <li>Guideline 2: Cras vehicula dapibus cursus. Morbi luctus vel neque at faucibus.</li>
+                <li>Guideline 1: Complete the form and make sure you entered the appropriate reason for clerance before submit the form.</li>
+                <li>Guideline 2: After submission you'll get a status page which display your current status of your clearance across all clearance staffs, then wait patiently untill all of your status is get approved.</li>
+                <li>Guideline 3: Approval might take a few time, After you get approved by all clearance staffs you can get your clearance.</li>
+                <li>Guideline 4: If you get reject by one of the clearance staff you have to contact the respective staff.</li>
+                <li>Guideline 5: If you get reject by Lab Assistants you won't get the clerarance from the Advisor, Department Head and School Dean staffs.</li>
+                <li>Guideline 6: If you get reject by Advisor you won't get the clerarance from the Department Head and School Dean staffs.</li>
+                <li>Guideline 7: If you get reject by Department Head you won't get the clerarance from the School Dean staff.</li>
+                
                 
                 <!-- Add more guidelines as needed -->
             </ul>
@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['agree'])) {
                 <label class="form-check-label" for="agree">I agree to the terms and policies</label>
             </div>
             <br>
-            <button type="submit" id="okButton" class="btn btn-primary" disabled>OK</button>
+            <button type="submit" id="okButton" class="btn btn-primary" disabled>Agree</button>
         </form>
     </div>
 
