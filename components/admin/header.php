@@ -127,44 +127,44 @@
               <hr class="dropdown-divider">
             </li>
 
-            <li class="message-item">
-              <!-- <a href="#">
+            <!-- <li class="message-item">
+              <a href="#">
                 <img src="assets/img/messages-1.jpg" alt="" class="rounded-circle">
                 <div>
                   <h4>Maria Hudson</h4>
                   <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
                   <p>4 hrs. ago</p>
                 </div>
-              </a> -->
-            </li>
+              </a>
+            </li> -->
             <li>
               <hr class="dropdown-divider">
             </li>
 
-            <li class="message-item">
-              <!-- <a href="#">
+            <!-- <li class="message-item">
+              <a href="#">
                 <img src="assets/img/messages-2.jpg" alt="" class="rounded-circle">
                 <div>
                   <h4>Anna Nelson</h4>
                   <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
                   <p>6 hrs. ago</p>
                 </div>
-              </a> -->
-            </li>
+              </a>
+            </li> -->
             <li>
               <hr class="dropdown-divider">
             </li>
 
-            <li class="message-item">
-              <!-- <a href="#">
+            <!-- <li class="message-item">
+              <a href="#">
                 <img src="assets/img/messages-3.jpg" alt="" class="rounded-circle">
                 <div>
                   <h4>David Muldon</h4>
                   <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
                   <p>8 hrs. ago</p>
                 </div>
-              </a> -->
-            </li>
+              </a>
+            </li> -->
             <li>
               <hr class="dropdown-divider">
             </li>
@@ -192,12 +192,12 @@
               <hr class="dropdown-divider">
             </li>
 
-            <li>
+            <!-- <li>
               <a class="dropdown-item d-flex align-items-center" href="#" data-page="userss-profile">
                 <i class="bi bi-person"></i>
                 <span>My Profile</span>
               </a>
-            </li>
+            </li> -->
            <!-- <li>
               <hr class="dropdown-divider">
             </li>
@@ -255,7 +255,7 @@
           <i class="bi bi-menu-button-wide"></i><span>Registration</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-            <a href="../registration" data-page="../registration/registration">
+            <a href="#" data-page="../registration/registration">
               <i class="bi bi-circle"></i><span>Student Registration</span>
             </a>
           </li>

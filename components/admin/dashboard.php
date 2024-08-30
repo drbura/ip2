@@ -11,7 +11,7 @@
   <?php include 'header.php'; ?>
 
   <div id="content">
-    <?php include 'main.php'; // Default content ?>
+    <?php include 'report.php'; // Default content ?>
   </div>
 
   <?php include 'footer.php'; ?>
@@ -37,7 +37,7 @@
       });
 
       // Load default content
-      var defaultPage = 'main'; // Default page to load
+      var defaultPage = 'report'; // Default page to load
       loadPage(defaultPage);
     });
   </script>

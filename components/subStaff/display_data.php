@@ -3,7 +3,7 @@
 session_start();
 
 // Now safely assign the session email to the variable
-$email = $_SESSION['email'];
+$email = $_GET['email'];
 
 // Database connection
 $servername = "localhost";
