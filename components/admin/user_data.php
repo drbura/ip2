@@ -121,7 +121,7 @@ $conn->close();
                 <thead>
                     <tr>
                         <th></th>
-                        <th></th>
+                        
                         <th>fName</th>
                         <th>mName</th>
                         <th>lName</th>
@@ -134,7 +134,7 @@ $conn->close();
                         <?php while($row = $result_admin->fetch_assoc()): ?>
                             <tr data-id="<?php echo $row["id"]; ?>">
                                 <td><button type="button" class="btn btn-primary edit-btn">Edit</button></td>
-                                <td><button type="button" class="btn btn-danger delete-btn">Delete</button></td>
+                              
                                 <td><?php echo $row["fName"]; ?></td>
                                 <td><?php echo $row["mName"]; ?></td>
                                 <td><?php echo $row["lName"]; ?></td>

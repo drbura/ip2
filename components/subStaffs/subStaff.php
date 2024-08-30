@@ -230,7 +230,7 @@
                     { value: 'Information technology', text: 'Information technology' },
                     { value: 'Computer Science', text: 'Computer Science' }
                 ],
-                "College of medicine and health science": [
+                "College of Medicine and health science": [
                     { value: 'Anesthesia', text: 'Anesthesia' },
                     { value: 'Laboratory', text: 'Laboratory' },
                     { value: 'Medicine', text: 'Medicine' },
