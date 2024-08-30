@@ -3,7 +3,6 @@
 session_start();
 
 // Now safely assign the session email to the variable
-
 $email = $_SESSION['email'];
 
 // Database connection
@@ -82,6 +81,7 @@ $conn->close();
     background-color: #f4f4f4;
     overflow-x: auto; /* Allows horizontal scrolling if needed */
 }
+
         .centered-table {
             width: 100%;
             margin-top: 20px;
@@ -295,6 +295,8 @@ $(".delete-btn").on("click", function() {
         console.log("Deletion canceled.");
     }
 });
+
+
 
 </script>
 </body>

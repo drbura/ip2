@@ -19,7 +19,6 @@ if ($conn->connect_error) {
 }
 
 $sql_school = "SELECT schoolName FROM ddu_staff WHERE email = ? ";
-
 $stmt_school = $conn->prepare($sql_school);
 $stmt_school->bind_param("s", $email);
 $stmt_school->execute();
@@ -58,7 +57,6 @@ while ($row = $result_substaff->fetch_assoc()) {
 
 $conn->close();
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>

@@ -15,4 +15,3 @@ while ($row = mysqli_fetch_assoc($result)) {
 // Return the assigned roles as a JSON array
 echo json_encode($assignedRoles);
 ?>
-
