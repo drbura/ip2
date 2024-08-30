@@ -104,7 +104,8 @@ $conn->close();
             margin-top: 30px;
         }
         .navbar-custom {
-            background-color: #007bff;
+            /* background-color: #007bff; */
+            background-color: orange;
             height: 60px;
         }
         .navbar-custom .navbar-brand img {
@@ -143,24 +144,34 @@ $conn->close();
         .btn-confirm:disabled {
             background-color: gray;
         }
+        ul{
+            list-style-type: none;
+        }
+        li{
+            font-size: large;
+        }
     </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-custom">
         <a class="navbar-brand" href="#">
-            <img src="./Images/Dire-Dawa_University-removebg.png" alt="Ethiopian Logo">
+            <img src="../../Images/Dire-Dawa_University-removebg.png" alt="DDU Logo">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
+                <li><?php echo $studentId ?></li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-user-circle fa-lg"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="logout.php">Logout</a>
+                        <ul >
+                            <li><?php echo $studentId ?></li>
+                        </ul>
+                        <a class="dropdown-item" href="index.php">Logout</a>
                     </div>
                 </li>
             </ul>
@@ -172,7 +183,7 @@ $conn->close();
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Actor</th>
+                    <th>Clearance Staff</th>
                     <th>Status</th>
                 </tr>
             </thead>
@@ -184,6 +195,10 @@ $conn->close();
                         <button class="btn <?php echo $status === 'REJECT' ? 'btn-danger' : ($status === 'APPROVED' ? 'btn-success' : 'btn-warning'); ?>" disabled>
                             <?php echo htmlspecialchars($status); ?>
                         </button>
+
+                        <?php if ($status === 'REJECT'): ?>
+                        <button class="btn btn-info view-reason" data-actor="<?php echo htmlspecialchars($actor); ?>">View Reason</button>
+                        <?php endif; ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
@@ -192,7 +207,7 @@ $conn->close();
         <div class="text-center mt-4">
             <form action="status.php" method="post">
                 <input type="hidden" name="confirm" value="1">
-                <button id="confirmButton" type="submit" class="btn btn-confirm">Confirm</button>
+                <button id="confirmButton" type="submit" class="btn btn-confirm">Get Clearance</button>
             </form>
             <br><br><br>
         </div>
@@ -200,6 +215,27 @@ $conn->close();
         <p class="text-center">No status updates available.</p>
         <?php endif; ?>
     </div>
+    <!-- Modal Popup for reject reason -->
+    <div class="modal fade" id="reasonModal" tabindex="-1" role="dialog" aria-labelledby="reasonModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reasonModalLabel">Reason for Rejection</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Reason content will be loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- Modal Popup for reject reason -->
+
     <script>
         $(document).ready(function() {
             function updateConfirmButton() {
@@ -219,7 +255,26 @@ $conn->close();
 
             // Call updateConfirmButton initially
             updateConfirmButton();
+
+            // Handle View Reason button click
+    $('.view-reason').on('click', function() {
+        const actor = $(this).data('actor');
+
+        $.ajax({
+            url: 'fetch_reason.php',
+            type: 'POST',
+            data: { actor: actor, studentId: "<?php echo $studentId; ?>" },
+            success: function(response) {
+                // Show the reason in the modal
+                $('#reasonModal .modal-body').html(response);
+                $('#reasonModal').modal('show');
+            },
+            error: function() {
+                alert('Failed to fetch reason.');
+            }
         });
+    });
+});
     </script>
 </body>
 </html>
