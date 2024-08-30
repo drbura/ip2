@@ -260,7 +260,7 @@
             </a>
           </li>
           <li>
-            <a href="../user/">
+            <a href="#" data-page="../user/user">
               <i class="bi bi-circle"></i><span>User Previlage</span>
             </a>
           </li>
