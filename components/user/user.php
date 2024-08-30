@@ -27,6 +27,7 @@
         .container {
             max-width: 600px;
             margin: 0 auto;
+       
             padding: 20px;
         }
 
@@ -41,6 +42,7 @@
             padding: 10px 20px;
             border: none;
             cursor: pointer;
+            
         }
 
         input[type="submit"]:hover {
@@ -74,7 +76,7 @@
                         <div class="input-field">
                             <label>Staff</label>
                             <select id="staff" name="staff" onchange="toggleCollegeName()" required>
-                                <option value="" disabled selected>---Select Role---</option>
+                                <option    value="" disabled selected >select staff</option>
                                 <option value="BookStore">Book Store</option>
                                 <option value="Library">Library</option>
                                 <option value="Cafeteria">Cafeteria</option>
@@ -144,20 +146,22 @@
     </div>
     <script>
     function toggleCollegeName() {
-        const roll = document.getElementById('staff').value;
+
+        const role = document.getElementById('staff').value;
         const collegeNameField = document.getElementById('collegeNameField');
         const collegeNameInput = document.getElementById('collegeName');
         
-        if (roll === 'SchoolDean') {
+        if (role === 'SchoolDean') {
             collegeNameField.style.display = 'block';
             collegeNameInput.setAttribute('required', 'required');
         } else {
             collegeNameField.style.display = 'none';
             collegeNameInput.removeAttribute('required');
         }
+
     }
 
-    // Ensure to call toggleCollegeName function on page load to set the initial state
+    // Call toggleCollegeName on page load to set the initial state
     document.addEventListener('DOMContentLoaded', toggleCollegeName);
 
     function validateName(inputId, errorId) {
@@ -216,15 +220,18 @@
             return false;
         } else {
             error.textContent = '';
+
             return true;
         }
     }
+
 
     function validatePassword() {
         const input = document.getElementById('password');
         const error = document.getElementById('passwordError');
         if (input.value.length !== 6) {
             error.textContent = 'Password must be 6 digits long.';
+
             return false;
         } else {
             error.textContent = '';
@@ -244,116 +251,116 @@
         }
     }
 
-    // Function to validate staff role and disable options if already registered
+   
     async function validateStaff() {
-        const select = document.getElementById('staff');
-        const collegeName = document.getElementById('collegeName').value;
-        const error = document.getElementById('staffError');
-        const staffRole = select.value;
-        
-        if (staffRole === '') {
-            error.textContent = 'Please choose a staff role.';
-            return false;
+    const staffSelect = document.getElementById('staff');
+    const staffOptions = staffSelect.options;
+
+    try {
+        // Fetch the staff roles that have already been assigned
+        const response = await fetch('check_staff.php');
+        const assignedRoles = await response.json();
+
+        // Iterate through the options and disable the assigned ones
+        for (let i = 0; i < staffOptions.length; i++) {
+            const option = staffOptions[i];
+
+            if (assignedRoles.includes(option.value)) {
+                option.disabled = true; // Disable the option if it has been assigned
+            } else {
+                option.disabled = false; // Enable the option if it hasn't been assigned
+            }
         }
 
-        try {
-            const response = await fetch('check_staff.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: `role=${encodeURIComponent(staffRole)}&collegeName=${encodeURIComponent(collegeName)}`,
-            });
-            const data = await response.json();
+        // Ensure that the School Dean option is always enabled
+       
+        const schoolDeanOption = staffSelect.querySelector('option[value="SchoolDean"]');
+        if (schoolDeanOption) {
+            schoolDeanOption.disabled = false;
+        }
+    } catch (error) {
+        console.error('Error validating staff:', error);
+    }
+}
 
-            // Enable or disable options based on the server response
-            const options = select.querySelectorAll('option');
-            options.forEach(option => {
-                if (data.staffExists && option.value === staffRole) {
-                    option.disabled = true;
-                    option.textContent = option.textContent.replace(' (Unavailable)', '') + ' (Unavailable)';
-                } else {
-                    option.disabled = false;
-                    option.textContent = option.textContent.replace(' (Unavailable)', '');
-                }
-            });
+// Call validateStaff on page load to set the initial state
+document.addEventListener('DOMContentLoaded', validateStaff);
 
-            if (staffRole !== 'SchoolDean' && data.staffExists) {
-                error.textContent = 'A staff member with this role already exists for this college/school.';
+async function validateSchoolDean() {
+    const staffSelect = document.getElementById('collegeName');
+    const staffOptions = staffSelect.options;
+    // const schoolDeanOption = staffSelect.querySelector('option[value="SchoolDean"]');
+
+    try {
+        // Fetch the school dean who is currently assigned
+        const response = await fetch('check_school.php');
+        const assignedDeans = await response.json();
+
+        // Check if there are any assigned School Deans
+        for (let i = 0; i < staffOptions.length; i++) {
+            const option = staffOptions[i];
+
+            if (assignedDeans.includes(option.value)) {
+                option.disabled = true; // Disable the option if it has been assigned
+            } else {
+                option.disabled = false; // Enable the option if it hasn't been assigned
+            }
+        }
+    } catch (error) {
+        console.error('Error validating School Dean:', error);
+    }
+}
+
+// Call validateSchoolDean on page load to set the initial state
+document.addEventListener('DOMContentLoaded', validateSchoolDean);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+    async function validateCollegeName(){
+        const collegeNameField = document.getElementById('collegeNameField');
+        const collegeNameInput = document.getElementById('collegeName');
+        const role = document.getElementById('staff').value;
+        if (role === 'SchoolDean') {
+            if (!collegeNameInput.value) {
+                document.getElementById('collegeNameError').textContent = 'Please select a college/school.';
                 return false;
             } else {
-                error.textContent = '';
+                document.getElementById('collegeNameError').textContent = '';
                 return true;
             }
-        } catch (error) {
-            console.error('Error validating staff:', error);
-            error.textContent = 'There was an error validating staff.';
-            return false;
-        }
-    }
-
-    // Function to validate college name and disable options if School Dean is already registered
-    async function validateCollegeName() {
-        const collegeNameSelect = document.getElementById('collegeName');
-        const error = document.getElementById('collegeNameError');
-        const staffRole = document.getElementById('staff').value;
-
-        if (staffRole === 'SchoolDean') {
-            if (collegeNameSelect.value === '') {
-                error.textContent = 'Please select a college/school.';
-                return false;
-            }
-
-            try {
-                const response = await fetch('check_staff.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: `collegeName=${encodeURIComponent(collegeNameSelect.value)}`,
-                });
-                const data = await response.json();
-
-                // Disable the college/school option if a School Dean already exists
-                const options = collegeNameSelect.querySelectorAll('option');
-                options.forEach(option => {
-                    if (data.schoolDeanExists && option.value === collegeNameSelect.value) {
-                        option.disabled = true;
-                        option.textContent = option.textContent.replace(' (Unavailable)', '') + ' (Unavailable)';
-                    } else {
-                        option.disabled = false;
-                        option.textContent = option.textContent.replace(' (Unavailable)', '');
-                    }
-                });
-
-                if (data.schoolDeanExists) {
-                    error.textContent = 'A School Dean is already registered for this college/school.';
-                    return false;
-                } else {
-                    error.textContent = '';
-                    return true;
-                }
-            } catch (error) {
-                console.error('Error validating college name:', error);
-                error.textContent = 'There was an error validating the college/school name.';
-                return false;
-            }
         } else {
-            error.textContent = '';
+            document.getElementById('collegeNameError').textContent = '';
+
             return true;
         }
     }
 
+
     // Ensure to call these functions on relevant events
-    document.getElementById('staff').addEventListener('change', validateCollegeName);
-    document.getElementById('staff').addEventListener('change', validateStaff);
+    document.getElementById('staff').addEventListener('change', async () => {
+        toggleCollegeName();
+        await validateStaff();
+        await validateCollegeName();
+    });
 
     document.getElementById('fName').addEventListener('blur', () => validateName('fName', 'fNameError'));
     document.getElementById('mName').addEventListener('blur', () => validateName('mName', 'mNameError'));
     document.getElementById('lName').addEventListener('blur', () => validateName('lName', 'lNameError'));
     document.getElementById('role').addEventListener('blur', validatePosition);
     document.getElementById('phone').addEventListener('blur', validatePhone);
-    document.getElementById('email').addEventListener('blur', validateEmail);
+    document.getElementById('email').addEventListener('blur', async () => await validateEmail());
     document.getElementById('password').addEventListener('blur', validatePassword);
     document.getElementById('date').addEventListener('blur', validateDate);
 
@@ -384,7 +391,6 @@
             if (staff !== 'SchoolDean') {
                 formData.delete('collegeName');
             }
-
             fetch('submit_form.php', {
                 method: 'POST',
                 body: formData
@@ -414,8 +420,6 @@
     });
 
 </script>
-
-
 
 </body>
 </html>

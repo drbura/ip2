@@ -11,7 +11,9 @@
   <?php include 'header.php'; ?>
 
   <div id="content">
+
     <?php include 'report.php'; // Default content ?>
+
   </div>
 
   <?php include 'footer.php'; ?>

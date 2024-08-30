@@ -24,12 +24,7 @@
     </div><!-- End Logo -->
 
 
-    <div class="search-bar">
-      <form class="search-form d-flex align-items-center" method="POST" action="#">
-        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-      </form>
-    </div>
+    <!--  -->
     <!-- End Search Bar -->
 
     <nav class="header-nav ms-auto">
@@ -197,12 +192,13 @@
               <hr class="dropdown-divider">
             </li>
 
-            <!-- <li>
+            <li>
               <a class="dropdown-item d-flex align-items-center" href="#" data-page="userss-profile">
                 <i class="bi bi-person"></i>
                 <span>My Profile</span>
               </a>
-            </li> -->
+
+            </li>
            <!-- <li>
               <hr class="dropdown-divider">
             </li>
@@ -260,7 +256,9 @@
           <i class="bi bi-menu-button-wide"></i><span>Registration</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+
             <a href="#" data-page="../registration/registration">
+
               <i class="bi bi-circle"></i><span>Student Registration</span>
             </a>
           </li>
