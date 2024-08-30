@@ -59,9 +59,6 @@
               <h6>Staff</h6>
               <span><?php echo($_GET['actor']) ?></span>
             </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
 
               <hr class="dropdown-divider">
             </li>
@@ -76,12 +73,12 @@
       </ul>
     </nav><!-- End Icons Navigation -->
   </header><!-- End Header -->
-
-  <!-- ======= Sidebar ======= -->
+ 
   <aside id="sidebar" class="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
+      <!-- Sidebar links -->
       <li class="nav-item">
-        <a class="nav-link " href="" data-page="ActorClearance">
+      <a class="nav-link" href="#" data-page="<?php echo ($_GET['actor'] === 'registrar') ? 'cleared' : 'ActorClearance'; ?>">
           <i class="bi bi-grid"></i>
           <span> Dashboard</span>
         </a>
@@ -106,6 +103,8 @@
       </li><!-- End Components Nav -->
 
       <!-- New Substaff link for School Dean actor -->
+      
+
       <?php if ($_GET['actor'] === 'SchoolDean'): ?>
       <li class="nav-item">
         <a class="nav-link collapsed" href="../subStaffs/" >
@@ -130,9 +129,15 @@
       </li>
       <li class="nav-item">
 
+        <a class="nav-link collapsed" href="#" data-page="cleared">
+          <i class="bi bi-people"></i>
+          <span>Cleared Students</span>
+
+
         <a class="nav-link collapsed" href="" data-page="../subStaff/display_data">
           <i class="bi bi-people"></i>
           <span>info </span>
+
         </a>
       </li>
       <?php endif; ?>

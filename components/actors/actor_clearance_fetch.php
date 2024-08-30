@@ -19,7 +19,7 @@ if ($conn->connect_error) {
 }
 
 function fetchRequests($conn, $actor, $searchTerm = '', $userEmail = '') {
-    $allowedActors = ['Advisor', 'LabAssistant', 'DepartmentHead', 'SchoolDean', 'Store', 'Library', 'BookStore', 'Cafeteria', 'AcademicEnrollment', 'StudentService', 'Dormitory', 'StudentLoan'];
+    $allowedActors = ['Advisor', 'LabAssistant', 'DepartmentHead', 'SchoolDean', 'Store', 'Library', 'BookStore', 'Cafeteria', 'AcademicEnrollment', 'StudentService', 'Dormitory', 'StudentLoan','Registrar'];
 
     if (!in_array($actor, $allowedActors)) {
         die("Invalid actor specified.");

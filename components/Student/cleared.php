@@ -15,7 +15,7 @@
         <div class="row">
             <div class="col-lg-12" align="center">
                 <br>
-                <h5 align="center"> Cleared Students List</h5>
+                <h5 align="center">Cleared Students List</h5>
                 <br>
                 <table class="table table-striped">
                     <thead>
@@ -26,32 +26,87 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php                
-                        require 'connect.php'; 
-                        // Check connection
-                        if ($conn->connect_error) {
-                            die("Connection failed: " . $conn->connect_error);
+                        <?php
+                        require 'connect.php';
+                        session_start(); // Start session to get user email
+
+                        $user_email = $_SESSION['email'] ?? ''; // Fetch email from session
+
+                        // Check if the user is a registrar or department head
+                        $role_query_staff = "SELECT 'registrar' AS role FROM ddu_staff WHERE email = ?";
+                        $role_query_substaff = "SELECT 'department_head' AS role, department FROM ddu_substaff WHERE email = ?";
+
+                        // Check if the user is a registrar
+                        $stmt = $conn->prepare($role_query_staff);
+                        if (!$stmt) {
+                            die("Query preparation failed: " . $conn->error);
+                        }
+                        $stmt->bind_param('s', $user_email);
+                        $stmt->execute();
+                        $role_result = $stmt->get_result();
+
+                        if ($role_result && $role_result->num_rows > 0) {
+                            $user_role = 'Registrar';
+                            // Fetch all cleared students
+                            $display_query = "
+                                SELECT d.student_id, CONCAT(d.first_name, ' ', d.father_name, ' ', d.gfather_name) AS student_name
+                                FROM ddustudentdata d
+                                INNER JOIN clearedstudentslist c ON d.student_id = c.student_id
+                                WHERE c.is_completed = 1";
+                            
+                            $stmt = $conn->prepare($display_query);
+                            if (!$stmt) {
+                                die("Query preparation failed: " . $conn->error);
+                            }
+                            $stmt->execute();
+                            $results = $stmt->get_result();
+                            
+                        } else {
+                            // Check if the user is a department head
+                            $stmt = $conn->prepare($role_query_substaff);
+                            if (!$stmt) {
+                                die("Query preparation failed: " . $conn->error);
+                            }
+                            $stmt->bind_param('s', $user_email);
+                            $stmt->execute();
+                            $role_result = $stmt->get_result();
+
+                            if ($role_result && $role_result->num_rows > 0) {
+                                $user_data = $role_result->fetch_assoc();
+                                $user_role = 'department_head';
+                                $user_department = $user_data['department'];
+
+                                // Fetch cleared students for the department head
+                                $display_query = "
+                                    SELECT d.student_id, CONCAT(d.first_name, ' ', d.father_name, ' ', d.gfather_name) AS student_name
+                                    FROM ddustudentdata d
+                                    INNER JOIN clearedstudentslist c ON d.student_id = c.student_id
+                                    WHERE c.is_completed = 1 AND d.department = ?";
+
+                                $stmt = $conn->prepare($display_query);
+                                if (!$stmt) {
+                                    die("Query preparation failed: " . $conn->error);
+                                }
+                                $stmt->bind_param('s', $user_department);
+                                $stmt->execute();
+                                $results = $stmt->get_result();
+
+                            } else {
+                                echo "<tr><td colspan='3'>Invalid User Role or Email</td></tr>";
+                                $results = false;
+                            }
                         }
 
-                        // Fetch student ID and name from the ddustudentdata table where process is completed in clearedstudentslist
-                        $display_query = "
-                            SELECT d.student_id, CONCAT(d.first_name, ' ', d.father_name, ' ', d.gfather_name) AS student_name
-                            FROM ddustudentdata d
-                            INNER JOIN clearedstudentslist c ON d.student_id = c.student_id
-                            WHERE c.is_completed = 1";             
-                        $results = mysqli_query($conn, $display_query);   
-                        $count = mysqli_num_rows($results);            
-                        if($count > 0) 
-                        {
-                            while($data_row = mysqli_fetch_array($results, MYSQLI_ASSOC))
-                            {
+                        if ($results && $results->num_rows > 0) {
+                            while ($data_row = $results->fetch_assoc()) {
                                 ?>
                                 <tr>
                                     <td><?php echo htmlspecialchars($data_row['student_id']); ?></td>
                                     <td><?php echo htmlspecialchars($data_row['student_name']); ?></td>
                                     <td>
-                                        <a href="view_pdf.php?id=<?php echo $data_row['student_id']; ?>" class="btn btn-info btn-sm">View PDF</a>
-                                        <a href="generate_pdf.php?id=<?php echo $data_row['student_id']; ?>" class="btn btn-success btn-sm">Download PDF</a>
+                                    <a href="view_pdf.php?id=<?php echo htmlspecialchars($data_row['student_id']); ?>" class="btn btn-info btn-sm">View PDF</a>
+                                    <a href="generate_pdf.php?id=<?php echo htmlspecialchars($data_row['student_id']); ?>" class="btn btn-success btn-sm">Download PDF</a>
+
                                     </td>
                                 </tr>
                                 <?php
@@ -59,12 +114,14 @@
                         } else {
                             echo "<tr><td colspan='3'>No Cleared Students yet</td></tr>";
                         }
+
+                        $stmt->close();
+                        $conn->close();
                         ?>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-    
 </body>
 </html>
