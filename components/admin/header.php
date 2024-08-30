@@ -193,7 +193,7 @@
               <h6>admin</h6>
               <span>Administrator</span>
             </li>
-            <li>
+            <!-- <li>
               <hr class="dropdown-divider">
             </li>
 
@@ -203,7 +203,7 @@
                 <span>My Profile</span>
               </a>
             </li>
-           <!-- <li>
+           <li>
               <hr class="dropdown-divider">
             </li>
 

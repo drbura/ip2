@@ -83,7 +83,7 @@ $html = '
 </head>
 <body>
    <div class="header">
-        <img src="Images\download.jpg" alt="University Logo">
+           <img src="../Images/download.jpg" alt="DDU Logo">
         <h1>
             Dire Dawa University<br>
             Student Clearance (Withdraw Form)<br>

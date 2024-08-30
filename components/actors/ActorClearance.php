@@ -4,7 +4,7 @@
 $actor = $_GET['actor'] ?? '';
 
 // Ensure $actor is a valid column name
-$validActors = ['Advisor', 'LabAssistant', 'DepartmentHead', 'SchoolDean', 'Store', 'Library', 'BookStore', 'Cafeteria', 'AcademicEnrollment', 'StudentService', 'Dormitory', 'StudentLoan'];
+$validActors = ['Advisor', 'LabAssistant', 'DepartmentHead', 'SchoolDean', 'Store', 'Library', 'BookStore', 'Cafeteria', 'AcademicEnrollment', 'StudentService', 'Dormitory', 'StudentLoan','Registrar'];
 
 if (!in_array($actor, $validActors)) {
     die("Invalid actor specified.");
@@ -72,7 +72,7 @@ $showSearchAndApproveAll = in_array($actor, $validActors);
 ?>
 
 <script>
-comfirm("This is your email" $UserEmail)
+comfirm("This is your email", $UserEmail)
 </script>
 <!DOCTYPE html>
 <html lang="en">

@@ -51,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($stmt->execute()) {
         // Show JavaScript alert and keep the user on the same page
-        echo "<script>alert('Student registered successfully.'); window.location.href='index.php';</script>";
+        echo "<script>alert('Student registered successfully.'); window.location.href='.../components/index.php';</script>";
     } else {
         echo "Error: " . $stmt->error;
     }
