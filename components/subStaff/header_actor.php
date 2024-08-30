@@ -6,6 +6,8 @@
   <title>Dashboard - Student Clearance Management System</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
+  <!-- Template Main JS File -->
+  <script src="../../assets/js/main.js"></script>
 </head>
 <body>
 
@@ -61,30 +63,30 @@
             <li>
               <hr class="dropdown-divider">
             </li>
-            <li>
+            <!-- <li>
               <a class="dropdown-item d-flex align-items-center" href="#">
                 <i class="bi bi-person"></i>
                 <span>My Profile</span>
               </a>
-            </li>
+            </li> -->
             <li>
               <hr class="dropdown-divider">
             </li>
-            <li>
+            <!-- <li>
               <a class="dropdown-item d-flex align-items-center" href="#">
                 <i class="bi bi-gear"></i>
                 <span>Account Settings</span>
               </a>
-            </li>
+            </li> -->
             <li>
               <hr class="dropdown-divider">
             </li>
-            <li>
+            <!-- <li>
               <a class="dropdown-item d-flex align-items-center" href="#">
                 <i class="bi bi-question-circle"></i>
                 <span>Need Help?</span>
               </a>
-            </li>
+            </li> -->
             <li>
               <hr class="dropdown-divider">
             </li>
@@ -106,7 +108,7 @@
       <li class="nav-item">
         <a id='redirectLink' class="nav-link " href="#">
           <i class="bi bi-grid"></i>
-          <span>DepartmentHead Dashboard</span>
+          <span>Dashboard</span>
         </a>
 
         
@@ -141,6 +143,12 @@
           <span>Substaff Registration</span>
         </a>
       </li>
+      <!-- <li class="nav-item">
+        <a class="nav-link collapsed" href="../subStaff/BB.php">
+          <i class="bi bi-people"></i>
+          <span>user information</span>
+        </a>
+      </li> -->
      
      
       
@@ -182,5 +190,7 @@
 });
 
   </script>
+  <!-- Template Main JS File -->
+  <script src="../../assets/js/main.js"></script>
 </body>
 </html>
