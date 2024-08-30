@@ -6,6 +6,8 @@
   <title>Dashboard - Student Clearance Management System</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
+  <!-- Template Main JS File -->
+  <script src="../../assets/js/main.js"></script>
 </head>
 <body>
 
@@ -50,7 +52,6 @@
         </li><!-- End Messages Nav -->
         <li class="nav-item dropdown pe-3">
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            <img width="40vh" height="60vh" src="" alt="Profile" class="rounded-circle">
             <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo($_GET['actor']) ?></span>
           </a><!-- End Profile Iamge Icon -->
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
@@ -61,12 +62,13 @@
             <li>
               <hr class="dropdown-divider">
             </li>
-            <li>
+            <!-- <li>
               <a class="dropdown-item d-flex align-items-center" href="users-profile.php">
                 <i class="bi bi-person"></i>
                 <span>My Profile</span>
               </a>
-            </li>
+            </li> -->
+            <!--
             <li>
               <hr class="dropdown-divider">
             </li>
@@ -86,6 +88,7 @@
               </a>
             </li>
             <li>
+-->
               <hr class="dropdown-divider">
             </li>
             <li>
@@ -131,7 +134,7 @@
       <!-- New Substaff link for School Dean actor -->
       <?php if ($_GET['actor'] === 'SchoolDean'): ?>
       <li class="nav-item">
-        <a class="nav-link collapsed" href="../subStaffs/">
+        <a class="nav-link collapsed" href="../subStaffs/" >
           <i class="bi bi-people"></i>
           <span>Substaff Registration</span>
         </a>
@@ -140,17 +143,24 @@
 
       <?php if ($_GET['actor'] === 'DepartmentHead'): ?>
       <li class="nav-item">
-        <a class="nav-link collapsed" href="../subStaff/">
+        <a class="nav-link collapsed" href="../subStaff/" >
           <i class="bi bi-people"></i>
           <span>Substaff Registration</span>
         </a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="../subStaff/subStaff" >
+          <i class="bi bi-people"></i>
+          <span>Info</span>
+        </a>
+      </li>
       <?php endif; ?>
+      
 
       <li class="nav-heading">Pages</li>
 
       <li class="nav-item">
-  <a class="nav-link collapsed" href="#" data-page="user-profile">
+  <a class="nav-link collapsed" href="#" data-page="users-profile">
     <i class="bi bi-person"></i>
     <span>Profile</span>
   </a>
@@ -166,5 +176,7 @@
   </aside><!-- End Sidebar-->
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <!-- Template Main JS File -->
+  <script src="../../assets/js/main.js"></script>
 </body>
 </html>

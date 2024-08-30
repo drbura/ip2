@@ -16,10 +16,18 @@ if ($conn->connect_error) {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = trim($_POST["email"]);
 
-    // Prepare the SQL statement
-    $stmt = $conn->prepare("SELECT COUNT(*) FROM ddu_subStaff WHERE email = ?");
-    // Bind the email parameter
-    $stmt->bind_param('s', $email);
+    // Prepare the SQL statement with UNION to check across all three tables
+    $stmt = $conn->prepare("
+        SELECT COUNT(*) FROM (
+            SELECT email FROM ddu_admin WHERE email = ?
+            UNION
+            SELECT email FROM ddu_staff WHERE email = ?
+            UNION
+            SELECT email FROM ddu_subStaff WHERE email = ?
+        ) AS combined
+    ");
+    // Bind the email parameter for all three queries
+    $stmt->bind_param('sss', $email, $email, $email);
     // Execute the statement
     $stmt->execute();
     // Bind result variables

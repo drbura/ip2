@@ -3,7 +3,7 @@
 session_start();
 
 // Now safely assign the session email to the variable
-$email = $_SESSION['email'];
+$email = $_GET['email'];
 
 // Database connection
 $servername = "localhost";
@@ -19,7 +19,7 @@ if ($conn->connect_error) {
 }
 
 // Fetch schoolName based on the logged-in SchoolDean's email
-$sql_school = "SELECT schoolName FROM ddu_staff WHERE email = ? AND staff = 'SchoolDean'";
+$sql_school = "SELECT department FROM ddu_subStaff WHERE email = ? ";
 $stmt_school = $conn->prepare($sql_school);
 $stmt_school->bind_param("s", $email);
 $stmt_school->execute();
@@ -27,7 +27,7 @@ $result_school = $stmt_school->get_result();
 
 if ($result_school->num_rows > 0) {
     $school_row = $result_school->fetch_assoc();
-    $user_school_name = $school_row['schoolName'];
+    $user_school_name = $school_row['department'];
 } else {
     echo "No school found for the logged-in user.";
     exit();
@@ -36,21 +36,19 @@ if ($result_school->num_rows > 0) {
 // Fetch Department Heads, Lab Assistants, and Advisors for the logged-in SchoolDean's school
 $sql_substaff = "SELECT subStaff_id, fName, mName, lName, staff, collegeName, department, semester, year, phone 
                  FROM ddu_subStaff 
-                 WHERE collegeName = ?";
+                 WHERE department = ?";
 $stmt_substaff = $conn->prepare($sql_substaff);
 $stmt_substaff->bind_param("s", $user_school_name);
 $stmt_substaff->execute();
 $result_substaff = $stmt_substaff->get_result();
 
-$subStaff_heads = [];
+
 $subStaff_labAssistants = [];
 $subStaff_advisors = [];
 
 // Process substaff data
 while($row = $result_substaff->fetch_assoc()) {
-    if ($row["staff"] === "DepartmentHead") {
-        $subStaff_heads[] = $row;
-    } elseif ($row["staff"] === "LabAssistant") {
+    if ($row["staff"] === "LabAssistant") {
         $subStaff_labAssistants[] = $row;
     } elseif ($row["staff"] === "Advisor") {
         $subStaff_advisors[] = $row;
@@ -111,39 +109,7 @@ $conn->close();
 <body>
 <main>
     <div class="container">
-        <h2>Department Heads</h2>
-        <table class="table centered-table table-bordered" id="heads-table">
-            <thead>
-                <tr>
-                    <th>subStaff_id</th>
-                    <th>fName</th>
-                    <th>mName</th>
-                    <th>lName</th>
-                    <th>staff</th>
-                    <th>collegeName</th>
-                    <th>department</th>
-                    <th>phone</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if (count($subStaff_heads) > 0): ?>
-                    <?php foreach($subStaff_heads as $row): ?>
-                        <tr>
-                            <td><?php echo $row["subStaff_id"]; ?></td>
-                            <td><?php echo $row["fName"]; ?></td>
-                            <td><?php echo $row["mName"]; ?></td>
-                            <td><?php echo $row["lName"]; ?></td>
-                            <td><?php echo $row["staff"]; ?></td>
-                            <td><?php echo $row["collegeName"]; ?></td>
-                            <td><?php echo $row["department"]; ?></td>
-                            <td><?php echo $row["phone"]; ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <tr><td colspan="8">No data available</td></tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
+       
         
         <h2>Lab Assistants</h2>
         <table class="table centered-table table-bordered" id="lab-assistants-table">

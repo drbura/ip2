@@ -150,7 +150,8 @@ $email = $user['email'];
     </style>
 </head>
 <body>
-
+<?php include 'lib.php'; ?>
+<?php include 'header.php'; ?>
 
 <main id="main" class="main">
     <div class="pagetitle">
@@ -232,16 +233,6 @@ $email = $user['email'];
                                         <button type="submit" class="btn btn-primary">Change Password</button>
                                     </div>
                                 </form><!-- End Change Password Form -->
-                                <!-- Below is the HTML snippet to be added under the change password form in your existing interface -->
-<?php if (!empty($successMessage)): ?>
-    <div class="alert alert-success text-center" role="alert">
-        <?php echo $successMessage; ?>
-    </div>
-<?php elseif (!empty($errorMessage)): ?>
-    <div class="alert alert-danger text-center" role="alert">
-        <?php echo $errorMessage; ?>
-    </div>
-<?php endif; ?>
                             </div>
                         </div><!-- End Bordered Tabs -->
                     </div>

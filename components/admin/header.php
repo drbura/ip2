@@ -132,44 +132,44 @@
               <hr class="dropdown-divider">
             </li>
 
-            <li class="message-item">
-              <!-- <a href="#">
+            <!-- <li class="message-item">
+              <a href="#">
                 <img src="assets/img/messages-1.jpg" alt="" class="rounded-circle">
                 <div>
                   <h4>Maria Hudson</h4>
                   <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
                   <p>4 hrs. ago</p>
                 </div>
-              </a> -->
-            </li>
+              </a>
+            </li> -->
             <li>
               <hr class="dropdown-divider">
             </li>
 
-            <li class="message-item">
-              <!-- <a href="#">
+            <!-- <li class="message-item">
+              <a href="#">
                 <img src="assets/img/messages-2.jpg" alt="" class="rounded-circle">
                 <div>
                   <h4>Anna Nelson</h4>
                   <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
                   <p>6 hrs. ago</p>
                 </div>
-              </a> -->
-            </li>
+              </a>
+            </li> -->
             <li>
               <hr class="dropdown-divider">
             </li>
 
-            <li class="message-item">
-              <!-- <a href="#">
+            <!-- <li class="message-item">
+              <a href="#">
                 <img src="assets/img/messages-3.jpg" alt="" class="rounded-circle">
                 <div>
                   <h4>David Muldon</h4>
                   <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
                   <p>8 hrs. ago</p>
                 </div>
-              </a> -->
-            </li>
+              </a>
+            </li> -->
             <li>
               <hr class="dropdown-divider">
             </li>
@@ -185,7 +185,6 @@
         <li class="nav-item dropdown pe-3">
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            <img width="40vh" height="60vh" src="" alt="Profile" class="rounded-circle">
             <span class="d-none d-md-block dropdown-toggle ps-2">Admin</span>
           </a><!-- End Profile Iamge Icon -->
 
@@ -198,13 +197,13 @@
               <hr class="dropdown-divider">
             </li>
 
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.php">
+            <!-- <li>
+              <a class="dropdown-item d-flex align-items-center" href="#" data-page="userss-profile">
                 <i class="bi bi-person"></i>
                 <span>My Profile</span>
               </a>
-            </li>
-            <li>
+            </li> -->
+           <!-- <li>
               <hr class="dropdown-divider">
             </li>
 
@@ -224,6 +223,7 @@
                 <span>Need Help?</span>
               </a>
             </li>
+          -->
             <li>
               <hr class="dropdown-divider">
             </li>
@@ -260,12 +260,12 @@
           <i class="bi bi-menu-button-wide"></i><span>Registration</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-            <a href="../registration">
+            <a href="#" data-page="../registration/registration">
               <i class="bi bi-circle"></i><span>Student Registration</span>
             </a>
           </li>
           <li>
-            <a href="../user/">
+            <a href="#" data-page="../user/user">
               <i class="bi bi-circle"></i><span>User Previlage</span>
             </a>
           </li>
@@ -278,12 +278,12 @@
         </a>
         <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="../Student/display_data.php">
+            <a href="#" data-page="../Student/user_data">
               <i class="bi bi-circle"></i><span>Student Data</span>
             </a>
           </li>
           <li>
-            <a href="display_data.php">
+            <a href="#" data-page="user_data">
               <i class="bi bi-circle"></i><span>User Data</span>
             </a>
           </li>
@@ -293,7 +293,7 @@
       <li class="nav-heading">Pages</li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="../../users-profile.php">
+        <a class="nav-link collapsed" href="#" data-page="userss-profile">
           <i class="bi bi-person"></i>
           <span>Profile</span>
         </a>
