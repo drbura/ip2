@@ -131,15 +131,16 @@ foreach ($requests as $request) {
         <td>' . htmlspecialchars($request['semester']) . '</td>
         <td>';
             if ($request[$actor] == 'APPROVED') {
-                echo '<button class="btn btn-success status-btn" disabled>Approved</button>
-                      <button class="btn btn-warning status-btn" onclick="updateStatus(' . $request['RequestId'] . ', \'PENDING\')">Restore</button>';
-            } elseif ($request[$actor] == 'REJECT') {
-                echo '<button class="btn btn-danger status-btn" disabled>Rejected</button>
-                      <button class="btn btn-warning status-btn" onclick="updateStatus(' . $request['RequestId'] . ', \'PENDING\')">Restore</button>';
-            } else {
-                echo '<button class="btn btn-success status-btn" onclick="updateStatus(' . $request['RequestId'] . ', \'APPROVED\')">Approve</button>
-                      <button class="btn btn-danger status-btn" onclick="updateStatus(' . $request['RequestId'] . ', \'REJECT\')">Reject</button>
-                      <button class="btn btn-warning status-btn" onclick="updateStatus(' . $request['RequestId'] . ', \'PENDING\')">Restore</button>';
-            }
+    echo '<button class="btn btn-success status-btn" disabled>Approved</button>
+            <button class="btn btn-warning status-btn" onclick="updateStatus(' . $request['RequestId'] . ', \'PENDING\')">Restore</button>';
+} elseif ($request[$actor] == 'REJECT') {
+    echo '<button class="btn btn-danger status-btn" disabled>Rejected</button>
+            <button class="btn btn-warning status-btn" onclick="updateStatus(' . $request['RequestId'] . ', \'PENDING\')">Restore</button>';
+} else {
+    echo '<button class="btn btn-success status-btn" onclick="updateStatus(' . $request['RequestId'] . ', \'APPROVED\')">Approve</button>
+            <button class="btn btn-danger status-btn" onclick="showRejectPopup(' . $request['RequestId'] . ')">Reject</button>
+            <button class="btn btn-warning status-btn" onclick="updateStatus(' . $request['RequestId'] . ', \'PENDING\')">Restore</button>';
+}
+
     echo '</td></tr>';
 }

@@ -22,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt = $conn->prepare("UPDATE request SET $actor = ? WHERE RequestId = ?");
     $stmt->bind_param("si", $status, $requestId);
 
+    
     if ($stmt->execute()) {
         echo "Status updated successfully";
     } else {

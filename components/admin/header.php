@@ -24,12 +24,7 @@
     </div><!-- End Logo -->
 
 
-    <div class="search-bar">
-      <form class="search-form d-flex align-items-center" method="POST" action="#">
-        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-      </form>
-    </div>
+    <!--  -->
     <!-- End Search Bar -->
 
     <nav class="header-nav ms-auto">
@@ -185,7 +180,6 @@
         <li class="nav-item dropdown pe-3">
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            <img width="40vh" height="60vh" src="" alt="Profile" class="rounded-circle">
             <span class="d-none d-md-block dropdown-toggle ps-2">Admin</span>
           </a><!-- End Profile Iamge Icon -->
 
@@ -199,17 +193,17 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="../../users-profile.php">
+              <a class="dropdown-item d-flex align-items-center" href="#" data-page="userss-profile">
                 <i class="bi bi-person"></i>
                 <span>My Profile</span>
               </a>
             </li>
-            <li>
+           <!-- <li>
               <hr class="dropdown-divider">
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="../../users-profile.php">
+              <a class="dropdown-item d-flex align-items-center" href="../../change_password.php">
                 <i class="bi bi-gear"></i>
                 <span>Account Settings</span>
               </a>
@@ -224,6 +218,7 @@
                 <span>Need Help?</span>
               </a>
             </li>
+          -->
             <li>
               <hr class="dropdown-divider">
             </li>
@@ -260,7 +255,7 @@
           <i class="bi bi-menu-button-wide"></i><span>Registration</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-            <a href="../registration">
+            <a href="../registration" data-page="../registration/registration">
               <i class="bi bi-circle"></i><span>Student Registration</span>
             </a>
           </li>
@@ -278,12 +273,12 @@
         </a>
         <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="../Student/display_data.php">
+            <a href="#" data-page="../Student/user_data">
               <i class="bi bi-circle"></i><span>Student Data</span>
             </a>
           </li>
           <li>
-            <a href="display_data.php">
+            <a href="#" data-page="user_data">
               <i class="bi bi-circle"></i><span>User Data</span>
             </a>
           </li>
@@ -293,7 +288,7 @@
       <li class="nav-heading">Pages</li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="../../users-profile.php">
+        <a class="nav-link collapsed" href="#" data-page="userss-profile">
           <i class="bi bi-person"></i>
           <span>Profile</span>
         </a>
