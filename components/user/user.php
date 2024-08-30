@@ -146,7 +146,6 @@
     </div>
     <script>
     function toggleCollegeName() {
-
         const role = document.getElementById('staff').value;
         const collegeNameField = document.getElementById('collegeNameField');
         const collegeNameInput = document.getElementById('collegeName');
@@ -158,7 +157,6 @@
             collegeNameField.style.display = 'none';
             collegeNameInput.removeAttribute('required');
         }
-
     }
 
     // Call toggleCollegeName on page load to set the initial state
@@ -220,18 +218,15 @@
             return false;
         } else {
             error.textContent = '';
-
             return true;
         }
     }
-
 
     function validatePassword() {
         const input = document.getElementById('password');
         const error = document.getElementById('passwordError');
         if (input.value.length !== 6) {
             error.textContent = 'Password must be 6 digits long.';
-
             return false;
         } else {
             error.textContent = '';
@@ -250,8 +245,9 @@
             return true;
         }
     }
-
+    
    
+
     async function validateStaff() {
     const staffSelect = document.getElementById('staff');
     const staffOptions = staffSelect.options;
@@ -342,11 +338,9 @@ document.addEventListener('DOMContentLoaded', validateSchoolDean);
             }
         } else {
             document.getElementById('collegeNameError').textContent = '';
-
             return true;
         }
     }
-
 
     // Ensure to call these functions on relevant events
     document.getElementById('staff').addEventListener('change', async () => {
@@ -391,6 +385,7 @@ document.addEventListener('DOMContentLoaded', validateSchoolDean);
             if (staff !== 'SchoolDean') {
                 formData.delete('collegeName');
             }
+
             fetch('submit_form.php', {
                 method: 'POST',
                 body: formData
@@ -418,8 +413,10 @@ document.addEventListener('DOMContentLoaded', validateSchoolDean);
             });
         }
     });
-
 </script>
+
+
+
 
 </body>
 </html>

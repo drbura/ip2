@@ -177,11 +177,11 @@ comfirm("This is your email" $UserEmail)
             });
         });
 
-        function updateStatus(requestId, status, current_status) {
+        function updateStatus(requestId, status) {
             $.ajax({
                 type: 'POST',
                 url: 'actor_update_status.php',
-                data: { requestId: requestId, status: status, actor: '<?php echo $actor; ?>',  current_status: current_status},
+                data: { requestId: requestId, status: status, actor: '<?php echo $actor; ?>' },
                 success: function(response) {
                     location.reload();
                 },
