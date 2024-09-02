@@ -16,7 +16,7 @@
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="index.html" class="logo d-flex align-items-center">
+      <a href="dashboard.php" class="logo d-flex align-items-center">
         <img width="35px"  src="../images/download.jpg" alt="DDU IMAGE">
         <span class="d-none d-lg-block">Clearance System</span>
       </a>
@@ -230,7 +230,7 @@
             </a>
           </li>
           <li>
-            <a href="#" data-page="../user/user">
+            <a href="../user/" >
               <i class="bi bi-circle"></i><span>User Previlage</span>
             </a>
           </li>

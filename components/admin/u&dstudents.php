@@ -40,8 +40,10 @@ if ($action == "update") {
 } elseif ($action == "delete") {
     // Delete the student record
     $sql = "DELETE FROM ddustudentdata WHERE student_id='$student_id'";
-
-    if ($conn->query($sql) === TRUE) {
+    $sql2 = "DELETE FROM request WHERE StudentId='$student_id'";
+    $sql3 = "DELETE FROM clearedstudentslist WHERE student_id='$student_id'";
+        
+    if ( ($conn->query($sql) && $conn->query($sql2) && $conn->query($sql3) ) === TRUE) {
         echo json_encode(['status' => 'success']);
     } else {
         echo json_encode(['status' => 'error', 'message' => 'Error deleting record: ' . $conn->error]);
