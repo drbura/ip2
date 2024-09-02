@@ -125,7 +125,7 @@
 </div><!-- End Reports -->
 
             <!-- Clearance Requests by Date Report -->
-<div class="col-12">
+<!-- <div class="col-12">
     <div class="card recent-sales overflow-auto">
 
         <div class="filter">
@@ -158,11 +158,11 @@
             </form>
 
             <div id="reportContent">
-                <!-- The report will be rendered here by Date_report.php -->
+                
             </div>
         </div>
     </div>
-</div>
+</div> -->
 
           </div>
         </div><!-- End Left side columns -->

@@ -85,6 +85,7 @@
                                 <option value="StudentService">Student Service</option>
                                 <option value="Store">Store</option>
                                 <option value="AcademicEnrollment">Enrollment and Academic Record</option>
+                                <option value="registrar">Registrar</option>
                                 <option value="SchoolDean">College/School</option>
                             </select>
                             <small class="error" id="staffError"></small>
@@ -136,7 +137,7 @@
                     </div>
                 </div>
                 <div class="input-field">
-                    <input type="submit" value="Add">
+                    <input type="submit" value="Register">
                 </div>
                 <div class="details ID">
                     <div class="fields">
@@ -311,18 +312,6 @@ async function validateSchoolDean() {
 document.addEventListener('DOMContentLoaded', validateSchoolDean);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
       
     async function validateCollegeName(){
         const collegeNameField = document.getElementById('collegeNameField');
@@ -414,9 +403,6 @@ document.addEventListener('DOMContentLoaded', validateSchoolDean);
         }
     });
 </script>
-
-
-
 
 </body>
 </html>

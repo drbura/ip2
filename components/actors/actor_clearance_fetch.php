@@ -137,7 +137,7 @@ foreach ($requests as $request) {
     echo '<button class="btn btn-danger status-btn" disabled>Rejected</button>
             <button class="btn btn-warning status-btn" onclick="updateStatus(' . $request['RequestId'] . ', \'PENDING\',  \'REJECTED\')">Restore</button>';
 } else {
-    echo '<button class="btn btn-success status-btn" onclick="updateStatus(' . $request['RequestId'] . ', \'APPROVED\' \'PENDING\', )">Approve</button>
+    echo '<button class="btn btn-success status-btn" onclick="updateStatus(' . $request['RequestId'] . ', \'APPROVED\', \'PENDING\' )">Approve</button>
             <button class="btn btn-danger status-btn" onclick="showRejectPopup(' . $request['RequestId'] . ')">Reject</button>
             <button class="btn btn-warning status-btn" onclick="updateStatus(' . $request['RequestId'] . ', \'PENDING\',  \'PENDING\')">Restore</button>';
 }

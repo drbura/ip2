@@ -4,7 +4,7 @@
 $actor = $_GET['actor'] ?? '';
 
 // Ensure $actor is a valid column name
-$validActors = ['Advisor', 'LabAssistant', 'DepartmentHead', 'SchoolDean', 'Store', 'Library', 'BookStore', 'Cafeteria', 'AcademicEnrollment', 'StudentService', 'Dormitory', 'StudentLoan','Registrar'];
+$validActors = ['Advisor', 'LabAssistant', 'DepartmentHead', 'SchoolDean', 'Store', 'Library', 'BookStore', 'Cafeteria', 'AcademicEnrollment', 'StudentService', 'Dormitory', 'StudentLoan','registrar'];
 
 if (!in_array($actor, $validActors)) {
     die("Invalid actor specified.");
@@ -85,16 +85,22 @@ comfirm("This is your email", $UserEmail)
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
     <style>
+        body{
+            overflow-x: hidden;
+        }
         .container {
             margin-top: 70px;
             margin-left: 350px;
+        }
+        #status_header{
+            width: 18%;
         }
         .status-btn {
             margin-right: 2px;
         }
         .btn {
-            padding: 3px;
-            font-size: 15px;
+            padding: 2px;
+            font-size: 14px;
         }
         .search-bar {
             margin-bottom: 20px;
@@ -135,7 +141,7 @@ comfirm("This is your email", $UserEmail)
                     <th>Department</th>
                     <th>Year</th>
                     <th>Semester</th>
-                    <th>Status    <button class="btn btn-success approve-all-btn" onclick="approveAll()">Approve All</button>
+                    <th id="status_header">Status    <button class="btn btn-success approve-all-btn" onclick="approveAll()">Approve All</button>
 </th>
                 </tr>
             </thead>

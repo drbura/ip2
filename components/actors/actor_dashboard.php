@@ -24,7 +24,7 @@
     }
     /* Ensure the footer is at the bottom of the page */
     footer {
-      position: absolute;
+      /* position: absolute; */
       bottom: 0;
       width: 100%;
     }
