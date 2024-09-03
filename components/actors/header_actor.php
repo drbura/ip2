@@ -136,7 +136,7 @@
 
         <a class="nav-link collapsed" href="" data-page="../subStaff/display_data">
           <i class="bi bi-people"></i>
-          <span>info </span>
+          <span>information</span>
 
         </a>
       </li>

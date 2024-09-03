@@ -30,7 +30,7 @@ if ($result_school->num_rows > 0) {
     $school_row = $result_school->fetch_assoc();
     $user_school_name = $school_row['department'];
 } else {
-    echo "No school found for the logged-in user.";
+    echo "No department found for the logged-in user.";
     exit();
 }
 
@@ -239,7 +239,7 @@ $(".edit-btn").on("click", function() {
             $cell.html(newValue);
 
             $.ajax({
-                url: "/BBB/components/subStaff/update.php",
+                url: "/CMS/components/subStaffs/update.php",
                 method: "POST",
                 data: {
                     id: id,
@@ -271,7 +271,7 @@ $(".delete-btn").on("click", function() {
     if (confirmation) {
         // Call AJAX to delete the data if the user confirms
         $.ajax({
-            url: "/BBB/components/subStaff/delete.php",
+            url: "/CMS/components/subStaff/delete.php",
             method: "POST",
             data: {
                 id: id,
