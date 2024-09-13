@@ -239,7 +239,7 @@ $(".edit-btn").on("click", function() {
             $cell.html(newValue);
 
             $.ajax({
-                url: "/CMS/components/subStaffs/update.php",
+                url: "/clear/components/subStaffs/update.php",
                 method: "POST",
                 data: {
                     id: id,
@@ -271,7 +271,7 @@ $(".delete-btn").on("click", function() {
     if (confirmation) {
         // Call AJAX to delete the data if the user confirms
         $.ajax({
-            url: "/CMS/components/subStaff/delete.php",
+            url: "/clear/components/subStaff/delete.php",
             method: "POST",
             data: {
                 id: id,

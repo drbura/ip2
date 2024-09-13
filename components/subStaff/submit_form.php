@@ -46,8 +46,8 @@ $stmt->bind_param("ssssssssssss", $fName, $mName, $lName, $collegeName, $departm
 
 // Execute statement
 if ($stmt->execute()) {
-   include ("index.php");
-    exit;
+    header("Location: " . $_SERVER['HTTP_REFERER']);
+    exit();
 } else {
     echo json_encode(['success' => false, 'error' => 'Database insert error: ' . $stmt->error]);
     exit;
