@@ -25,10 +25,11 @@
             margin: auto;
         }
         h2 {
-            color: #007bff;
+            color: #012970;
             font-weight: bold;
             margin-bottom: 20px;
-            font-size: 1.5rem;
+            font-size: 1.4rem;
+            font-family: Tahoma;
         }
         .form-label {
             color: #333;
@@ -83,6 +84,9 @@
         }
         .input-error {
             border: 2px solid red;
+        }
+        .form-group.lable{
+            font-family: Tahoma;
         }
     </style>
     <script>
@@ -180,7 +184,7 @@
 
     <main>
         <div class="container mt-5">
-            <h2 class="text-center">DDU STUDENT ADMISSION FORM</h2>
+            <h2 class="text-center">STUDENT ADMISSION FORM</h2>
             <form action="insert.php" method="post" onsubmit="return validateForm()" enctype="multipart/form-data">
 
                 <!-- Legend: Student Information -->
@@ -412,8 +416,8 @@
 
             <!-- Buttons -->
             <div class="text-right">
-                <button type="submit" class="btn btn-primary">Submit</button>
-                <button type="reset" class="btn btn-secondary">Reset</button>
+                <button type="submit" class="btn btn-primary">Register</button>
+                <button type="reset" class="btn btn-secondary">Clear Form</button>
             </div>
             <div id="registrationMessage" class="alert alert-success" style="display: none;"></div>
 

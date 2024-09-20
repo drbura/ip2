@@ -121,6 +121,12 @@
       <?php endif; ?>
 
       <?php if ($_GET['actor'] === 'DepartmentHead'): ?>
+        <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-page="../upload/upload_form" >
+          <i class="bi bi-people"></i>
+          <span>Student Registration</span>
+        </a>
+      </li>
       <li class="nav-item">
         <a class="nav-link collapsed" href="../subStaff/" >
           <i class="bi bi-people"></i>
