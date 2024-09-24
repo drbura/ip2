@@ -30,7 +30,7 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Promoted Students</title>
-    <style>
+     <style>
         body {
             font-family: Arial, sans-serif;
             margin-left: 320px;
@@ -51,13 +51,14 @@ $conn->close();
             text-align: center;
         }
         .centered-table th {
-            background-color: #f4f4f4;
+            background-color: #ddd;
+            color: #012970;
         }
         h2 {
             text-align: center;
             margin-bottom: 20px;
             margin-top: 20px;
-            color: #333;
+            color: #012970;
         }
         .no-data {
             text-align: center;
