@@ -89,17 +89,18 @@ $conn->close();
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <style>
-<<<<<<< Updated upstream
-        h1{
-=======
         body {
             margin-top: 70px;
             margin-left: 350px;
         }
         h1 {
->>>>>>> Stashed changes
             margin-top: 1rem;
         }
+        .btn-group {
+            display: flex;
+            justify-content: flex-start; 
+             gap: 5px; 
+         }
     </style>
     <script>
         function promoteAll() {
@@ -128,9 +129,9 @@ $conn->close();
     <div class="container">
         <div class="row">
             <div class="col-lg-12" align="center">
-              <br>
+                <br>
                 <h1 align="center">Cleared Students List</h1>
-              <br>
+                <br>
                 <table class="table table-striped">
                     <thead>
                     <tr>
@@ -158,9 +159,12 @@ $conn->close();
                                     <td><?php echo htmlspecialchars($data_row['AcademicYear']); ?></td>
                                     <td><?php echo htmlspecialchars($data_row['Semester']); ?></td>
                                     <td>
-                                    <a href="student_specific.php?student_id=<?php echo htmlspecialchars($data_row['student_id']); ?>&action=view" class="btn btn-info btn-sm">View PDF</a>
-                                    <a href="student_specific.php?student_id=<?php echo htmlspecialchars($data_row['student_id']); ?>&action=download" class="btn btn-success btn-sm">Download PDF</a>
-                                    </td>
+    <div class="btn-group">
+        <a href="student_specific.php?student_id=<?php echo htmlspecialchars($data_row['student_id']); ?>&action=view" class="btn btn-info btn-sm">View PDF</a>
+        <a href="student_specific.php?student_id=<?php echo htmlspecialchars($data_row['student_id']); ?>&action=download" class="btn btn-success btn-sm">Download PDF</a>
+    </div>
+</td>
+
                                 </tr>
                                 <?php
                             }
