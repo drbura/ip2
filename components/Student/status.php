@@ -138,7 +138,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm'])) {
         $stmt_student->close();
     
         // Fetch AcademicYear, Semester, and Reason from request_log
-        $sql_log = "SELECT AcademicYear, Semester, Reason FROM request_log WHERE studentid = ? ORDER BY RequestDate DESC LIMIT 1";
+        $sql_log = "SELECT AcademicYear, Semester, Reason FROM request_processed WHERE studentid = ? ORDER BY RequestDate DESC LIMIT 1";
         $stmt_log = $conn->prepare($sql_log);
         if ($stmt_log === false) {
             die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
