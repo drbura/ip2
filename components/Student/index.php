@@ -20,11 +20,12 @@
   margin-bottom: 20px;
 }
 body {
-  background-color: #c9d6ff;
+  background: #4070f4;
+  /* background-color: #c9d6ff; */
   background: linear-gradient(to right, #e2e2e2, #c9d6ff);
 }
 .container {
-  background: #fff;
+  background: #4070f4;
   width: 450px;
   height: 400px;
   padding: 1.5rem;

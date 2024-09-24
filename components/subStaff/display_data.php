@@ -1,9 +1,7 @@
 <?php
-// Start the session at the very beginning
 session_start();
 
-// Now safely assign the session email to the variable
-$email = $_GET['email'];
+$email = $_SESSION['email'];
 
 // Database connection
 $servername = "localhost";
@@ -29,7 +27,7 @@ if ($result_school->num_rows > 0) {
     $school_row = $result_school->fetch_assoc();
     $user_school_name = $school_row['department'];
 } else {
-    echo "No school found for the logged-in user.";
+    echo "No department found for the logged-in user.";
     exit();
 }
 
@@ -41,7 +39,6 @@ $stmt_substaff = $conn->prepare($sql_substaff);
 $stmt_substaff->bind_param("s", $user_school_name);
 $stmt_substaff->execute();
 $result_substaff = $stmt_substaff->get_result();
-
 
 $subStaff_labAssistants = [];
 $subStaff_advisors = [];
@@ -58,7 +55,6 @@ while($row = $result_substaff->fetch_assoc()) {
 $conn->close();
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -69,52 +65,55 @@ $conn->close();
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin-left: 320px;
             padding: 20px;
+            background-color: #f8f9fa;
+            margin-left: 320px;
+            margin-top: 50px;
         }
         .container {
-    width: 100%;
-    max-width: 1200px; /* Adjust as necessary */
-    margin: 0 auto;
-    margin-top:10px; /* Center the container */
-    padding: 20px;
-    background-color: #f4f4f4;
-    overflow-x: auto; /* Allows horizontal scrolling if needed */
-}
-
+            max-width: 1200px;
+            margin: 0 auto;
+            margin-top: 10px;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        h2 {
+            text-align: center;
+            color: #012970;
+            margin-bottom: 20px;
+        }
         .centered-table {
             width: 100%;
-            margin-top: 20px;
             border-collapse: collapse;
-            font-size: 14px;
+            margin-bottom: 40px;
         }
         .centered-table th, .centered-table td {
             border: 1px solid #ddd;
-            padding: 8px;
+            padding: 12px;
             text-align: center;
             background-color: #f4f4f4;
         }
         .centered-table th {
             background-color: #ddd;
+            color: #012970;
         }
-        h2 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #333;
+        .btn {
+            border: none;
+            color: #ffffff;
+            font-size: 14px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+        }
+        .btn-danger {
+            background-color: #dc3545;
         }
         .no-data {
             text-align: center;
             color: red;
             font-weight: bold;
-        }
-        .btn-margin {
-            margin-top: 0px;
-        }
-        .btn {
-            border: none;
-            background-color: black;
-            color: red;
-            font-size: 7px;
         }
         .editable td {
             background-color: #ffffcc;
@@ -124,18 +123,11 @@ $conn->close();
             box-sizing: border-box;
         }
     </style>
-     
 </head>
 <body>
-<br>
-<br>
 <main>
     <div class="container">
         <form id="bulk-action-form" action="update&delete.php" method="post">
-            <hr>
-
-            <hr>
-
             <h2>Lab Assistants</h2>
             <table class="table centered-table table-bordered" id="LabAssistants-table">
                 <thead>
@@ -155,7 +147,6 @@ $conn->close();
                     <?php if (count($subStaff_labAssistants) > 0): ?>
                         <?php foreach ($subStaff_labAssistants as $row): ?>
                             <tr data-id="<?php echo $row['subStaff_id']; ?>" data-table="LabAssistants-table">
-
                                 <td><button type="button" class="btn btn-primary edit-btn">Edit</button></td>
                                 <td><button type="button" class="btn btn-danger delete-btn">Delete</button></td>
                                 <td data-column="fName"><?php echo $row["fName"]; ?></td>
@@ -168,11 +159,10 @@ $conn->close();
                             </tr>
                         <?php endforeach; ?>
                     <?php else: ?>
-                        <tr><td colspan="7">No data available</td></tr>
+                        <tr><td colspan="9" class="no-data">No data available</td></tr>
                     <?php endif; ?>
                 </tbody>
             </table>
-            <hr>
 
             <h2>Advisors</h2>
             <table class="table centered-table table-bordered" id="Advisors-table">
@@ -195,7 +185,6 @@ $conn->close();
                     <?php if (count($subStaff_advisors) > 0): ?>
                         <?php foreach ($subStaff_advisors as $row): ?>
                             <tr data-id="<?php echo $row['subStaff_id']; ?>" data-table="Advisors-table">
-
                                 <td><button type="button" class="btn btn-primary edit-btn">Edit</button></td>
                                 <td><button type="button" class="btn btn-danger delete-btn">Delete</button></td>
                                 <td data-column="fName"><?php echo $row["fName"]; ?></td>
@@ -210,7 +199,7 @@ $conn->close();
                             </tr>
                         <?php endforeach; ?>
                     <?php else: ?>
-                        <tr><td colspan="9">No data available</td></tr>
+                        <tr><td colspan="11" class="no-data">No data available</td></tr>
                     <?php endif; ?>
                 </tbody>
             </table>
@@ -239,7 +228,7 @@ $(".edit-btn").on("click", function() {
             $cell.html(newValue);
 
             $.ajax({
-                url: "/BBB/components/subStaff/update.php",
+                url: "/clear/components/subStaffs/update.php",
                 method: "POST",
                 data: {
                     id: id,
@@ -271,7 +260,7 @@ $(".delete-btn").on("click", function() {
     if (confirmation) {
         // Call AJAX to delete the data if the user confirms
         $.ajax({
-            url: "/BBB/components/subStaff/delete.php",
+            url: "/clear/components/subStaff/delete.php",
             method: "POST",
             data: {
                 id: id,
@@ -295,8 +284,6 @@ $(".delete-btn").on("click", function() {
         console.log("Deletion canceled.");
     }
 });
-
-
 
 </script>
 </body>

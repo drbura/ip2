@@ -85,6 +85,7 @@
                                 <option value="StudentService">Student Service</option>
                                 <option value="Store">Store</option>
                                 <option value="AcademicEnrollment">Enrollment and Academic Record</option>
+                                <option value="registrar">Registrar</option>
                                 <option value="SchoolDean">College/School</option>
                             </select>
                             <small class="error" id="staffError"></small>
@@ -136,7 +137,7 @@
                     </div>
                 </div>
                 <div class="input-field">
-                    <input type="submit" value="Add">
+                    <input type="submit" value="Register">
                 </div>
                 <div class="details ID">
                     <div class="fields">
@@ -311,18 +312,6 @@ async function validateSchoolDean() {
 document.addEventListener('DOMContentLoaded', validateSchoolDean);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
       
     async function validateCollegeName(){
         const collegeNameField = document.getElementById('collegeNameField');
@@ -359,64 +348,40 @@ document.addEventListener('DOMContentLoaded', validateSchoolDean);
     document.getElementById('date').addEventListener('blur', validateDate);
 
     document.getElementById('registrationForm').addEventListener('submit', async function(event) {
-        event.preventDefault(); // Prevent default form submission
+    event.preventDefault(); // Prevent default form submission
 
-        let valid = true;
-        valid = validateName('fName', 'fNameError') && valid;
-        valid = validateName('mName', 'mNameError') && valid;
-        valid = validateName('lName', 'lNameError') && valid;
-        valid = validatePosition() && valid;
-        valid = validatePhone() && valid;
-        valid = await validateEmail() && valid; // Wait for validateEmail to complete
-        valid = validatePassword() && valid;
-        valid = validateDate() && valid;
-        valid = await validateStaff() && valid; // Wait for validateStaff to complete
-        valid = await validateCollegeName() && valid; // Wait for validateCollegeName to complete
+    let valid = true;
+    valid = validateName('fName', 'fNameError') && valid;
+    valid = validateName('mName', 'mNameError') && valid;
+    valid = validateName('lName', 'lNameError') && valid;
+    valid = validatePosition() && valid;
+    valid = validatePhone() && valid;
+    valid = await validateEmail() && valid; // Await the email validation
+    valid = validatePassword() && valid;
+    valid = validateDate() && valid;
+    valid = await validateCollegeName() && valid; // Await the college name validation
 
-        const staff = document.getElementById('staff').value;
-        if (staff === 'SchoolDean') {
-            valid = valid && document.getElementById('collegeName').value !== '';
+    if (valid) {
+        const formData = new FormData(this);
+        const response = await fetch(this.action, {
+            method: this.method,
+            body: formData,
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            alert('Form submitted successfully!');
+            window.location.reload(); // Reload the page on successful submission
+        } else {
+            alert('Failed to submit the form. Please try again.');
         }
+    } else {
+        alert('Please fix the errors in the form before submitting.');
+    }
+});
 
-        if (valid) {
-            const formData = new FormData(document.getElementById('registrationForm'));
-            
-            // Only include collegeName if staff is SchoolDean
-            if (staff !== 'SchoolDean') {
-                formData.delete('collegeName');
-            }
-
-            fetch('submit_form.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.text())
-            .then(text => {
-                try {
-                    const data = JSON.parse(text);
-                    if (data.success) {
-                        alert('User added successfully');
-                        window.location.reload(); // Reload the form after user clicks "OK"
-                    } else {
-                        console.error('Server error:', data.error);
-                        alert('There was an error adding the user.');
-                    }
-                } catch (error) {
-                    console.error('Error parsing JSON:', error);
-                    console.error('Response text:', text);
-                    alert('There was an error processing the response from the server.');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('There was an error adding the user.');
-            });
-        }
-    });
 </script>
-
-
-
 
 </body>
 </html>

@@ -413,8 +413,8 @@
 
             <!-- Buttons -->
             <div class="text-right">
-                <button type="submit" class="btn btn-primary">Submit</button>
-                <button type="reset" class="btn btn-secondary">Reset</button>
+                <button type="submit" class="btn btn-primary">Register</button>
+                <button type="reset" class="btn btn-secondary">Clear Form</button>
             </div>
             <div id="registrationMessage" class="alert alert-success" style="display: none;"></div>
 

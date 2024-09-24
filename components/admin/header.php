@@ -16,7 +16,7 @@
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="index.html" class="logo d-flex align-items-center">
+      <a href="dashboard.php" class="logo d-flex align-items-center">
         <img width="35px"  src="../images/download.jpg" alt="DDU IMAGE">
         <span class="d-none d-lg-block">Clearance System</span>
       </a>
@@ -221,16 +221,16 @@
       </li><!-- End Dashboard Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="">
           <i class="bi bi-menu-button-wide"></i><span>Registration</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-            <a href="#" data-page="../registration/registration">
+            <a href="" data-page="../registration/registration">
               <i class="bi bi-circle"></i><span>Student Registration</span>
             </a>
           </li>
           <li>
-            <a href="#" data-page="../user/user">
+            <a href="../user/" >
               <i class="bi bi-circle"></i><span>User Previlage</span>
             </a>
           </li>
@@ -238,17 +238,17 @@
       </li><!-- End Components Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+        <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="">
           <i class="bi bi-layout-text-window-reverse"></i><span>Information Table</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="#" data-page="../Student/user_data">
+            <a href="" data-page="../Student/user_data">
               <i class="bi bi-circle"></i><span>Student Data</span>
             </a>
           </li>
           <li>
-            <a href="#" data-page="user_data">
+            <a href="" data-page="user_data">
               <i class="bi bi-circle"></i><span>User Data</span>
             </a>
           </li>
@@ -258,7 +258,7 @@
       <li class="nav-heading">Pages</li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-page="userss-profile">
+        <a class="nav-link collapsed" href="" data-page="userss-profile">
           <i class="bi bi-person"></i>
           <span>Profile</span>
         </a>

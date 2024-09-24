@@ -36,7 +36,14 @@ if (!$id || !$table || !$column || !$value) {
     // Determine the correct table
     if ($table === 'heads-table') {
         $sql = "UPDATE ddu_subStaff SET $column = ? WHERE subStaff_id = ?";
-    }  else {
+    } 
+    else if ($table === 'LabAssistants-table'){
+        $sql="UPDATE ddu_subStaff SET $column = ? WHERE subStaff_id = ?";
+    }
+    else if ($table === 'Advisors-table'){
+        $sql="UPDATE ddu_subStaff SET $column = ? WHERE subStaff_id = ?";
+    }
+    else {
         echo json_encode(['status' => 'error', 'message' => 'Invalid table']);
         exit;
     }

@@ -26,6 +26,7 @@ $table = $_POST['table'];
 switch ($action) {
     case "delete":
         switch ($table) {
+            case "heads-table":
             case "LabAssistants-table":
             case "Advisors-table":
                 $sql = "DELETE FROM ddu_subStaff WHERE subStaff_id = ?";

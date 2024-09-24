@@ -12,7 +12,7 @@
       margin: 0;
       padding: 0;
     }
-    header, footer {
+    header{
       background: #f1f1f1; /* Example background color */
       padding: 10px;
       text-align: center;
@@ -24,9 +24,9 @@
     }
     /* Ensure the footer is at the bottom of the page */
     footer {
-      position: absolute;
+      /* position: absolute; */
       bottom: 0;
-      width: 100%;
+      width: 70%;
     }
   </style>
 </head>
