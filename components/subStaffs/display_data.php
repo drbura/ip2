@@ -19,6 +19,7 @@ if ($conn->connect_error) {
 }
 
 $sql_school = "SELECT schoolName FROM ddu_staff WHERE email = ? ";
+
 $stmt_school = $conn->prepare($sql_school);
 $stmt_school->bind_param("s", $email);
 $stmt_school->execute();
@@ -57,6 +58,7 @@ while ($row = $result_substaff->fetch_assoc()) {
 
 $conn->close();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -258,7 +260,7 @@ $(".edit-btn").on("click", function() {
             $cell.html(newValue);
 
             $.ajax({
-                url: "/BBB/components/subStaffs/update.php",
+                url: "/clear/components/subStaffs/update.php",
                 method: "POST",
                 data: {
                     id: id,
@@ -290,7 +292,7 @@ $(".delete-btn").on("click", function() {
     if (confirmation) {
         // Call AJAX to delete the data if the user confirms
         $.ajax({
-            url: "/BBB/components/subStaffs/delete.php",
+            url: "/clear/components/subStaff/delete.php",
             method: "POST",
             data: {
                 id: id,

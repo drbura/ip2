@@ -89,11 +89,12 @@ $conn->close();
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <style>
-        body {
+
+        body{
             margin-top: 70px;
             margin-left: 350px;
         }
-        h1 {
+        h1{
             margin-top: 1rem;
         }
         .btn-group {

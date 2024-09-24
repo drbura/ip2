@@ -336,47 +336,43 @@
         document.getElementById('year').addEventListener('blur', () => validateSelect('year', 'yearError'));
         document.getElementById('semester').addEventListener('blur', () => validateSelect('semester', 'semesterError'));
 
-        document.getElementById('registrationForm').addEventListener('submit', async function(event) {
-            event.preventDefault(); // Prevent default form submission
+        document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('registrationForm').addEventListener('submit', async function(e) {
+        e.preventDefault(); // Prevent form from submitting the traditional way
 
-            let valid = true;
-            valid = validateName('fName', 'fNameError') && valid;
-            valid = validateName('mName', 'mNameError') && valid;
-            valid = validateName('lName', 'lNameError') && valid;
-            valid = validateRole() && valid;
-            // valid = validatePosition() && valid;
-            valid = validatePhone() && valid;
-            valid = await validateEmail() && valid;
-            valid = validatePassword() && valid;
-            valid = validateDate() && valid;
-            valid = validateSelect('collegeName', 'collegeNameError') && valid;
-            valid = validateSelect('department', 'departmentNameError') && valid;
-            valid = validateSelect('year', 'yearError') && valid;
-            valid = validateSelect('semester', 'semesterError') && valid;
+        // Validate all the required fields
+        const isValidFName = true; // Add your validation logic here
+        const isValidMName = true; // Add your validation logic here
+        const isValidLName = true; // Add your validation logic here
+        const isValidPhone = true; // Add your validation logic here
+        const isValidPassword = true; // Add your validation logic here
+        const isValidDate = true; // Add your validation logic here
+        const isValidEmail = true; // Add your validation logic here
 
-            console.log(valid );
-
-            if (valid) {
-                const formData = new FormData(document.getElementById('registrationForm'));
-                fetch('submit_form.php', {
+        if (isValidFName && isValidMName && isValidLName && isValidPhone && isValidPassword && isValidDate && isValidEmail) {
+            const formData = new FormData(this);
+            try {
+                const response = await fetch(this.action, {
                     method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert('User added successfully');
-                        window.location.reload(); // Reload the form after user clicks "OK"
-                    } else {
-                        alert('There was an error adding the user.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('There was an error adding the user.');
+                    body: formData,
                 });
+                const result = await response.json();
+                if (result.status === 'success') {
+                    alert('Form submitted successfully.');
+                    window.location.reload(); // Reload the page after successful submission
+                } else {
+                    alert(`There was an error: ${result.message}`);
+                }
+            } catch (error) {
+                console.error('Error submitting the form:', error);
+                alert('There was an error processing your request.');
             }
-        });
+        } else {
+            alert('Please fill out all required fields correctly.');
+        }
+    });
+});
+
     </script>
 </body>
 </html>

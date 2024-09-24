@@ -17,14 +17,14 @@ $stmt->execute();
 $result = $stmt->get_result();
 
 if ($row = $result->fetch_assoc()) {
-   //  Simulate that all statuses are "APPROVED"
-     // $statuses = array_map(function() {
-      //    return 'APPROVED';
-    //  }, $row);
+//    //   Simulate that all statuses are "APPROVED"
+//      $statuses = array_map(function() {
+//          return 'APPROVED';
+//      }, $row);
     // Filter out statuses that are "PENDING"
     $statuses = array_filter($row, function($status) {
             return $status !== 'Pending';
-  });
+    });
 } else {
     $statuses = []; // No status to show
 }

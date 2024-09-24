@@ -23,7 +23,7 @@ if ($conn->connect_error) {
 $email = $_SESSION['email'];
 
 // Query to fetch user details from ddu_staff, ddu_substaff, or ddu_admin based on email
-$sql = "SELECT CONCAT_WS(' ', fName, mName, lName) AS full_name, position AS role, phone, email
+$sql = "SELECT CONCAT_WS(' ', fName, mName, lName) AS full_name, staff AS role, phone, email
         FROM ddu_staff WHERE email = ? 
         UNION 
         SELECT CONCAT_WS(' ', fName, mName, lName) AS full_name, staff AS role, phone, email
