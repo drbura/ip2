@@ -9,25 +9,37 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <style>
+        body{
+            margin-top: 70px;
+            margin-left: 350px;
+        }
+        h1{
+            margin-top: 1rem;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <div class="row">
             <div class="col-lg-12" align="center">
                 <br>
-                <h5 align="center">Cleared Students List</h5>
+                <h1 align="center">Cleared Students List</h1>
                 <br>
                 <table class="table table-striped">
                     <thead>
-                        <tr>
+                    <tr>
                             <th>Student ID</th>
                             <th>Student Name</th>
+                            <th>Department</th>
+                            <th>Academic Year</th>
+                            <th>Semester</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
-                        require 'connect.php';
+                        require '../student/connect.php';
                         session_start(); // Start session to get user email
 
                         $user_email = $_SESSION['email'] ?? ''; // Fetch email from session
@@ -49,7 +61,7 @@
                             $user_role = 'Registrar';
                             // Fetch all cleared students
                             $display_query = "
-                                SELECT d.student_id, CONCAT(d.first_name, ' ', d.father_name, ' ', d.gfather_name) AS student_name
+                                SELECT d.student_id, CONCAT(d.first_name, ' ', d.father_name, ' ', d.gfather_name) AS student_name,d.department,d.Year,d.semester
                                 FROM ddustudentdata d
                                 INNER JOIN clearedstudentslist c ON d.student_id = c.student_id
                                 WHERE c.is_completed = 1";
@@ -78,7 +90,7 @@
 
                                 // Fetch cleared students for the department head
                                 $display_query = "
-                                    SELECT d.student_id, CONCAT(d.first_name, ' ', d.father_name, ' ', d.gfather_name) AS student_name
+                                    SELECT d.student_id, CONCAT(d.first_name, ' ', d.father_name, ' ', d.gfather_name) AS student_name,d.department,d.Year,d.semester
                                     FROM ddustudentdata d
                                     INNER JOIN clearedstudentslist c ON d.student_id = c.student_id
                                     WHERE c.is_completed = 1 AND d.department = ?";
@@ -103,9 +115,12 @@
                                 <tr>
                                     <td><?php echo htmlspecialchars($data_row['student_id']); ?></td>
                                     <td><?php echo htmlspecialchars($data_row['student_name']); ?></td>
+                                    <td><?php echo htmlspecialchars($data_row['department']); ?></td>
+                                    <td><?php echo htmlspecialchars($data_row['Year']); ?></td>
+                                    <td><?php echo htmlspecialchars($data_row['semester']); ?></td>
                                     <td>
-                                    <a href="view_pdf.php?id=<?php echo htmlspecialchars($data_row['student_id']); ?>" class="btn btn-info btn-sm">View PDF</a>
-                                    <a href="generate_pdf.php?id=<?php echo htmlspecialchars($data_row['student_id']); ?>" class="btn btn-success btn-sm">Download PDF</a>
+                                    <a href="student_specific.php?student_id=<?php echo htmlspecialchars($data_row['student_id']); ?>&action=view" class="btn btn-info btn-sm">View PDF</a>
+                                    <a href="student_specific.php?student_id=<?php echo htmlspecialchars($data_row['student_id']); ?>&action=download" class="btn btn-success btn-sm">Download PDF</a>
 
                                     </td>
                                 </tr>
