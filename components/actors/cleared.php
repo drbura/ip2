@@ -24,7 +24,7 @@ if ($role_result && $role_result->num_rows > 0) {
     // Fetch all cleared students
     $display_query = "
         SELECT c.student_id, CONCAT(d.first_name, ' ', d.father_name, ' ', d.gfather_name) AS student_name, 
-               c.department, c.AcademicYear, c.Semester
+               c.department, c.AcademicYear, c.Semester, c.reason
         FROM clearedstudentslist c
         INNER JOIN ddustudentdata d ON c.student_id = d.student_id
         WHERE c.is_completed = 1";
@@ -54,7 +54,7 @@ if ($role_result && $role_result->num_rows > 0) {
         // Fetch cleared students for the department head
         $display_query = "
             SELECT c.student_id, CONCAT(d.first_name, ' ', d.father_name, ' ', d.gfather_name) AS student_name, 
-                   c.department, c.AcademicYear, c.Semester
+                   c.department, c.AcademicYear, c.Semester, c.reason
             FROM clearedstudentslist c
             INNER JOIN ddustudentdata d ON c.student_id = d.student_id
             WHERE c.is_completed = 1 AND c.department = ?";
@@ -89,7 +89,6 @@ $conn->close();
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <style>
-
         body{
             margin-top: 70px;
             margin-left: 350px;
@@ -101,7 +100,7 @@ $conn->close();
             display: flex;
             justify-content: flex-start; 
              gap: 5px; 
-         }
+        }
     </style>
     <script>
         function promoteAll() {
@@ -141,6 +140,7 @@ $conn->close();
                         <th>Department</th>
                         <th>Academic Year</th>
                         <th>Semester</th>
+                        <th>Reason</th> <!-- Added Reason column header -->
                         <th>Action 
                             <?php if ($user_role === 'Registrar'): ?>
                                 <button class="btn btn-primary btn-sm" onclick="promoteAll()">Promote All</button>
@@ -159,18 +159,18 @@ $conn->close();
                                     <td><?php echo htmlspecialchars($data_row['department']); ?></td>
                                     <td><?php echo htmlspecialchars($data_row['AcademicYear']); ?></td>
                                     <td><?php echo htmlspecialchars($data_row['Semester']); ?></td>
+                                    <td><?php echo htmlspecialchars($data_row['reason']); ?></td> <!-- Added Reason column -->
                                     <td>
-    <div class="btn-group">
-        <a href="student_specific.php?student_id=<?php echo htmlspecialchars($data_row['student_id']); ?>&action=view" class="btn btn-info btn-sm">View PDF</a>
-        <a href="student_specific.php?student_id=<?php echo htmlspecialchars($data_row['student_id']); ?>&action=download" class="btn btn-success btn-sm">Download PDF</a>
-    </div>
-</td>
-
+                                        <div class="btn-group">
+                                            <a href="student_specific.php?student_id=<?php echo htmlspecialchars($data_row['student_id']); ?>&action=view" class="btn btn-info btn-sm">View PDF</a>
+                                            <a href="student_specific.php?student_id=<?php echo htmlspecialchars($data_row['student_id']); ?>&action=download" class="btn btn-success btn-sm">Download PDF</a>
+                                        </div>
+                                    </td>
                                 </tr>
                                 <?php
                             }
                         } else {
-                            echo "<tr><td colspan='6'>No Cleared Students yet</td></tr>";
+                            echo "<tr><td colspan='7'>No Cleared Students yet</td></tr>";
                         }
                         ?>
                     </tbody>
