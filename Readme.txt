@@ -7,4 +7,3 @@ hashim farah            1405054
 samuel dabala           1402917 
 samuel misganaw         1402912 
 
-<!-- Failed to upload "Dashboard - Student Clearance Management System - Google Chrome 2025-01-28 05-53-10.mp4" -->
