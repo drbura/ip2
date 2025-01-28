@@ -1,6 +1,9 @@
-Thanks for downloading this template!
+this a project for clearance system by group 5 computer scince 3rd year students
 
-Template Name: NiceAdmin
-Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-Author: BootstrapMade.com
-License: https://bootstrapmade.com/license/
+name                     id 
+biruk ayinalem          1401613
+feker geazahegn         1405071
+hashim farah            1405054
+samuel dabala           1402917 
+samuel misganaw         1402912 
+
