@@ -5,5 +5,5 @@ biruk ayinalem          1401613
 feker geazahegn         1405071
 hashim farah            1405054
 samuel dabala           1402917 
-samuel misganaw         1402912 
+samuel misganu          1402912 
 
