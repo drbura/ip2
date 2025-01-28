@@ -25,7 +25,7 @@ body {
   background: linear-gradient(to right, #e2e2e2, #c9d6ff);
 }
 .container {
-  background: #4070f4;
+  /* background: #4070f4; */
   width: 450px;
   height: 400px;
   padding: 1.5rem;

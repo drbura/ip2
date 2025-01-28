@@ -135,9 +135,9 @@
       </li>
       <li class="nav-item">
 
-        <a class="nav-link collapsed" href="#" data-page="cleared">
+        <!-- <a class="nav-link collapsed" href="#" data-page="cleared">
           <i class="bi bi-people"></i>
-          <span>Cleared Students</span>
+          <span>Cleared Students</span> -->
 
 
         <a class="nav-link collapsed" href="" data-page="../subStaff/display_data">

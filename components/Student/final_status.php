@@ -9,50 +9,27 @@ include 'connect.php'; // Ensure this file correctly sets up $conn
 
 $studentId = $_SESSION['id']; // Ensure student_id is stored in session
 
-/// Query to fetch student details from clearedstudentslist table
-$sql_cleared = "SELECT full_name, department, AcademicYear, semester FROM clearedstudentslist WHERE student_id = ?";
-$stmt_cleared = $conn->prepare($sql_cleared);
-if ($stmt_cleared === false) {
+// Query to fetch student details from ddustudentdata table
+$sql_student = "SELECT first_name, father_name, gfather_name, student_id, Department,year,semester, school FROM ddustudentdata WHERE student_id = ?";
+$stmt_student = $conn->prepare($sql_student);
+if ($stmt_student === false) {
     die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
 }
-$stmt_cleared->bind_param("s", $studentId);
-$stmt_cleared->execute();
-$result_cleared = $stmt_cleared->get_result();
-if ($result_cleared === false) {
-    die("Execute failed: (" . $stmt_cleared->errno . ") " . $stmt_cleared->error);
+$stmt_student->bind_param("s", $studentId);
+$stmt_student->execute();
+$result_student = $stmt_student->get_result();
+if ($result_student === false) {
+    die("Execute failed: (" . $stmt_student->errno . ") " . $stmt_student->error);
 }
 
-$student_cleared = $result_cleared->fetch_assoc();
-$stmt_cleared->close();
+$student = $result_student->fetch_assoc();
+$stmt_student->close();
 
-// Get full name, department, AcademicYear, and semester from clearedstudentslist
-$fullName = $student_cleared['full_name'];
-$department = $student_cleared['department'];
-$academicYear = $student_cleared['AcademicYear'];
-$semester = $student_cleared['semester'];
-
-// Query to fetch the school from ddustudentdata table
-$sql_ddustudent = "SELECT school FROM ddustudentdata WHERE student_id = ?";
-$stmt_ddustudent = $conn->prepare($sql_ddustudent);
-if ($stmt_ddustudent === false) {
-    die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
-}
-$stmt_ddustudent->bind_param("s", $studentId);
-$stmt_ddustudent->execute();
-$result_ddustudent = $stmt_ddustudent->get_result();
-if ($result_ddustudent === false) {
-    die("Execute failed: (" . $stmt_ddustudent->errno . ") " . $stmt_ddustudent->error);
-}
-
-$student_ddustudent = $result_ddustudent->fetch_assoc();
-$stmt_ddustudent->close();
-
-// Fetch school from ddustudentdata
-$school = $student_ddustudent['school'];
-
+// Concatenate full name
+$fullName = $student['first_name'] . ' ' . $student['father_name'] . ' ' . $student['gfather_name'];
 
 // Query to fetch clearance reason and request date from request table
-$sql_request = "SELECT Reason, RequestDate FROM request_processed WHERE StudentId = ? ORDER BY RequestDate DESC LIMIT 1";
+$sql_request = "SELECT Reason, RequestDate, Advisor, LabAssistant, DepartmentHead, SchoolDean, BookStore, Library, Cafeteria, StudentLoan, Dormitory, StudentService, Store, AcademicEnrollment FROM request WHERE StudentId = ? ORDER BY RequestDate DESC LIMIT 1";
 $stmt_request = $conn->prepare($sql_request);
 if ($stmt_request === false) {
     die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
@@ -68,23 +45,8 @@ $request = $result_request->fetch_assoc();
 $stmt_request->close();
 
 $conn->close();
-
-// Set default approvals for all departments
-$approvals = [
-    'Advisor' => 'APPROVED',
-    'LabAssistant' => 'APPROVED',
-    'DepartmentHead' => 'APPROVED',
-    'SchoolDean' => 'APPROVED',
-    'BookStore' => 'APPROVED',
-    'Library' => 'APPROVED',
-    'Cafeteria' => 'APPROVED',
-    'StudentLoan' => 'APPROVED',
-    'Dormitory' => 'APPROVED',
-    'StudentService' => 'APPROVED',
-    'Store' => 'APPROVED',
-    'AcademicEnrollment' => 'APPROVED'
-];
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -146,7 +108,7 @@ $approvals = [
 <body>
     <nav class="navbar navbar-expand-lg navbar-custom">
         <a class="navbar-brand" href="#">
-            <img src="../Images/download.jpg" alt="DDU Logo">
+            <img src="./Images/download.jpg" alt="Ethiopian Logo">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -158,56 +120,56 @@ $approvals = [
                         <i class="fas fa-user-circle fa-lg"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="index.php">Logout</a>
+                        <a class="dropdown-item" href="logout.php">Logout</a>
                     </div>
                 </li>
             </ul>
         </div>
     </nav>
     <div class="header">
-        <img src="../Images/download.jpg" alt="DDU  Logo">
+        <img src="Images\download.jpg" alt="University Logo">
         <h1>
             Dire Dawa University<br>
             Student Clearance (Withdraw Form)<br>
             for Regular Undergraduate Students
         </h1>
-        <img src="../Images/download.jpg" alt="DDU  Logo">
+        <img src="Images\download.jpg" alt="University Logo">
     </div>
     <div class="container">
         <table class="table table-striped">
            
-        <tbody>
+            <tbody>
                 <tr>
                     <td>Full Name</td>
-                    <td><?php echo htmlspecialchars($fullName) ?></td>
+                    <td><?php echo htmlspecialchars($fullName); ?></td>
                 </tr>
                 <tr>
                     <td>ID</td>
-                    <td><?php echo htmlspecialchars($studentId) ?></td>
+                    <td><?php echo htmlspecialchars($student['student_id']); ?></td>
                 </tr>
                 <tr>
                     <td>College</td>
-                    <td><?php echo htmlspecialchars($school) ?></td>
+                    <td><?php echo htmlspecialchars($student['school']); ?></td>
                 </tr>
                 <tr>
                     <td>Department</td>
-                    <td><?php echo htmlspecialchars($department) ?></td>
+                    <td><?php echo htmlspecialchars($student['Department']); ?></td>
                 </tr>
                 <tr>
-                    <td>Academic Year</td>
-                    <td><?php echo htmlspecialchars($academicYear) ?></td>
+                    <td>year</td>
+                    <td><?php echo htmlspecialchars($student['year']); ?></td>
                 </tr>
                 <tr>
-                    <td>Semester</td>
-                    <td><?php echo htmlspecialchars($semester) ?></td>
+                    <td>semester</td>
+                    <td><?php echo htmlspecialchars($student['semester']); ?></td>
                 </tr>
                 <tr>
                     <td>Reason</td>
-                    <td><?php echo htmlspecialchars($request['Reason']) ?></td>
+                    <td><?php echo htmlspecialchars($request['Reason']); ?></td>
                 </tr>
                 <tr>
                     <td>Request Date</td>
-                    <td><?php echo htmlspecialchars($request['RequestDate']) ?></td>
+                    <td><?php echo htmlspecialchars($request['RequestDate']); ?></td>
                 </tr>
             </tbody>
         </table>
@@ -215,28 +177,30 @@ $approvals = [
         <table class="table table-striped">
             
             <tbody>
-                <?php foreach ($approvals as $actor => $status): ?>
-                    <tr>
-                        <td><?php echo htmlspecialchars($actor); ?></td>
-                        <td>
-                            <button class="btn <?php echo $status === 'APPROVED' ? 'btn-success' : 'btn-warning'; ?>" disabled>
-                                <?php echo htmlspecialchars($status); ?>
-                            </button>
-                        </td>
-                    </tr>
+                <?php foreach ($request as $actor => $status): ?>
+                    <?php if (in_array($actor, ['Advisor', 'LabAssistant', 'DepartmentHead', 'SchoolDean', 'BookStore', 'Library', 'Cafeteria', 'StudentLoan', 'Dormitory', 'StudentService', 'Store', 'AcademicEnrollment'])): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($actor); ?></td>
+                            <td>
+                                <button class="btn <?php echo $status === 'REJECT' ? 'btn-danger' : ($status === 'APPROVED' ? 'btn-success' : 'btn-warning'); ?>" disabled>
+                                    <?php echo htmlspecialchars($status); ?>
+                                </button>
+                            </td>
+                        </tr>
+                    <?php endif; ?>
                 <?php endforeach; ?>
             </tbody>
         </table>
         <form action="generate_pdf.php" method="post">
-            <div class="text-center mt-4">
-                <a href="generate_pdf.php" class="btn btn-confirm">Download PDF</a>
-            </div>
-        </form>
-        <form action="view_pdf.php" method="post" target="_blank">
-            <div class="text-center mt-4">
-                <button type="submit" class="btn btn-secondary">View PDF</button>
-            </div>
-        </form>
+    <div class="text-center mt-4">
+        <a href="generate_pdf.php" class="btn btn-confirm">Download PDF</a>
+    </div>
+</form>
+<form action="view_pdf.php" method="post" target="_blank">
+    <div class="text-center mt-4">
+        <button type="submit" class="btn btn-secondary">View PDF</button>
+    </div>
+</form>
     </div>
 </body>
 </html>

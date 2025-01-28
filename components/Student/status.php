@@ -17,13 +17,13 @@ $stmt->execute();
 $result = $stmt->get_result();
 
 if ($row = $result->fetch_assoc()) {
-//    //   Simulate that all statuses are "APPROVED"
-//      $statuses = array_map(function() {
-//          return 'APPROVED';
-//      }, $row);
+    // // Simulate that all statuses are "APPROVED"
+    // $statuses = array_map(function() {
+    //     return 'APPROVED';
+    // }, $row);
     // Filter out statuses that are "PENDING"
     $statuses = array_filter($row, function($status) {
-            return $status !== 'Pending';
+        return $status !== 'Pending';
     });
 } else {
     $statuses = []; // No status to show
@@ -31,73 +31,6 @@ if ($row = $result->fetch_assoc()) {
 
 // Handle form submission to update the status
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm'])) {
-    // Transfer data from `request` table to `request_log` table
-    $sql_select_request = "SELECT * FROM request WHERE StudentId = ? ORDER BY RequestDate DESC LIMIT 1";
-    $stmt_select_request = $conn->prepare($sql_select_request);
-    if ($stmt_select_request === false) {
-        die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
-    }
-    $stmt_select_request->bind_param("s", $studentId);
-    $stmt_select_request->execute();
-    $result_request = $stmt_select_request->get_result();
-    
-    if ($request_data = $result_request->fetch_assoc()) {
-        // Insert the fetched data into `request_log` table
-        $sql_insert_log = "INSERT INTO request_processed (StudentId,AcademicYear,Semester, Reason, RequestDate, Advisor, LabAssistant, DepartmentHead, SchoolDean, BookStore, Library, Cafeteria, StudentLoan, Dormitory, StudentService, Store, AcademicEnrollment)
-                           VALUES (?,?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        $stmt_insert_log = $conn->prepare($sql_insert_log);
-        if ($stmt_insert_log === false) {
-            die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
-        }
-
-        // Bind parameters for inserting into `request_log`
-        $stmt_insert_log->bind_param(
-            "sssssssssssssssss", 
-            $request_data['StudentId'],
-            $request_data['AcademicYear'],
-            $request_data['Semester'],
-            $request_data['Reason'], 
-            $request_data['RequestDate'], 
-            $request_data['Advisor'], 
-            $request_data['LabAssistant'], 
-            $request_data['DepartmentHead'], 
-            $request_data['SchoolDean'], 
-            $request_data['BookStore'], 
-            $request_data['Library'], 
-            $request_data['Cafeteria'], 
-            $request_data['StudentLoan'], 
-            $request_data['Dormitory'], 
-            $request_data['StudentService'], 
-            $request_data['Store'], 
-            $request_data['AcademicEnrollment']
-        );
-
-        // Execute the insert
-        if ($stmt_insert_log->execute()) {
-            // Delete the student's record from the `request` table after successful transfer
-            $sql_delete_request = "DELETE FROM request WHERE StudentId = ?";
-            $stmt_delete_request = $conn->prepare($sql_delete_request);
-            if ($stmt_delete_request === false) {
-                die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
-            }
-            $stmt_delete_request->bind_param("s", $studentId);
-            if ($stmt_delete_request->execute()) {
-                // Record deleted successfully from the `request` table
-                echo "Record successfully transferred to request_log and deleted from request.";
-            } else {
-                echo "Error deleting record from request: " . $conn->error;
-            }
-            $stmt_delete_request->close();
-        } else {
-            echo "Error inserting record into request_log: " . $conn->error;
-        }
-        $stmt_insert_log->close();
-    } else {
-        echo "No request found to log.";
-    }
-
-    $stmt_select_request->close();
-
     // Check if student is already in clearedstudentslist
     $sql_check = "SELECT COUNT(*) AS count FROM clearedstudentslist WHERE student_id = ?";
     $stmt_check = $conn->prepare($sql_check);
@@ -113,15 +46,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm'])) {
     if ($row_check['count'] == 0) {
         // Student is not yet in clearedstudentslist, so insert
         // Prepare the SQL query to insert into clearedstudentslist table
-        $sql_insert = "INSERT INTO clearedstudentslist (student_id, full_name, department, AcademicYear, Semester, Reason, ClearedDate, is_completed) 
-                       VALUES (?, ?, ?, ?, ?, ?, ?, 1)";
+        $sql_insert = "INSERT INTO clearedstudentslist (student_id, full_name, is_completed) VALUES (?, ?, 1)";
         $stmt_insert = $conn->prepare($sql_insert);
         if ($stmt_insert === false) {
             die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
         }
-    
-        // Fetch the student's full name and department from ddustudentdata
-        $sql_student = "SELECT first_name, father_name, gfather_name, department FROM ddustudentdata WHERE student_id = ?";
+
+        // Fetch the student's full name
+        $sql_student = "SELECT first_name, father_name, gfather_name FROM ddustudentdata WHERE student_id = ?";
         $stmt_student = $conn->prepare($sql_student);
         if ($stmt_student === false) {
             die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
@@ -134,32 +66,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm'])) {
         }
         $student = $result_student->fetch_assoc();
         $fullName = $student['first_name'] . ' ' . $student['father_name'] . ' ' . $student['gfather_name'];
-        $department = $student['department'];  // Fetch the department
         $stmt_student->close();
-    
-        // Fetch AcademicYear, Semester, and Reason from request_log
-        $sql_log = "SELECT AcademicYear, Semester, Reason FROM request_processed WHERE studentid = ? ORDER BY RequestDate DESC LIMIT 1";
-        $stmt_log = $conn->prepare($sql_log);
-        if ($stmt_log === false) {
-            die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
-        }
-        $stmt_log->bind_param("s", $studentId);
-        $stmt_log->execute();
-        $result_log = $stmt_log->get_result();
-        if ($result_log === false || $result_log->num_rows == 0) {
-            die("No log data found for the student.");
-        }
-        $log = $result_log->fetch_assoc();
-        $AcademicYear = $log['AcademicYear'];
-        $Semester = $log['Semester'];
-        $Reason = $log['Reason'];
-        $stmt_log->close();
-    
-        // Set ClearedDate to the current timestamp
-        $ClearedDate = date("Y-m-d H:i:s");
-    
-        // Bind parameters and execute the insert query into clearedstudentslist
-        $stmt_insert->bind_param("sssssss", $studentId, $fullName, $department, $AcademicYear, $Semester, $Reason, $ClearedDate);
+
+        // Bind parameters and execute the insert query
+        $stmt_insert->bind_param("ss", $studentId, $fullName);
         if ($stmt_insert->execute()) {
             // Redirect to final_status.php after successful update
             header('Location: final_status.php');
@@ -172,8 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm'])) {
         // Student already exists in clearedstudentslist
         echo "Student has already been processed.";
     }
-    
-}    
+}
 
 
 $stmt->close();
@@ -195,8 +104,7 @@ $conn->close();
             margin-top: 30px;
         }
         .navbar-custom {
-            /* background-color: #007bff; */
-            background-color: orange;
+            background-color: #007bff;
             height: 60px;
         }
         .navbar-custom .navbar-brand img {
@@ -235,38 +143,24 @@ $conn->close();
         .btn-confirm:disabled {
             background-color: gray;
         }
-        ul{
-            list-style-type: none;
-        }
-        li{
-            font-size: large;
-        }
     </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-custom">
         <a class="navbar-brand" href="#">
-
-        <img src="../Images/download.jpg" alt="DDU Logo">
-
-           
-
+            <img src="./Images/Dire-Dawa_University-removebg.png" alt="Ethiopian Logo">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
-                <li><?php echo $studentId ?></li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-user-circle fa-lg"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                        <ul >
-                            <li><?php echo $studentId ?></li>
-                        </ul>
-                        <a class="dropdown-item" href="index.php">Logout</a>
+                        <a class="dropdown-item" href="logout.php">Logout</a>
                     </div>
                 </li>
             </ul>
@@ -278,7 +172,7 @@ $conn->close();
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Clearance Staff</th>
+                    <th>Actor</th>
                     <th>Status</th>
                 </tr>
             </thead>
@@ -290,10 +184,6 @@ $conn->close();
                         <button class="btn <?php echo $status === 'REJECT' ? 'btn-danger' : ($status === 'APPROVED' ? 'btn-success' : 'btn-warning'); ?>" disabled>
                             <?php echo htmlspecialchars($status); ?>
                         </button>
-
-                        <?php if ($status === 'REJECT'): ?>
-                        <button class="btn btn-info view-reason" data-actor="<?php echo htmlspecialchars($actor); ?>">View Reason</button>
-                        <?php endif; ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
@@ -302,7 +192,7 @@ $conn->close();
         <div class="text-center mt-4">
             <form action="status.php" method="post">
                 <input type="hidden" name="confirm" value="1">
-                <button id="confirmButton" type="submit" class="btn btn-confirm">Get Clearance</button>
+                <button id="confirmButton" type="submit" class="btn btn-confirm">Confirm</button>
             </form>
             <br><br><br>
         </div>
@@ -310,27 +200,6 @@ $conn->close();
         <p class="text-center">No status updates available.</p>
         <?php endif; ?>
     </div>
-    <!-- Modal Popup for reject reason -->
-    <div class="modal fade" id="reasonModal" tabindex="-1" role="dialog" aria-labelledby="reasonModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="reasonModalLabel">Reason for Rejection</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <!-- Reason content will be loaded here -->
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-    <!-- Modal Popup for reject reason -->
-
     <script>
         $(document).ready(function() {
             function updateConfirmButton() {
@@ -350,26 +219,7 @@ $conn->close();
 
             // Call updateConfirmButton initially
             updateConfirmButton();
-
-            // Handle View Reason button click
-    $('.view-reason').on('click', function() {
-        const actor = $(this).data('actor');
-
-        $.ajax({
-            url: 'fetch_reason.php',
-            type: 'POST',
-            data: { actor: actor, studentId: "<?php echo $studentId; ?>" },
-            success: function(response) {
-                // Show the reason in the modal
-                $('#reasonModal .modal-body').html(response);
-                $('#reasonModal').modal('show');
-            },
-            error: function() {
-                alert('Failed to fetch reason.');
-            }
         });
-    });
-});
     </script>
 </body>
 </html>
